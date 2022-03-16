@@ -1,0 +1,6 @@
+// select SC and reload
+
+$('#select_setting_channel').change( function(){
+    //alert( 'new SC ' + $(this).val() )
+    socket.emit( 'load_new_SC', $(this).val() )
+})

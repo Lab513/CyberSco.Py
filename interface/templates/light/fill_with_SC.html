@@ -1,0 +1,55 @@
+//---------- filling interface form with default setting channels
+
+var fill_with_dic_chan = function(letter, dic_abcd){                            // fill A, B, C, D with set chan
+       var elem = $('#chan'+letter)
+       elem.find('.COOL_lamb').val(dic_abcd[letter]['lamb'])
+       elem.find('.COOL_intens').val(dic_abcd[letter]['intens'])
+
+       var shut = dic_abcd[letter]['shut']
+       var tofind = '.select_shutter option[value="' + 'shut_' + shut + '"]'
+       //alert("tofind " + tofind)
+       elem.find(tofind).prop('selected', true)
+
+}
+
+socket.on('set_chan', function(msg){                                            // receive yaml and fill set chan
+
+    var dic_set_chan = JSON.parse(msg)
+    //alert('dic_set_chan from yaml is ' + dic_set_chan)                        // dictionary SC
+
+    $('.chb_SC').prop( "checked", false )                                       // reset check boxes
+    $('.input_chan_set').val('')                                                // reset input values
+
+    //----- name SC
+
+    $('#name_setting_channels').val( dic_set_chan['name_set_chan'] )            // retrieve SC name
+
+    //------ BF
+    if ( 'BF' in dic_set_chan ){
+          $('#BF_intens').val( dic_set_chan['BF'] )                         // BF value
+          $('#set_BF').prop( "checked", true )                              // check box BF true
+      }
+
+    //----- Xcite
+
+    if ( 'Xcite' in dic_set_chan ){
+          $('#Xcite_intens').val( dic_set_chan['Xcite'] )                   // Xcite value
+          $('#set_Xcite').prop( "checked", true )                           // check box XCite true
+    }
+
+    //------ Cooled
+
+    if ( 'COOL' in dic_set_chan ){
+          var dic_abcd = dic_set_chan['COOL']
+          //alert('dic_abcd ' + dic_abcd)
+          for (var l of ['A','B','C','D']){
+                fill_with_dic_chan( l, dic_abcd )                           // Coolled values
+              }
+          $('#set_Coolled').prop( "checked", true )                         // check box Cooled true
+      }
+
+    if ( 'filter' in dic_set_chan ){                                       // filter
+        $('#filter').val( dic_set_chan['filter'] )
+      }
+
+  })

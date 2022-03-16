@@ -1,0 +1,32 @@
+
+
+else if (node.type == 'ZSSC') {
+
+      var timestamp = new Date().getTime().toString();
+      node.key = timestamp;
+      if (node.data.far_limit == 0 &&
+          node.data.near_limit == 0 && node.data.step == 0 &&
+          node.data.setting_channel_name == "undefined" &&
+          node.data.exposure_time == 0)
+          {
+            node.data.exposure_time = parseInt($("#exposure-time").val());
+            if ($("#position-z").text() == "Loading...") {
+              node.data.position_z = "Error";
+            }
+            else {
+              node.data.position_z = $("#position-z").text();
+            }
+            if ($("#setting-channel-to-apply :selected").text() != "Select a setting channel...") {
+              node.data.setting_channel_name = $("#setting-channel-to-apply :selected").text();
+            }
+      }
+      $tdList.eq(1).html('<button onClick="editTree();"><img src="/static/icons/tree/icons/wrench.png"></button>');
+      $tdList.eq(4).html('<div id="ZSSC' + node.key + "-info" +
+              '"> Z-Pos: ' + node.data.position_z +
+                 ' far/near limit: ' + node.data.far_limit+'um/' + node.data.near_limit + 'um' +
+                 ' Step: ' + node.data.step + 'um' +
+                 ' SC: ' + node.data.setting_channel_name +
+                 ' ET: ' + node.data.exposure_time + 'ms' +
+                 ' Shut: ' + node.data.shut + '</div>')
+
+}

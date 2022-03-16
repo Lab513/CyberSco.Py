@@ -1,0 +1,13 @@
+else if (node.type == 'MFV') {
+
+      var timestamp = new Date().getTime().toString();
+      node.key = timestamp;
+      $tdList.eq(1).html('<button onClick="editTree();"><img src="/static/icons/tree/icons/wrench.png"></button>');
+      $tdList.eq(4).html('<div id="MFV' + node.key + "-info" +
+                '">V1: ' + node.data.valve_1 +
+                ' V2: ' + node.data.valve_2 +
+                ' V3: ' + node.data.valve_3 +
+                ' V4: ' + node.data.valve_4 +
+                ' V5: ' + node.data.valve_5 + '</div>');
+
+}

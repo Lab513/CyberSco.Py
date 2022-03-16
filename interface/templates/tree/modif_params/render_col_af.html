@@ -1,0 +1,45 @@
+/*
+AUtofocus
+*/
+
+else if (node.type == 'AF') {
+
+      var timestamp = new Date().getTime().toString();
+      node.key = timestamp;
+      $tdList.eq(2).html('<button class="update_af" ' +
+                   ' afid=' + timestamp + ' title="Update autofocus"><img src="/static/icons/tree/icons/map_edit.png"></button>');
+      $tdList.eq(4).html('<div id="AF' + timestamp + "-info" +
+                 '"> Objective: ' + node.data.objectif +
+                 ' Z-Offset: ' + node.data.zoffset +
+                  '</div>');
+
+      if (node.data.objectif == "undefined" && node.data.zoffset == 0) {
+        updateAutoFocus(node.key + "-info", node.key)
+      }
+
+      socket.on( 'update_af_infos', function( nodeidaf ){
+
+           var infos = nodeidaf.split(';')
+           var nodeid = infos[0]                                               // node id
+           new_af = infos[1]                                                   // new offset
+           if ( node.key == nodeid ){
+                 node.data.zoffset = new_af
+             }
+
+           $('#AF' + nodeid + '-info').text(                                  // change the AF infos
+                  ' Objective: ' + node.data.objectif +
+                  ' Z-Offset: ' + node.data.zoffset
+                  )
+
+              })
+
+          $('.update_af').click( function(e){                                 // update the AF
+              e.stopImmediatePropagation();
+              e.preventDefault();
+              socket.emit('update_af', $(this).attr('afid') )                 // ask for upadte using the id
+              $('#save_prot_params').click()                                  // save the protocol parameters in the protocol yaml file
+
+          })
+
+
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html lang="en" >
+
+<head>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet" href="/static/css/styleMda.css">
+
+
+<script src="/static/js/jquery-ui.js"> </script>
+<script src="/static/js/jquery.fancytree.js"> </script>
+
+{% include 'tree/fancy_tree_libs/fancy_libs.html' %}
+
+<script src="/static/js/jquery.ui-contextmenu.js"> </script>
+
+<script src="/static/js/js-yaml.min.js"> </script>
+
+<script src="/static/js/scriptUpdateNodeFancyTree.js"> </script>
+
+</head>
+
+<style>
+
+#protocol {
+
+  width: 600px;
+  padding-bottom: 50px;
+}
+
+</style>
+
+<body>
+
+<div class="col" id="protocol">
+
+        <!-- create the protocol -->
+
+        {% include 'tree/protocols/handle_protocols.html' %}
+
+        {% include 'tree/drop_objects/basic_elements_dropdown.html' %}
+
+        {% include 'tree/structure_protocol.html' %}
+
+        {% include 'tree/design/tree_table.html' %}
+
+</div>
+
+        {% include 'tree/modif_params/params.html' %}
+
+    <script>
+
+        {% include 'tree/properties/fancy_tree.html' %}
+
+        {% include 'tree/properties/tree_context_menu.html' %}
+
+    </script>
+
+  </body>
+
+</html>

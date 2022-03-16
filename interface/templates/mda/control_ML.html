@@ -1,0 +1,26 @@
+<!-- Monitorings -->
+
+<div id='control_panel' >
+
+    <!-- inserted images -->
+
+{% include "mda/control_ML_table.html" %}
+
+</div>
+
+<script >
+
+  $('#control_panel').hide()
+
+  // refresh the images for monitoring
+
+  setInterval( function(){
+
+    $('#BF').attr('src', '/static/mda_pics/frame0.png' + '?'  + new Date().getTime())                                // BF
+    $('#pred').attr('src', '/static/mda_pics/pred_frame0.png' + '?'  + new Date().getTime())                         // BF segm predictions
+    $('#pred_ev').attr('src', '/static/mda_pics/pred_ev_frame0.png' + '?'  + new Date().getTime())                   // events predictions
+    $('#pred_ev_superp').attr('src', '/static/mda_pics/pred_ev_frame0_superp.png' + '?'  + new Date().getTime())     // events segm + BF
+
+  },  3000)
+
+</script>

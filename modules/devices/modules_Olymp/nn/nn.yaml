@@ -1,0 +1,42 @@
+# list of num with corresponding Objective for ZDC
+# missing our 4x, 10x and 60x for MissMarple
+75: LCPlanFl 20x
+76: LCPlanFl 40x
+79: LCPlanFl 60x
+78: LUCPlanFl 40x
+75: LUCPlanFlN 20x
+76: LUCPlanFlN 40x
+79: LUCPlanFlN 60x
+31: PlanApo 100x O3
+70: PlanApo 60x O TIRFM-SP
+62: PlanApo 60x O/LSM
+#30: PlanApo 60x O3
+60: PlanApo 40x W/LSM
+30: PlanApoN 60x O
+77: SLCPlanFl 40x
+45: UApo 30x 3/340
+47: UApo 40x 3/340
+48: UApo 40x W
+57: UPlanFl 60x OI3
+36: UPlanAPO 20x
+43: UPlanApo 100x OI3
+39: UPlanApo 40x OI3
+40: UPlanApo 60x
+41: UPlanApo 60x W
+42: UPlanApo 60x W/IR
+58: UPlanFl 100x O3
+55: UPlanFl 20x
+71: UPlanFl 40x O-SP
+56: UPlanFl 40x
+58: UPlanFlN 100x O
+58: UPlanFlN 100x OI
+55: UPlanFlN 20x
+39: UPlanFlN 40x O
+40: UPlanFlN 60x
+57: UPlanFlN 60x OI
+43: UPlanSApo 100X O
+36: UPlanSApo 20x
+47: UPlanSApo 40x
+#30: UPlanSApo 60x O
+41: UPlanSApo 60x W
+56: UPlanFlN 40x

@@ -1,0 +1,64 @@
+// swept refresh
+
+sweepx = 0
+sweepy = 0
+
+socket.on('swept', function(sizes){                            //
+
+     var sweep_size = JSON.parse(sizes)
+
+     dx_sweep = sweep_size['width']                                                // image width in px
+     dy_sweep = sweep_size['height']                                               // image height in px
+     sweepx = sweep_size['sweepx']                                                 // sweep x in µm
+     sweepy = sweep_size['sweepy']                                                 // sweep y in µm
+     //alert( 'sweepx is ' + sweepx + ' sweepy is ' + sweepy )
+     $('#swept_chip_image').attr('width', dx_sweep)                                // adapt the size of the html tag img to the image size
+                           .attr('height', dy_sweep)
+     $('#sweep_chip_panel').show()                                                 // Show swept chip panel
+     $('#swept_chip_image').attr('src', '/static/sweep_chip/big_img.png' + '?t='  + new Date().getTime())
+
+     $('#sweep_panel_close').click(function(){                                     // Close swept chip panel
+         $('#sweep_chip_panel').hide()
+     })
+
+  })
+
+  //--------------- Toggle the panel
+
+  $('#map_sweep_button').click(function(){                                         // Toggle swept chip panel
+      $('#sweep_chip_panel').toggle()
+  })
+
+  //--------------- drag panel
+
+  $("#sweep_panel_drag").mouseenter( function() {                                  // Drag sweep_chip_panel
+         $("#sweep_chip_panel").draggable( { disabled: false } );                  // enable
+  }).mouseleave( function() {
+         $("#sweep_chip_panel").draggable( { disabled: true } );                   // disable
+    });
+
+    //--------------- Click in the image
+
+    $('#swept_chip_image').click(function (e) {
+
+        var sweepw = parseInt( $('#swept_chip_image').attr('width') )
+        var sweeph = parseInt( $('#swept_chip_image').attr('height') )
+        x_img = e.pageX - $(this).offset().left                                   // mouse posx in px in the image
+        y_img = e.pageY - $(this).offset().top                                    // mouse posy in px in the image
+        var x = Math.round( ( x_img  )/sweepw*sweepx, 2 )                         // in µm
+        var y = Math.round( ( y_img  )/sweeph*sweepy, 2 )                         // in µm
+
+        //-------------
+
+        //alert( 'x is ' + x + 'µm' + ' y is ' + y + 'µm' )
+        //alert( 'sweepx is ' + sweepx + 'sweepy is ' + sweepy )
+        socket.emit( 'coord_in_sweep', JSON.stringify( { 'x': x, 'y': y } ) )     // sending pos in µm
+
+        //-------------- Current position, place the marker
+
+        var markx = x_img - $(this).parent().scrollLeft() + 50                    // x pos for mark
+        var marky = y_img - $(this).parent().scrollTop() + 100                    // y pos for mark
+        $('#you_are_here').show()
+        $('#you_are_here').css( { 'left': markx + 'px', 'top': marky + 'px' })    // place the marker "you are here"
+
+});

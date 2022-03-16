@@ -1,0 +1,117 @@
+// Make a snapshot
+
+$('#snap').click(function(){
+
+    var selected_SC = $('#select_snap_setting_channel option:selected').text().trim()      // Selected setting channel
+    socket.emit('snap', selected_SC)                                                       // sending the current SC
+
+})
+
+// Context menu for changing exposure time
+
+$("#snap").bind('contextmenu', function(event) {
+
+     if (event.which == 3){ // can also use button instead of which.
+         // prevent default action.
+         event.preventDefault();
+         //alert("context!!!")
+         $('#snap_exposure').toggle()
+         if( $('#snap_exposure').is(":hidden") ){
+             var snap_exp_time = $('#inp_snap_exp_time').val()
+             socket.emit('snap_exp_time', snap_exp_time)
+         }
+
+     }
+
+})
+
+socket.on('saved_set_chan', function( list_SC ){
+
+    /*
+    Access to the personnalized setting channels
+    */
+
+    //alert('list_SC is ' + list_SC)
+    var dic_set_chan = JSON.parse( list_SC )
+    list_set_chan = dic_set_chan['list_SC']
+    curr_set_chan = dic_set_chan['curr_SC']
+    //alert( list_set_chan )
+
+    //-------------------------  SNAP
+
+    $('#select_snap_setting_channel').empty()                                          // Clear select
+    for ( sc of list_set_chan ){
+      $('#select_snap_setting_channel')
+             .append('<option value="' + sc + '">' + sc + ' </option>');               // Add options
+      //alert('sc is ' + sc)
+    }
+    $('#select_snap_setting_channel').selectpicker('refresh')                          // needed to have the list each time
+    $('#select_snap_setting_channel').selectpicker('val', 'BF')
+
+    //-------------------------  LIVE FLUO
+
+    $('#live_fluo').change( function(){
+        //alert($(this).is(':checked'))
+        if ( $(this).is(':checked') ){
+            var selected_SC = $('#select_snap_setting_channel option:selected').text().trim()
+            //alert('live_fluo_on')
+            socket.emit('live_fluo_on', selected_SC)
+            }
+        else{
+            socket.emit('live_fluo_off', '')
+        }
+
+    })
+
+    //-------------------------  LIGHT SC
+
+    $('#select_setting_channel').empty()                                                // Clear select
+    for ( sc of list_set_chan ){
+      $('#select_setting_channel')
+             .append('<option value="' + sc + '">' + sc + ' </option>');                // Add options
+      //alert('sc is ' + sc)
+    }
+    $('#select_setting_channel').selectpicker('refresh')                                // needed to have the list each time
+    //alert( 'curr_set_chan is ' + curr_set_chan )
+    $('#select_setting_channel').selectpicker('val', curr_set_chan)                     // select current name
+
+    //-------------------------  TREE
+
+    for ( var elem of ['spsc', 'spscm', 'zssc'] ){
+
+        var name_sc = '#' + elem + '_setting_channel_name'
+        $(name_sc).empty()                                                                 // Clear select
+        for ( sc of list_set_chan ){
+          $(name_sc)
+                 .append('<option value="' + sc + '">' + sc + ' </option>');               // Add options
+        }
+        $(name_sc).selectpicker('refresh')                                                 // needed to have the list each time
+        $(name_sc).selectpicker('val', curr_set_chan)                                      // select current name
+
+      }
+})
+
+var load_masks = function(elem, dmd_masks){
+
+    var list_dmd_masks = JSON.parse( dmd_masks )
+
+    elem.empty()                                                   // Clear select
+    for ( m of list_dmd_masks ){
+         elem.append('<option value="' + m + '">' + m + ' </option>');             // Add options
+      }
+    elem.selectpicker('refresh')                                   // needed to have the list each time
+    elem.selectpicker('val', list_dmd_masks[0])                    // select current name
+
+}
+
+socket.on('dmd_masks', function( dmd_masks ){
+
+    /*
+    Retrieve the masks
+    */
+
+    load_masks( $('#spscm_mosaic_mask_name'), dmd_masks )     // load masks for tree
+    load_masks( $('#curr_mask_name'), dmd_masks )             // load masks for drawing DMD masks
+
+
+})

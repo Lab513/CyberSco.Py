@@ -1,0 +1,19 @@
+function determine_typeOfNode(transfer){
+
+      //alert('transfer.getData("text") ' + transfer.getData("text"))
+      var typeOfNode = ''
+      if(transfer.getData("text")=='Autofocus') typeOfNode = 'AF' ;
+      else if(transfer.getData("text")=='ZSSC' ) typeOfNode = 'ZSSC' ;
+      else if(transfer.getData("text")=='ZSSCM') typeOfNode = 'ZSSCM' ;
+      else if(transfer.getData("text")=='SPSC') typeOfNode = 'SPSC' ;
+      else if(transfer.getData("text")=='SPSCM') typeOfNode = 'SPSCM' ;
+      else if(transfer.getData("text")=='Delay') typeOfNode = 'DELAY' ;
+      else if(transfer.getData("text")=='XYZ-position') typeOfNode = 'XYZ' ;
+      else if(transfer.getData("text")=='Group-Position') typeOfNode = 'GROUP' ;
+      else if(transfer.getData("text")=='Sequence') typeOfNode = 'LOOP' ;
+      else if(transfer.getData("text")=='Function') typeOfNode = 'FUNC' ;
+      else if(transfer.getData("text")=='MicroFluidics-Valves') typeOfNode = 'MFV' ;
+      else {typeOfNode = "LIGHT";}
+
+      return typeOfNode
+}

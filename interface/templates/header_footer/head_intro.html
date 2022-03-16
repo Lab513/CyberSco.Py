@@ -1,0 +1,41 @@
+<header class="intro-header" style= "background-image: url('{{header.background}}'); padding-top:100px "  >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="site-heading">
+
+<!--                     <h1 style= "color:#428bca " >{{header.main_title}}</h1>
+                    <hr class="small">
+                    <span class="subheading" style= "color:#428bca " >{{header.presentation_interface}}</span> -->
+
+                    <h1 style= "color:#428bca " >{{ header.main_title }}</h1>
+                    <hr class="small">
+                    <h2 style= "color:#428bca " >{{ header.mess }}</h2>
+                    <hr class="small">
+                    <span class="subheading" style= "color:#428bca " >{{ header.presentation_interface }}</span>
+
+                    <div id="loading"> Loading .... </div>
+
+                    <ul id="begin" class="pager" hidden>
+                        <li class="next">
+                            <a href='/interf'>{{ body.begin }}</a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<script >
+
+  //
+
+  var beg_start = 30          // nb of seconds before allowing to begin
+  setTimeout(function(){
+        $('#begin').show()    // allow to continue
+        $('#loading').hide()  // hide loading
+   }, beg_start*1000);
+
+</script>

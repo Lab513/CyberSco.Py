@@ -1,0 +1,37 @@
+function render_columns(node){
+
+      $tdList = $(node.tr).find(">td");
+      //console.log(node.key);
+      $tdList.eq(0).find("input").val("node.key");
+
+      if(false) {
+        $tdList.eq(1).html('<button onClick="editTree();"><img src="/static/icons/tree/icons/wrench.png"></button>');
+      }
+
+      else if (node.type == 'PROT') {
+           $tdList.eq(1).html('<button onClick="editTree();"><img src="/static/icons/tree/icons/wrench.png"></button>');
+      }
+
+     {% include 'tree/modif_params/render_col_af.html' %}
+
+     {% include 'tree/modif_params/render_col_loop.html' %}
+
+     {% include 'tree/modif_params/render_col_pos.html' %}
+
+     {% include 'tree/modif_params/render_col_zssc.html' %}
+
+     {% include 'tree/modif_params/render_col_zsscm.html' %}
+
+     {% include 'tree/modif_params/render_col_spsc.html' %}
+
+     {% include 'tree/modif_params/render_col_spscm.html' %}
+
+     {% include 'tree/modif_params/render_col_delay.html' %}
+
+     {% include 'tree/modif_params/render_col_group.html' %}
+
+     {% include 'tree/modif_params/render_col_func.html' %}
+
+     {% include 'tree/modif_params/render_col_mfv.html' %}
+
+}

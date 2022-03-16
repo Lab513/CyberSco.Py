@@ -1,0 +1,7 @@
+$('#select_mda').on('change', function() {        // select mda
+    //curr_mda = $(this).val()
+    alert("ouuuuupsss")
+    console.log("ouuuuupsss")
+    socket.emit('select_mda', $(this).val())    // send the current mda to the server
+
+});

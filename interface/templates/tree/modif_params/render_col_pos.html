@@ -1,0 +1,72 @@
+/*
+Position
+*/
+
+else if ( node.type == 'XYZ' ) {
+
+         if ( node.data.gate == undefined ){
+             node.data.gate = 'none'
+         }
+         var timestamp = new Date().getTime().toString();
+         node.key = timestamp;
+         $tdList.eq(2).html('<button class="update_position"' +
+                      ' posid=' + timestamp + ' title="Update position"><img src="/static/icons/tree/icons/map_edit.png"></button>');
+         $tdList.eq(3).html('<button class="goto_position"' +
+                      ' posid=' + timestamp + ' title="Go to position"><img src="/static/icons/tree/icons/map_go.png"></button>');
+         $tdList.eq(4).html('<div id="POS' + timestamp + "-info" + '">X:Y:Z:Gate => ' +
+                          node.data.xPosition +':' +
+                          node.data.yPosition + ':' +
+                          node.data.zPosition + ':' +
+                          node.data.gate + '</div>');
+
+         if (node.data.xPosition == 0 && node.data.yPosition == 0 && node.data.zPosition == 0) {
+            updateNodePosition(node.key + "-info", node.key);
+         }
+
+         socket.on( 'update_xyz_infos', function( nodeidposxyz ){
+
+              var infos = nodeidposxyz.split(';')
+              var nodeid = infos[0]                                             // node id
+              new_posx = infos[1]
+              new_posy = infos[2]
+              new_posz = infos[3]
+              if ( node.key == nodeid ){
+                    node.data.xPosition = new_posx                              // new x
+                    node.data.yPosition = new_posy                              // new y
+                    node.data.zPosition = new_posz                              // new z
+                }
+
+              $('#POS' + nodeid + '-info').text('X:Y:Z:Gate => ' +              // change the infos
+                                 node.data.xPosition + ':' +
+                                 node.data.yPosition + ':' +
+                                 node.data.zPosition + ':' +
+                                 node.data.gate
+                                )
+
+          })
+
+         $('.update_position').click( function(e){                              // update the position
+             e.stopImmediatePropagation();
+             e.preventDefault();
+             socket.emit('update_position', $(this).attr('posid') )             // ask for upadte using the id
+             setTimeout( function(){
+                 $('#save_prot_params').click()                                 // save the protocol parameters in the protocol yaml file
+                 //alert('saved')
+             }, 500 )
+
+         })
+
+         $('.goto_position').click( function(){                                 // go to the position
+
+             var node_id = $(this).attr('posid')
+
+             if ( node.key == node_id ){
+                 var x = node.data.xPosition
+                 var y = node.data.yPosition
+                 var z = node.data.zPosition
+                 socket.emit('goto_position', JSON.stringify( { 'id' : node_id,  'x' : x, 'y' : y, 'z' : z } ))
+               }
+
+         })
+
+}

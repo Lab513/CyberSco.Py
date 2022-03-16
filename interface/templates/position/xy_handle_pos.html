@@ -1,0 +1,73 @@
+// adding new position
+
+var dic_pos = {}
+
+var retrieve_pos = function(newpos){
+
+    dic_save_pos = JSON.parse(newpos)
+    var numpos = dic_save_pos['numpos']                                       // retrieve the index of the position
+    var valpos = JSON.stringify(dic_save_pos["pos"])                          // retrieve value of the position
+
+    //alert('dic_pos is ' + JSON.stringify(dic_pos) )
+    //alert('dic_pos[numpos] ' + dic_pos[numpos])
+
+    if (typeof dic_pos[numpos] == 'undefined') {                              // test if yet exists
+
+
+        pos_exists = false
+    }
+    else{
+        pos_exists = true
+    }
+
+    //alert('pos_exists is ' + pos_exists)
+
+    dic_pos[numpos] = valpos                                                 // save in dic_pos
+
+    return [ numpos, valpos, pos_exists ]
+
+}
+
+socket.on('position_saved', function(newpos){
+
+    var [ numpos, valpos, pos_exists ] = retrieve_pos(newpos)
+    var txt_li_pos = 'pos' + numpos
+    if (!pos_exists){
+      var new_pos_li = '<li id="' + txt_li_pos +  '" class="pos" value=' + valpos + '>' + txt_li_pos + '</li>'  // saving the position in the li tag
+      $('#list_save_pos').append(new_pos_li)
+
+    }
+    else{
+
+      $('#' + txt_li_pos).attr('value', valpos)
+
+    }
+
+    // Effect of clicking on a position
+
+    curr_pos = -1
+    dic_gate = {}                               // gates dictionary
+
+    $('.pos').click(function(){
+
+        $('.pos').css({'color':'black'})        // all pos in black
+        $(this).css({'color':'blue'})           // selected pos in blue
+        //------
+        curr_pos  = $(this).text().slice(3)
+        $('#curr_pos_param').text(curr_pos)
+        socket.emit('moveto', $(this).attr('value'))          // move to
+        socket.emit('curr_numpos', curr_pos)                  // send current position
+
+    })
+
+    // Gates
+
+    $('#set_pos_params').click(function(){             // button to save associated gate
+      
+      var curr_pos = $('#curr_pos_param').text()
+      dic_gate[curr_pos] = $('#gate_numb').val()
+      socket.emit( 'pos_gate', JSON.stringify(dic_gate) )  // dic pos_gate
+
+   })
+
+  })

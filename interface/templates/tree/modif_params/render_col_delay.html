@@ -1,0 +1,12 @@
+else if (node.type == 'DELAY') {
+
+      //alert('changing delay !!!')
+      //alert(node.data.time)
+
+      var timestamp = new Date().getTime().toString();
+      node.key = timestamp;
+      $tdList.eq(1).html('<button onClick="editTree();"><img src="/static/icons/tree/icons/wrench.png"></button>');
+      $tdList.eq(4).html('<div id="DELAY' + node.key + "-info" +
+                '"> Delay (ms): ' + node.data.time + '</div>');
+
+}

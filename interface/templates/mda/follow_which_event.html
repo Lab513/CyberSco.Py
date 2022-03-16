@@ -1,0 +1,14 @@
+socket.on('used_event_model', function(rep){
+
+   /*
+   Event name
+   */
+
+   dic_kind_event = { 'Buds105' : 'bud'}
+   var event_name = rep.trim()
+   var kind_event = dic_kind_event[event_name]
+   var follow_name = 'follow ' + kind_event + ' event '
+   $('#follow_event_name').text( follow_name )
+   //alert( follow_name )
+
+  })

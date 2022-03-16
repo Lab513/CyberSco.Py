@@ -1,0 +1,16 @@
+
+<!-- Select the the protocols for "free mda" mode -->
+
+<h5 style="padding-left:80px;" > existing protocols : </h5>
+
+<select class="selectpicker" id="protocol-to-run" >
+
+    <!-- list of the protocols -->
+
+    {% for p in prot %}
+
+        <option value="{{ p }}"> {{ p }} </option>
+
+    {% endfor %}
+
+</select>

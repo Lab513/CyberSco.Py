@@ -1,0 +1,35 @@
+
+//---------- Sending setting channels made in the interface
+
+var make_dic_chan = function(letter){                             // make dic for each letter for Coolled
+       var elem = $( '#chan' + letter )
+       var dic_chan = { 'lamb' : elem.find('.COOL_lamb').val(),
+                        'intens' : elem.find('.COOL_intens').val(),
+                        'shut' : elem.find('.select_shutter option:selected').text().trim()
+                   }
+      return dic_chan
+}
+
+$('#save_chan_butt').click(function(){                           // save the current "setting channels"
+
+    var name_set_chan = $('#name_setting_channels').val()
+    var dic_set_chan = { name_set_chan }                         // init dic
+
+    if ( $('#set_BF').is(':checked') ){                          // BF
+        dic_set_chan['BF'] = $('#BF_intens').val()
+    }
+    if ( $('#set_Xcite').is(':checked') ){                       // Xcite
+        dic_set_chan['Xcite'] = $('#Xcite_intens').val()
+    }
+    if ( $('#set_Coolled').is(':checked') ){                     // Coolled
+        var COOL = {}
+        for ( var l of ['A','B','C','D'] ){
+          COOL[l] = make_dic_chan(l)
+        }
+        dic_set_chan['COOL'] = COOL
+    }
+    dic_set_chan['filter'] = $('#filter').val()                  // filter
+
+    socket.emit( 'save_chan_dict', JSON.stringify( dic_set_chan ) )
+
+})      //

@@ -1,0 +1,8 @@
+# port for Prior
+
+port : COM4
+baudrate : 19200
+bytesize : EIGHTBITS
+parity : PARITY_NONE
+stopbits : STOPBITS_ONE
+xonxoff :  False

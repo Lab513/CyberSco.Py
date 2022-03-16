@@ -1,0 +1,8 @@
+socket.on('hard_soft_infos', function(msg){
+
+    var dic_infos = JSON.parse(msg.mess)
+    $('#GPU').text(dic_infos.id)                     // gp Id
+    $('#gpu_mem').text(dic_infos.mem)                // gpu mem
+    $('#tf_version').text(dic_infos.tf_version)      // tensorflow
+    
+  })

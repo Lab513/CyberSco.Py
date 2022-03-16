@@ -1,0 +1,74 @@
+//------  Devices connexion states
+
+socket.on('bip', function(msg){
+      alert('bipbip')
+      alert(msg)
+      mess = 'gate:connected'
+      var device = msg.split(':')[0] //[1].trim()
+      var dev = mess.split(':')[0] //[1].trim()
+      alert('device is ' + device)
+      alert('dev = ' + dev)
+      //var state = msg.split(' ')[2].trim()
+      //alert( 'device is ' + device + ' and state is '  state )
+ })
+
+socket.on('connexion_state', function(msg){
+
+      /*
+
+      */
+      msg_split = msg.split(':')
+      //alert( msg_split )
+      var device = msg_split[0].trim()
+      var state = msg_split[1].trim()
+      var dev = $('#' + device)
+      dev.empty()
+
+      if ( state != 'connected' ){
+             $('#panel_connexion').show()
+             var div_conn = $('<div/>').attr('alert_unconn', device)
+                                       .addClass('alert_not_conn_' + device)
+                                       .text( device + ' is not connected !!! ' )
+             if ( $('#panel_connexion').children('.alert_not_conn_' + device).length == 0 ){
+                   $('#panel_connexion').append( div_conn )
+                }
+             $('#panel_connexion').fadeOut( 60000 )           // make disappear the panel
+      }
+      //alert(msg)
+
+      //------------ icons
+
+      var img_conn = $('<img />').attr('src',"static/icons/capicon/svg/326.svg")       // connected
+                                  .addClass('dev_conn_img')
+                                  .attr('id', 'conn_' + device)
+                                  .hide()
+
+      var img_unconn = $('<img />').attr('src',"static/icons/capicon/svg/326b.svg")    // unconnected
+                                    .addClass('dev_conn_img')
+                                    .attr('id', 'unconn_' + device)
+                                    .hide()
+
+      var span_conn = $('<span/>').append(img_conn)
+      var span_unconn = $('<span/>').append(img_unconn)
+
+      //-----------------------
+
+      dic_ndev = {
+                  'prior': 'Prior :',
+                  'olympus': 'Olympus :',
+                  'coolled': 'Coolled :',
+                  'xcite' : 'XCite :',
+                  'gate': 'Gate :'
+                 }
+
+      dev.text( dic_ndev[device] ).append( span_conn )
+                                  .append( span_unconn )
+      if ( state == 'connected' ){                                               // state
+         $('#' + 'conn_' + device).show()
+         //alert( device + ' is connected ..' )
+      }
+      else{
+         $('#' + 'unconn_' + device).show()
+      }
+
+  })

@@ -1,0 +1,13 @@
+// ------------  Update protocol
+
+$('#delete_protocol').click(function(){                                           // update the protocol
+
+    //alert( 'deleting ' )
+
+    $('#ask_if_delete').show()
+
+    {% include 'tree/protocols/protocol_sure_to_delete.html' %}
+
+    {% include 'tree/protocols/protocol_refresh.html' %}
+
+})

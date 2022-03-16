@@ -1,0 +1,114 @@
+<!-- Panel for controlling the processing -->
+
+<!-- inserted in index_folder.html -->
+
+<div id='panel_connexion' hidden> </div>
+
+<div class='screen_panel' >
+
+    <!-- inserted image -->
+
+    <img id="curr_cam_pic"  style="line-height : 20px;" ></img>
+
+    {% include 'image/cursors.html' %}
+
+    <div id='pos_prior' >
+
+        <span> x: </span> <input id='xpos' > <span> µm </span>
+        <span> y: </span> <input id='ypos' > <span> µm </span>
+
+    </div>
+
+    <!-- step x and y -->
+
+    <div id='dxy' >
+         <span id='dxy_name'> Δxy: </span> <input id='input_step_xy' > <span id='dxy_unit'> µm </span>
+    </div>
+
+    <!-- nb of cells -->
+
+    <div id='panel_nb_cells' ></div>
+
+    <!-- SNAP -->
+
+    <button id='snap' class="btn btn-warning" > SNAP </button>
+
+    <!-- Set the SC -->
+
+    {% include 'image/snap_select.html'  %}
+
+    {% include 'image/snap_panel.html' %}
+
+    {% include 'image/live_snap.html' %}
+
+    <!-- mda repetition index -->
+
+    {% include 'mda/curr_rep.html' %}
+
+
+</div>
+
+<!-- Drawing panel for DMD -->
+
+<div class="draw_DMD_panel" hidden>
+
+      <div>
+          <div id="canvas-editor"></div>
+      </div>
+
+      <!-- <button class="btn btn-warning"  id="save_canvas"  > Save </button> -->
+
+      <div align="center" id='save_name_img_mosaic'>
+          <input type="text" id="name_img_mosaic"  placeholder=" name image for mosaic ">
+          <button  class="btn btn-warning"  id="save_canvas" > Save </button>
+      </div>
+
+      <!-- show yet existing masks -->
+
+      <div id="select_mask_dmd_panel"  >
+        <select id="curr_mask_name"  class="selectpicker select_mask"  >
+        </select>
+      </div>
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+      var drawer = new DrawerJs.Drawer(null, {
+            texts: customLocalization,
+            plugins: drawerPlugins,
+            // defaultImageUrl: '/images/drawer.jpg',
+            defaultActivePlugin : { name : 'Pencil', mode : 'lastUsed'},
+        }, 450, 450);
+        $('#canvas-editor').append( drawer.getHtml() );
+        drawer.onInsert();
+
+        $('#save_canvas').click( function(){
+
+          var base64Output = drawer.api.getCanvasAsImage()                   // retrieve the image from the canvas
+          socket.emit( 'name_img_mosaic', $('#name_img_mosaic').val() )      // name of the image
+          setTimeout(function(){
+              socket.emit( 'image_canvas', base64Output )                    // send the image to the server for saving it
+           }, 100);
+
+        })
+
+        //$('.editable-canvas-image').css({'width':'200px', 'height':'200px'})
+
+    });
+
+</script>
+
+
+<script >
+
+  $('#curr_cam_pic').attr('src', '/static/curr_pic/frame0.png' + '?'  + new Date().getTime())
+  $(".screen_panel")                 // .draggable()
+  $('#panel_nb_cells').hide()
+  $('#canvas-editor').click(function(){
+
+  })
+
+</script>

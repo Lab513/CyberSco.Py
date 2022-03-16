@@ -1,0 +1,8 @@
+# port for Coolled
+
+port : COM5
+baudrate : 38400
+bytesize : EIGHTBITS
+parity : PARITY_NONE
+stopbits : STOPBITS_ONE
+xonxoff :  False

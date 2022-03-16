@@ -1,0 +1,149 @@
+// Actions for predefined and free MDAs
+
+ function load_basic_prot(){
+
+      socket.emit('read_yaml', 'temp0.yaml')                          // ask for reading the yaml
+      socket.on('prot_json', function( json_file ){                   // on receiving the json
+
+          initFancyTreeFromJSON( json_file )                          // load the protocol json file in the tree
+
+        })
+
+}
+
+function load_predef_prot(){
+
+     socket.emit('read_yaml', '@predef_prot.yaml')                          // ask for reading the yaml
+     socket.on('prot_json', function( json_file ){                      // on receiving the json
+
+         initFancyTreeFromJSON( json_file )                             // load the protocol json file in the tree
+
+       })
+
+}
+
+// make correction in the tree for predef
+
+socket.on('correct_tree', function(){                                   // for predef id LOOP informations
+
+      setTimeout(function(){
+            //alert('hiding text in LOOP')
+            $('[id*="LOOP"]').hide()  }, 500
+        );
+
+ })
+
+function show_elem_for_mda(){
+
+  /* show launch button and button for experim infos*/
+
+  $('#launch_mda_tree').show()
+  $('.icon_infos_experim').show()
+  $('.icon_mda_monitorings_params').show()
+
+}
+
+function hide_elem_for_mda(){
+
+  /* hide launch button and button for experim infos*/
+
+  $('#launch_mda_tree').hide()
+  $('.icon_infos_experim').hide()
+  $('.icon_mda_monitorings_params').hide()
+
+}
+
+//------------- Predefined MDA
+
+function predef_show(){                                      // show objects linked to predef mda
+
+      //alert('predefined mda')
+      $( "#free_mda" ).prop( "checked", false )
+      $('#mda_panel').fadeIn()                               // show panel predefined MDAs
+      //$('#drop_elems_for_mda').show()
+      $('#drop_elems_for_mda').hide()                        // hide the elements for completing the mda..
+      $('#tree').show()                                      // show the tree, used only for the positions and loop
+      show_elem_for_mda()                                    // show infos experiment and monitorings params
+      socket.emit('kind_mda', 'predefined_mda')
+
+ }
+
+ function predef_hide(){                                     // hide objects linked to predef mda
+
+     $('#mda_panel').hide()
+     $('#drop_elems_for_mda').hide()
+     $('#tree').hide()
+     hide_elem_for_mda()
+
+  }
+
+$('#predefined_mda').change( function(){                     // open the predef mda panel
+
+    if ( $(this).is(':checked') ){
+
+        free_hide()                                          // hide free mda
+        predef_show()                                        // show the predef panel
+        load_basic_prot()                                    // load a basic protocol
+        $('#mda_exp_descript').hide()                        // hide tooltip
+
+        }
+    else{
+        predef_hide()                                        // hide the predef panel
+    }
+
+})
+
+//------------- Free MDA
+
+function free_show(){                                         // show objects linked to free mda
+
+      //alert('free_mda')
+      $( "#predefined_mda" ).prop( "checked", false )
+      $('#protocol-settings').show()                           // line for loading existing protocols, save, save, modify, rename them
+      $('#drop_elems_for_mda').show()
+      $('#tree').show()
+      show_elem_for_mda()                                      // show infos experiment and monitorings params
+      socket.emit('kind_mda', 'free_mda')                      //
+
+}
+
+function free_hide(){                                          // hide objects linked to free mda
+
+    $('#protocol-settings').hide()
+    $('#drop_elems_for_mda').hide()
+    $('#tree').hide()
+    hide_elem_for_mda()
+
+}
+
+$('#free_mda').change( function(){
+
+    if ( $(this).is(':checked') ){
+        predef_hide()                                          // hide the predef panel
+        free_show()                                            // show free mda
+        load_predef_prot()
+        }
+    else{
+        free_hide()                                            // hide free mda
+    }
+
+})      //
+
+//-------------------------- Hide elements ---
+
+$('#protocol-settings').hide()
+$('#drop_elems_for_mda').hide()
+$('#tree').hide()
+
+//------------- close mda panel ---
+
+$('#mda_panel_close').click( function(){
+    $('#mda_panel').hide()
+})
+
+//------------- close mda predefined panel ---
+
+$('#predefined_mda_set').click( function(){
+    $('#mda_panel').toggle()
+
+})

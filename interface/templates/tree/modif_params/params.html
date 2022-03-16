@@ -1,0 +1,66 @@
+<!-- Passing from interface to the tree -->
+
+<div class="params_panel" >
+
+<center>
+    <h4 id='params_title'></h4>
+</center>
+
+<br><br>
+
+{% include 'tree/modif_params/panels_modif_params.html' %}
+
+<center>
+
+      <button id='save_prot_params' type="button" class="btn btn-success"> save </button>
+
+</center>
+
+</div>
+
+<script >
+
+      find_name_param = function(elem){                                    // return name param from id
+
+          var spl = elem.attr('id').split('_')
+          spl0 = spl[0]
+          if (spl0 == 'zssc' | spl0 == 'zsscm' | spl0 == 'spsc' | spl0 == 'spscm'){
+             name_param = elem.attr('id').replace(spl0 + '_', '')          // remove spsc_, zssc_, zsscm_ etc.. in the name
+          }
+          else{
+             name_param = elem.attr('id')
+          }
+          return name_param
+      }
+
+      //-----------------------------
+
+      $('.params_panel').hide()
+      $('.inj').hide()
+      $('#save_prot_params').click( function(){                                      // save new value
+          $('.params_panel').children().each(function(){
+             if ( $(this).is(":visible") == true & $(this).hasClass('inj') ){
+                 var node = $("#tree").fancytree("getActiveNode");
+                 $(this).children().each(function(){
+                     $(this).children().each(function(){
+                          if ( $(this).hasClass('inp') & !$(this).hasClass('btn-group') ){
+                             var name_param = find_name_param($(this))
+                             node.data[name_param] = $(this).val()                 // inject value from the input in the tree
+
+                          }
+                    })
+                 })
+                 render_columns(node)                                              // modifying the visible infos on the right panel
+             }
+
+          })
+
+          $('.params_panel').fadeOut(500)                                          // make disappear the panel for params
+
+          setTimeout(function(){
+              $('#update_protocol').click()                                       // update the protocol after saving new parameters
+          },300)
+
+      })
+
+</script>

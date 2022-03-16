@@ -1,0 +1,43 @@
+// monitorings MDAs at distance parameters
+
+socket.on('monitor_settings',  function(){
+
+      /*
+      Retrieve the monitorings parameters for the MDA
+      */
+
+      dic_mda_monitor = {}
+
+      //------------------ using mails
+
+      if ( $('#send_mails').is(':checked') ){
+            dic_mda_monitor['mail'] = true
+          }
+      else{
+          dic_mda_monitor['mail'] = false
+      }
+
+      //--------------------- using Team
+
+      if ($('#send_to_teams').is(':checked')){
+            dic_mda_monitor['team'] = true
+          }
+      else{
+          dic_mda_monitor['team'] = false
+      }
+
+      //--------------------- delay between messages
+
+      dic_mda_monitor['delay_messages'] = $('#monitor_delay').val()                         // retrieve the delay for monitoring in minutes
+
+      //---------------------
+
+      socket.emit( 'monitor_params', JSON.stringify( dic_mda_monitor ) )                    // send the dictionary
+
+      $('#mda_far_monitorings_panel').hide()
+
+})
+
+$('#mda_far_monitorings_panel_close').click( function(){          //
+   $('#mda_far_monitorings_panel').hide()
+})

@@ -1,0 +1,38 @@
+
+// Move z up, down, retrieve steps
+
+
+//------- move z up
+
+$('#butt_img_up_z').click(function(){
+        setTimeout(function(){
+            socket.emit('movez', 'up')
+        }, 500);
+   })
+
+//------- move z down
+
+$('#butt_img_down_z').click(function(){
+       setTimeout(function(){
+           socket.emit('movez', 'down')
+       }, 500);
+  })
+
+//----------- show z value
+
+socket.on('posz', function(msg){
+
+    var z = msg
+    $('#pos_z').val( z )                                                         //  position in interface
+
+  })
+
+//----------- Retrieving x,y and z steps
+
+socket.on('steps_xyz', function(steps){
+
+    dic_steps = JSON.parse(steps)
+    $('#input_step_xy').val( dic_steps['stepxy'] )                               //  step x,y
+    $('#input_step_z').val( Math.round( dic_steps['stepz']/100, 2 ) )            //  step z
+
+  })

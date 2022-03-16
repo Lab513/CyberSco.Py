@@ -1,0 +1,63 @@
+<div id='sweep_chip_panel' >
+
+   <!-- close button -->
+
+    <img id='sweep_panel_close'  src="static/icons/capicon/svg/057.svg">  </img>
+
+    <!-- drag area -->
+
+    <div id="sweep_panel_drag">
+        <img id='sweep_drag_img'  src="static/icons/capicon/svg/349.svg">  </img>
+    </div>
+
+    <h4 style='text-align: center'> Sweep Chip </h4>
+
+    <br>
+
+    <!-- marker -->
+
+    <img id='you_are_here' src="static\icons\misc_icons\you_are_here.svg" >
+
+    <!-- image -->
+
+    <div id='show_image_sweep'>
+
+      <img id='swept_chip_image' >
+
+    </div>
+
+    <!-- slider for image size -->
+
+    <div class="">
+       <input id="ex2" data-slider-id='ex2Slider' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="0.7"/>
+    </div>
+
+    <div id='slider_sweep_value'> </div>
+
+</div>
+
+<script >
+
+  $('#sweep_chip_panel').hide()                                                 //  panel containing the image obtained by sweeping in the chip
+  $('#you_are_here').hide()                                                     //  position marker
+
+  dx_sweep = 0
+  dy_sweep = 0
+
+  // slider for changing size of the composite image sweep_chip image
+
+  $('#ex2').bootstrapSlider({                                                   // slider for opacity
+      formatter: function(value) {
+
+        $('#swept_chip_image').attr('width', dx_sweep*value)                    // adapt the size of the html tag img with the slider
+                              .attr('height', dy_sweep*value)                   // Show swept chip panel
+
+         $('#slider_sweep_value').text(value)                                   // slider value
+          return 'Current value: ' + value;
+        }
+    });
+
+
+
+
+</script>

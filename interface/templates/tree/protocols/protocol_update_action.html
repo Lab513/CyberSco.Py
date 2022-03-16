@@ -1,0 +1,39 @@
+// Update protocol
+
+var curr_protocol = null
+
+var send_protocol = function(name_protocol, curr_protocol){                           // send tree with name etc..
+
+      var tree = $("#tree").fancytree('getTree');                                     // load the tree
+      var tree_json = tree.toDict(true)                                               // dictionary from the tree
+      dic_prot = JSON.stringify({ 'nameprotoc' : name_protocol,
+                                  'newname' : curr_protocol + '.yaml',
+                                  'tree' : tree_json  })
+      socket.emit('save_protocol', dic_prot)
+
+}
+
+$('#update_protocol').click(function(){                                           // update the protocol or duplicate it with new name
+
+    $( "#protocol-to-run option:selected" ).each(function() {
+
+          var name_protocol = $( this ).text().trim()
+          var new_name = $( "#input_duplicate_rename" ).val()                     // new name
+          //alert(new_name.trim())
+          if ( new_name.trim() == '' ){                                           // update protocol
+             curr_protocol = name_protocol
+             //alert('update the current protocol')
+          }
+          else{                                                                   // duplicate with new name
+             curr_protocol = new_name
+             //alert('duplicate the current protocol with another name')
+          }
+
+          //alert( name_protocol )
+          send_protocol(name_protocol, curr_protocol)
+
+    });
+
+    {% include 'tree/protocols/protocol_refresh.html' %}
+
+})

@@ -1,0 +1,50 @@
+<!-- Number of cells in the interface -->
+
+$('#cells_nb').change(function(){
+
+    if ($(this).is(':checked')){
+          //alert('show nb of cells !!!')
+          $('#panel_nb_cells').show()
+        }
+    else{
+         $('#panel_nb_cells').hide()
+    }
+
+})      //
+
+setInterval(function() {
+  socket.emit('ask_nb_cells', '')                           // message sent to the server for loading the yaml
+}, 1000);
+
+socket.on('real_time_nb_cells', function( nb_cells ){
+    $('#panel_nb_cells').text('nb of cells : ' + nb_cells)                    // print the nb of cells in the interface
+    $('#panel_nb_cells_controls').text('nb of cells : ' + nb_cells)           // print the nb of cells in the control panel
+})
+
+$('#superp_segm').change(function(){
+    if ($(this).is(':checked')){
+        socket.emit('superp_BF_ML', '')                      // BF with superimposed segmentation
+        }
+    else{
+        socket.emit('unsuperp_BF_ML', '')                    // BF only
+    }
+})
+
+$('#tracking').change(function(){
+    if ($(this).is(':checked')){
+        socket.emit('track BF', '')                          // tracking BF
+        }
+    else{
+        socket.emit('untrack BF', '')                        // untracking BF
+    }
+})
+
+$('#events').change(function(){
+    if ($(this).is(':checked')){
+        socket.emit('track events', '')          // tracking events
+        //alert('ask for events')
+        }
+    else{
+        socket.emit('untrack events', '')        // untracking events
+    }
+})

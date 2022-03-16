@@ -1,0 +1,5 @@
+For testing, in a Terminal run
+
+mosaic_img.exe 10
+
+where 10 is the exposure time in seconds..

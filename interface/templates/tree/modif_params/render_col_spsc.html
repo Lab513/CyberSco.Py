@@ -1,0 +1,16 @@
+else if (node.type == 'SPSC') {
+
+      var timestamp = new Date().getTime().toString();
+      node.key = timestamp;
+      if (node.data.setting_channel_name == "undefined" && node.data.exposure_time == 0) {
+        if ($("#setting-channel-to-apply :selected").text() != "Select a setting channel...") {
+          node.data.setting_channel_name = $("#setting-channel-to-apply :selected").text();
+        }
+        node.data.exposure_time = parseInt($("#exposure-time").val());
+      }
+      $tdList.eq(1).html('<button onClick="editTree();"><img src="/static/icons/tree/icons/wrench.png"></button>');
+      $tdList.eq(4).html('<div id="SPSC' + node.key + "-info" +
+       '">SC: ' + node.data.setting_channel_name +
+       ' ET: ' + node.data.exposure_time + 'ms</div>');
+
+}

@@ -1,0 +1,15 @@
+/*
+Change the objective
+*/
+
+$('#select_objective').change(function(){
+    //alert("changing the objective")
+    //alert("new objective is " + $(this).val())
+    socket.emit( 'change_obj', $(this).val() )                                      // change the objective of the Olympus
+})
+
+socket.on('curr_objective', function(obj){
+
+    $('#select_objective').val(obj).change()
+
+  })

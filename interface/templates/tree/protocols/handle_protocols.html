@@ -1,0 +1,60 @@
+
+
+<br><br><br>
+
+{% include 'tree/protocols/mda_infos.html' %}
+
+{% include 'tree/protocols/free_or_predefined.html' %}
+
+<!-- <div class="icon_mda_set" > predefined mda <img id="butt_mda_set" class="icon_settings" src="static/icons/capicon/svg/205.svg"  > </div> -->
+
+<br><br>
+
+<div >
+    <button class="btn btn-success" id="launch_mda_tree" hidden> launch_mda </button>
+</div>
+
+<div id="protocol-settings">
+
+    <br><br><br><br>
+
+    {% include 'tree/protocols/protocol_select_picker.html' %}
+    {% include 'tree/protocols/protocol_update.html' %}
+    {% include 'tree/protocols/protocol_delete.html' %}
+    {% include 'tree/protocols/protocol_input_save.html' %}
+
+    <br><br><br><br>
+
+    <script>
+
+        $(document).ready( function(){
+
+            var addr_comm = 'http://' + document.domain + ':' + location.port
+            var socket = io.connect( addr_comm );  //+ '/test'
+            //var socket = io.connect({transports: ['websocket']});
+
+            //alert(addr_comm)
+
+            socket.on('response', function() {
+                   // alert('Connected')
+               });
+
+            //------- Serial connexion
+
+            {% include 'tree/protocols/protocol_to_run.html' %}
+
+            // ----  update protocol or save protocol with a new name
+
+            {% include 'tree/protocols/protocol_update_action.html' %}
+
+            // ----  delete protocol
+
+            {% include 'tree/protocols/protocol_delete_action.html' %}
+
+
+        });
+
+
+</script>
+
+</div>

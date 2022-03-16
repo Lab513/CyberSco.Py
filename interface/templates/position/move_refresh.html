@@ -1,0 +1,49 @@
+
+// Cursors for moving the Prior
+
+$('#butt_img_right').click(function(){  socket.emit('move', 'right') })      // image right
+$('#butt_img_left').click(function(){  socket.emit('move', 'left') })        // image left
+$('#butt_img_up').click(function(){  socket.emit('move', 'up') })            // image up
+$('#butt_img_down').click(function(){  socket.emit('move', 'down') })        // image down
+
+// Receive and print the positon of the Prior
+
+socket.on('new_posx', function(posx){                                       // receive pos x
+
+    //alert('posx is ' + posx)
+    var x = posx
+    $('#xpos').val(x)
+
+  })
+
+socket.on('new_posy', function(posy){                  // receive pos y
+
+    //alert('posy is ' + posy)
+    var y = posy
+    $('#ypos').val(y)
+
+  })
+
+$('#xpos').change( function(){                        // act when changing x
+
+    var valx = $('#xpos').val()
+    var valy = $('#ypos').val()
+    //alert( "valx " + valx )
+    //alert( "valy " + valy )
+    dic_pos_xy = { 'x' : valx, 'y' : valy }
+    //alert( 'dic_pos_xy is ' + dic_pos_xy )
+    socket.emit( 'fast_xy_pos', JSON.stringify( dic_pos_xy ) )
+
+})
+
+$('#ypos').change( function(){                                   // act when changing y
+
+    var valx = $('#xpos').val()
+    var valy = $('#ypos').val()
+    //alert( "valx " + valx )
+    //alert( "valy " + valy )
+    dic_pos_xy = { 'x' : valx, 'y' : valy }
+    //alert( 'dic_pos_xy is ' + dic_pos_xy )
+    socket.emit( 'fast_xy_pos', JSON.stringify( dic_pos_xy ) )
+
+})

@@ -1,0 +1,49 @@
+
+var dic_icons = {
+
+        'take_pic' : {
+
+              'ZSSC' : ['flag_blue.png', 'Z-Stack + Setting channel'],            //
+              'ZSSCM' : ['flag_green.png', 'Z-Stack + Setting channel + Mosaic'], //
+              'SPSC' : ['flag_red.png', 'Simple Picture + Setting channel'],      //
+              'SPSCM' : ['flag_purple.png', 'Simple Picture + Setting channel + Mosaic'] //
+
+            },
+
+        'protoc_actions' : {
+
+              //--------
+              'Delay' : 'clock.png',
+              'Sequence' : 'arrow_rotate_clockwise.png',
+              'Function' : 'lightning.png'
+
+         },
+
+        'controller': {
+
+                //--------
+                'Autofocus' : 'autofocus.png',
+                'XYZ-position' : 'yxz-512.png',
+                'Group-Position' : 'text_list_numbers.png',
+                'MicroFluidics-Valves' : 'ctrl_valve_rsz.jpg'
+
+        }
+
+    }
+
+var lprotocol = ['take_pic', 'protoc_actions', 'controller']
+
+var dic_assign_icons = {} // dictionary { 'Sequence' : 'arrow_rotate_clockwise.png', etc.. } made in elem of protocol loop
+var dic_corresp = {
+                    'LOOP':'Sequence',
+                    'XYZ':'XYZ-position',
+                    'ZSSC':'ZSSC',
+                    'ZSSCM':'ZSSCM',
+                    'SPSC':'SPSC',
+                    'SPSCM':'SPSCM',
+                    'GROUP':'Group-Position',
+                    'DELAY':'Delay',
+                    'AF':'Autofocus',
+                    'FUNC':'Function',
+                    'MFV':'MicroFluidics-Valves'
+                  }

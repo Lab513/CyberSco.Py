@@ -1,0 +1,15 @@
+/*
+Refresh snap page
+*/
+
+socket.on('snapped', function(kind){
+
+    if (kind == 'fluo'){
+
+      $('#snap_panel').show()
+      $('#curr_snap_pic').attr('src', '/static/snapped/snap_curr.png' + '?t='  + new Date().getTime())
+
+    }
+
+
+  })

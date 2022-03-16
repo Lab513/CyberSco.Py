@@ -1,0 +1,21 @@
+// ask if sure to delete
+
+$('#ok_delete_protocol').click(function(){
+
+      $( "#protocol-to-run option:selected" ).each(function() {
+
+            var name_protocol = $( this ).text().trim()
+            //alert( 'deleting ' + name_protocol )
+            dic_prot = JSON.stringify({ 'nameprotoc' : name_protocol + '.yaml'  })
+            socket.emit( 'delete_protocol', dic_prot )
+            $('#ask_if_delete').hide()
+
+      });
+
+  })
+
+$('#cancel_delete').click(function(){
+
+      $('#ask_if_delete').hide()
+
+  })

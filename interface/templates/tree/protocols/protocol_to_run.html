@@ -1,0 +1,15 @@
+// Protocole to run
+
+$( "#protocol-to-run" ).change( function(){
+
+    var name_yaml = $(this).val().trim()
+    //alert('name_yaml is ' + name_yaml)
+    socket.emit('read_yaml', name_yaml + '.yaml')                 // ask for reading the yaml
+    socket.on('prot_json', function( json_file ){                   // on receiving the json
+
+        //alert(json_file)
+        initFancyTreeFromJSON( json_file )                        // load the protocol json file in the tree
+
+      })
+
+})

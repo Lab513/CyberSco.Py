@@ -1,0 +1,8 @@
+# port for Olympus
+
+port : COM1
+baudrate : 19200
+bytesize : EIGHTBITS
+parity : PARITY_EVEN
+stopbits : STOPBITS_TWO    
+xonxoff :  False

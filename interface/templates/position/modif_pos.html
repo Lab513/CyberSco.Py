@@ -1,0 +1,12 @@
+<!-- Modif pos -->
+
+$('#modif_pos').change(function(){
+
+    if ($(this).is(':checked')){
+          socket.emit('modif_pos', '1')                  
+        }
+    else{
+         socket.emit('modif_pos', '0')
+    }
+
+})

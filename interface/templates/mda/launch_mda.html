@@ -1,0 +1,29 @@
+/*
+Launch the MDA experiment
+Send the name of the protocol first and then the signal of beginning..
+*/
+
+$('#launch_mda_tree').click(function(){
+
+      $( "#protocol-to-run option:selected" ).each( function() {
+
+          var name_protocol = $( this ).text().trim()
+          curr_protocol = name_protocol
+          socket.emit('launch_tree_protocol', curr_protocol)
+
+        });
+
+      setTimeout(function(){
+
+        socket.emit('launch_mda', '')        // launch mda after sending the name
+
+      }, 300)
+
+      setTimeout(function(){
+
+        $('.mda_triggered').show().delay(60000).fadeOut()           // Indicate that the mda was launched
+
+      }, 600)
+
+
+    });

@@ -1,0 +1,31 @@
+<div class="experim_infos_panel"  hidden>
+
+  <!-- Close button -->
+
+  <img id='experim_infos_panel_close'  src="static/icons/capicon/svg/057.svg">  </img>
+
+  <h4 id="title_infos_exp" > Experiment informations </h4>
+
+ {% set list_infos = [ 'name_experiment', 'author', 'strains', 'microscope', 'objective' ] %}
+
+  {% for info in list_infos %}
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" "> {{ info }} </span>
+            </div>
+            <input type="text" id="experim_{{ info }}" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        </div>
+
+  {% endfor %}
+
+  <!-- <br> -->
+
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text"> Description </span>
+      </div>
+      <textarea id= "text_experim" class="form-control" aria-label="With textarea" style="width: 300px; height: 250px;"></textarea>
+    </div>
+
+</div>

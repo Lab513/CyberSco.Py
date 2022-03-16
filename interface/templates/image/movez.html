@@ -1,0 +1,26 @@
+<!-- offset, refocus -->
+
+<div class='z_panel' >
+
+    <!-- up -->
+    <img id="butt_img_up_z"  src="static/icons/capicon/svg/279.svg"  >
+    <!-- down -->
+    <img id="butt_img_down_z"  src="static/icons/capicon/svg/278.svg"  >
+
+    <span id='zname'> z: </span> <input id='pos_z' > <span id='pos_z_unit'> µm </span>
+
+    {% include 'image/save_return_z.html' %}
+
+    {% include 'image/step_z.html' %}
+
+    <button class="btn btn-success" id="offset" > offset </button>
+    <div id='offset_value' > no offset </div>
+    <button class="btn btn-warning" id="refocus" > refocus </button>
+
+</div>
+
+<script >
+
+  $('#offset_value').hide()
+
+</script>

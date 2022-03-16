@@ -1,0 +1,19 @@
+function assign_icons(data){
+      //alert("icon")
+      var node = data.node;
+      if( node.type === "PROT" )  { newSourceOptionId = node.data.config; return "/static/icons/tree/icons/protocol.png";}
+      else{
+        var addrimg = '/static/icons/tree/icons/' + dic_assign_icons[dic_corresp[node.type]]
+         return addrimg
+      }
+
+}
+
+function assign_tooltips(data){
+      var node = data.node;
+      if( node.type === "PROT" )   return "Protocole";
+      else{
+         return dic_corresp[node.type]
+      }
+
+}

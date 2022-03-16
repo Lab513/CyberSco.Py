@@ -1,0 +1,19 @@
+// Repetion index
+
+socket.on('curr_rep', function(rep){
+
+    //alert(rep)
+    //if ( parseInt(rep) == 1 ){
+    //    $('#curr_rep').show()
+    //}
+    $('#curr_rep').show()
+    $('#curr_rep').text( 'rep n°: ' + rep)                                      // current repetition index
+
+  })
+
+  socket.on('time_elapsed', function(tel){
+
+      $('#time_elapsed').show()
+      $('#time_elapsed').text( 'time_elapsed: ' + tel + ' min')                 // time elapsed from the beginning of the MDA
+
+    })

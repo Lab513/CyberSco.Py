@@ -1,0 +1,13 @@
+
+
+  $('#set_stepxy').click(function(){
+      var val_stepxy = $('#stepxy').val()
+      dic_stepxy = {'stepxy':val_stepxy}
+      socket.emit('set_stepxy', JSON.stringify(dic_stepxy))
+  })      //
+
+  $('#set_stepz').click(function(){
+      var val_stepz = $('#stepz').val()
+      dic_stepz = {'stepz':val_stepz}
+      socket.emit('set_stepz', JSON.stringify(dic_stepz))
+  })      //

@@ -1,0 +1,32 @@
+// experiment infos
+
+socket.on('experim_infos',  function(){
+
+    /*
+    Retrieve the infos and send them to the server
+    */
+
+    var dic_exp_infos = {}
+    list_infos = [ 'name_experiment', 'author', 'strains', 'microscope', 'objective' ]
+
+    for (li of list_infos){
+        dic_exp_infos[li] = $('#experim_' + li).val()                       // main informations
+    }
+
+    //----------------------  Other infos
+
+    dic_exp_infos['text_experim'] = $('#text_experim').val()                // description
+
+    dic_exp_infos['software'] = 'Cyberscope'                                // software
+
+    //----------------------  Sending to server
+
+    str_dic_exp_infos = JSON.stringify(dic_exp_infos)                       // stringify the infos dictionary
+    //alert('dic_exp_infos are ' + JSON.stringify(dic_exp_infos) )
+    socket.emit('save_experim_infos', str_dic_exp_infos)                    // send the dictionary
+
+})
+
+$('#experim_infos_panel_close').click( function(){                          // close the infos experiment panel
+   $('.experim_infos_panel').hide()
+})

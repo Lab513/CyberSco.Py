@@ -1,0 +1,12 @@
+socket.on('sweep_num', function(sweep_done){
+
+    $('#sweep_done').text(sweep_done)
+    //alert('sweep_done is ' + sweep_done)
+
+  })
+
+socket.on('sweep_tlast', function(telapsed){
+
+    $('#sweep_tlast').text(telapsed)
+
+  })

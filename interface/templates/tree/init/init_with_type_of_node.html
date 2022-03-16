@@ -1,0 +1,106 @@
+function init_node_with_typeOfNode(typeOfNode, node, transfer, data){
+
+      if(typeOfNode==="AF"){                                   // Autofocus
+        node.addNode({
+          title: transfer.getData("text"),
+          objectif: "undefined",
+          range: 0,
+          zoffset: 0,
+          type : typeOfNode
+          }, data.hitMode);
+      }
+      if(typeOfNode==="LOOP"){                                  // Loop
+        node.addNode({
+          title: transfer.getData("text"),
+          nb_repetition: 0,
+          time_per_repetition: 0,
+          type : typeOfNode
+          }, data.hitMode);
+      }
+      if(typeOfNode==="XYZ"){                                   // Position
+        node.addNode({
+          title: transfer.getData("text"),
+          xPosition : 0,
+          yPosition : 0,
+          zPosition : 0,
+          type : typeOfNode
+          }, data.hitMode);
+      }
+      if(typeOfNode==="ZSSC"){                                   // Z stack + Settings Channels
+        //alert("ZS+SC")
+        node.addNode({
+          title: transfer.getData("text"),
+          z_position: 0,
+          far_limit: 0,
+          near_limit: 0,
+          step: 0,
+          keep_shutter_on_wzs: true,
+          setting_channel_name: "undefined",
+          exposure_time: 0,
+          type : typeOfNode
+          }, data.hitMode);
+      }
+      if(typeOfNode==="ZSSCM"){                                  // Z stack + Settings Channels + Mosaic
+          node.addNode({
+              title: transfer.getData("text"),
+              z_position: 0,
+              far_limit: 0,
+              near_limit: 0,
+              step: 0,
+              keep_shutter_on_wzs: true,
+              setting_channel_name: "undefined",
+              mosaic_mask_name: "undefined",
+              exposure_time: 0,
+              type : typeOfNode
+                }, data.hitMode);
+        }
+        if(typeOfNode==="SPSC"){                                 // Simple Picture + Settings Channels
+          node.addNode({
+              title: transfer.getData("text"),
+              setting_channel_name: "undefined",
+              exposure_time: 0,
+              type : typeOfNode
+                }, data.hitMode);
+        }
+          if(typeOfNode==="SPSCM"){                              // Simple Picture + Settings Channels + Mosaic
+        node.addNode({
+          title: transfer.getData("text"),
+          setting_channel_name: "undefined",
+              mosaic_mask_name: "undefined",
+              exposure_time: 0,
+          type : typeOfNode
+          }, data.hitMode);
+      }
+      if(typeOfNode==="DELAY"){
+        node.addNode({
+          title: transfer.getData("text"),
+          time: 0,
+          type : typeOfNode
+          }, data.hitMode);
+      }
+      if(typeOfNode==="GROUP"){
+        node.addNode({
+          title: transfer.getData("text"),
+
+          type : typeOfNode
+          }, data.hitMode);
+      }
+      if(typeOfNode==="FUNC") {
+        node.addNode({
+          title: transfer.getData("text"),
+          function_name: "undefined",
+          type : typeOfNode
+          }, data.hitMode);
+      }
+      if(typeOfNode==="MFV") {
+        node.addNode({
+          title: transfer.getData("text"),
+          valve_1: "Close",
+          valve_2: "Close",
+          valve_3: "Close",
+          valve_4: "Close",
+          valve_5: "Close",
+          type : typeOfNode
+          }, data.hitMode);
+      }
+}

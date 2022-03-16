@@ -1,0 +1,25 @@
+// --------- Refresh the protocols
+
+socket.on( 'refresh_list_protocols', function(listp){                         // receiving new list and refreshing select
+
+      var list_prot = JSON.parse( listp )
+      $( "#protocol-to-run" ).empty()
+
+      for ( p of list_prot ){                                                 // refresh select list..
+
+            var opt = $('<option/>', { value : p })
+                           .text(p)
+                           .data('content', p)
+
+            //alert( "in refresh protocol, curr_protocol is " + curr_protocol)
+            if ( p == curr_protocol ){                                          // keep the selected option..
+                opt.prop("selected", true)
+            }
+
+            $('#protocol-to-run')
+                .append(opt)
+                .selectpicker('refresh')                                      // refresh bootstrap select list
+
+          }
+
+} )                                                                           // socket.on

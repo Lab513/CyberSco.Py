@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+{% include 'header_footer/index_head.html' %}
+
+<style>
+
+.dropzone {
+top: 200px;
+width: 200px;
+height: 80px;
+min-height: 0px !important;
+}
+
+</style>
+
+<body>
+
+{% include 'header_doc_exit.html' %}
+
+<!-- socket -->
+
+{% include 'socket.html' %}
+
+<!-- setting panel -->
+
+{% include 'settings/lateral_bar.html' %}
+
+<!-- xy  panel -->
+
+{% include 'position/xy_panel.html' %}
+
+<!-- channels settings  panel -->
+
+{% include 'light/set_chan_panel.html' %}
+
+<!-- setting panel -->
+
+{% include 'settings/settings_panel.html' %}
+
+<!-- sweep chip -->
+
+{% include 'settings/swept_chip.html' %}
+
+<!-- experim infos panel -->
+
+{% include 'infos/experim_infos_panel.html' %}
+
+<!-- infos panel -->
+
+{% include 'infos/hard_soft_infos.html' %}
+
+<!-- Utilities for moving the Prior -->
+
+{% include 'image/screen.html' %}
+
+<!-- move in z axis -->
+
+{% include 'image/movez.html' %}
+
+<!-- snap exposure -->
+
+{% include 'image/snap_exposure.html' %}
+
+<!-- save the current position -->
+
+{% include 'position/save_pos.html' %}
+
+<!-- MDAs -->
+
+{% include 'mda/choice_mda.html' %}
+
+<!-- control panel -->
+
+{% include 'mda/control_ML.html' %}
+
+<!-- mda_tree_panel -->
+
+{% include 'mda/mda_tree_panel.html' %}
+
+<!-- mda beginning message -->
+
+{% include 'mda/trig_mda_message.html' %}
+
+<!-- mda monitorings params -->
+
+{% include 'mda/mda_monitorings_params.html' %}
+
+
+<script>
+
+$(document).ready(function(){
+
+    //------- Serial connexion
+
+    {% include 'infos/devices_connexion.html' %}
+
+    //------- Moving the prior
+
+    {% include 'position/move_refresh.html' %}
+
+    //------- Moving on z axis
+
+    {% include 'image/movez_refresh.html'  %}
+
+    //------- refresh steps
+
+    {% include 'position/refresh_steps.html'  %}
+
+    //------- refresh objective
+
+    {% include 'image/refresh_objective.html'  %}
+
+    //------- refresh AF method
+
+    {% include 'image/refresh_AF_method.html'  %}
+
+    //------- refresh model
+
+    {% include 'segm_track/refresh_model.html'  %}
+
+    //------- Offset and refocus
+
+    {% include 'image/offset_and_refocus.html'  %}
+
+    //------- Reset offset
+
+    {% include 'image/reset_offset_refresh.html'  %}
+
+    //------- Save pos
+
+    {% include 'position/send_saved_pos.html'  %}
+
+    //------- Snap
+
+    {% include 'image/image_snap.html'  %}
+
+    //------- Refresh and show snap image
+
+    {% include 'image/snap_refresh.html' %}
+
+    //------- Sweep chip
+
+    {% include 'image/sweep_chip_trig.html' %}
+
+    {% include 'settings/swept_panel_refresh.html' %}
+
+    {% include 'settings/sweep_done.html' %}
+
+    //------- fast pos for x, y and z
+
+    {% include 'image/fast_pos.html'  %}
+
+    //------- fast_xy_pos
+
+    {% include 'position/fast_xy_pos.html'  %}
+
+    //------- Refresh camera image
+
+    {% include 'image/image_refresh.html' %}
+
+    //-------- save position
+
+    {% include 'position/xy_handle_pos.html' %}
+
+    //-------- allow modify pos
+
+    {% include 'position/modif_pos.html' %}
+
+    //-------- reload the positions
+
+    {% include 'position/reload_pos.html' %}
+
+    //-------- show cells number
+
+    {% include 'segm_track/refresh_nb_cells.html' %}
+
+    //-------- retrieve setting channels
+
+    {% include 'light/send_set_chan.html' %}
+
+    //-------- change selection SC
+
+    {% include 'light/SC_change.html' %}
+
+    //------- which event is followed
+
+    {% include 'mda/follow_which_event.html' %}
+
+    //------- launch mda
+
+    {% include 'mda/launch_mda.html' %}
+
+    //------- modify interface
+
+    {% include 'mda/modif_interf.html' %}
+
+    //------- panel for mdas
+
+    {% include 'mda/actions_mda_tree.html' %}
+
+    //------- free or predefined mda
+
+    {% include 'mda/free_predefined_mda_action.html' %}
+
+    // Retrieve infos mda
+
+    {% include 'infos/retrieve_experim_infos.html' %}
+
+    // Retrieve params for mda monitoring
+
+    {% include 'mda/retrieve_monitorings_params.html' %}
+
+    //------- Curr repetition index
+
+    {% include 'mda/curr_rep_refresh.html' %}
+
+    //------- take pic
+
+    {% include 'image/take_pic_mess.html' %}
+
+    //-------- actions for settings panel
+
+    {% include 'settings/settings_actions.html' %}
+
+    //-------- Information about the devices
+
+    {% include 'infos/hard_soft_infos_refresh.html' %}
+
+});
+
+$('#refresh').hide()
+
+</script>
+
+
+</body>
+</html>

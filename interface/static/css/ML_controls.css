@@ -1,0 +1,17 @@
+
+
+#panel_nb_cells_controls {
+
+    /* number of cells in Real Time */
+
+     padding-left: 15px;
+     padding-top: 10px;
+     position: absolute;
+     box-shadow: 0.5em 0.5em 0.7em;
+     top: 100px;
+     left: 50%;
+     width:200px;
+     height:40px;
+     z-index: 1;
+
+}

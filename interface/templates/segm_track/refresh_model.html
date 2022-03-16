@@ -1,0 +1,43 @@
+/*
+Set current model
+*/
+
+socket.on('curr_model', function( model_name ){                                    // select new model
+
+    //alert( model_name )
+
+    $('#select_model').val( model_name ).change()
+
+  })
+
+socket.on('new_model', function(mod){                                               // load model
+
+    //alert('Current model is ' + mod)
+
+    $('#curr_cam_pic').attr('src', 'http://10.40.12.87:2204/load_model')    //
+    setTimeout(function(){
+          $('#curr_cam_pic').attr('src', 'http://10.40.12.87:2204/video_feed')
+      }, 10000)
+
+  })
+
+socket.on('all_models', function( lmodels ){
+
+    /*
+    Retrieve all the models in use
+    */
+
+    //alert('lmodels is ' + lmodels)
+    var list_models = JSON.parse( lmodels )
+    //alert(list_models)
+    $('#select_model').empty()                                                            // Clear select
+    for ( mod of list_models ){
+      $('#select_model')
+             .append('<option value="' + mod + '">' + mod + ' </option>');                // Add options
+      //alert('mod is ' + mod)
+    }
+ })
+
+ $('#select_model').change(function(){
+     socket.emit( 'change_model', $(this).val() )                                        // change the main model
+ })

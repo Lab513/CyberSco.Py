@@ -1,0 +1,94 @@
+function node_command(elem, data){
+
+  var refNode, moveMode,
+  tree = elem.fancytree("getTree"),
+  node = tree.getActiveNode();
+
+  switch( data.cmd ) {
+
+  case "moveUp":
+        refNode = node.getPrevSibling();
+        if( refNode ) {
+          node.moveTo(refNode, "before");
+          node.setActive();
+        }
+        break;
+
+  case "moveDown":
+        refNode = node.getNextSibling();
+        if( refNode ) {
+          node.moveTo(refNode, "after");
+          node.setActive();
+        }
+        break;
+
+  case "indent":
+        refNode = node.getPrevSibling();
+        if( refNode ) {
+          node.moveTo(refNode, "child");
+          refNode.setExpanded();
+          node.setActive();
+        }
+        break;
+
+  case "outdent":
+        if( !node.isTopLevel() ) {
+            if(node.getParent().type != 'PROT'){
+              node.moveTo(node.getParent(), "after");
+              node.setActive();
+            }
+        }
+        break;
+
+  case "rename":
+        node.editStart();
+        break;
+
+  case "remove":
+        refNode = node.getNextSibling() || node.getPrevSibling() || node.getParent();
+        node.remove();
+        if( refNode ) {
+          refNode.setActive();
+        }
+        break;
+
+  case "addChild":
+        node.editCreateNode("child", "");
+        break;
+  case "addSibling":
+        node.editCreateNode("after", "");
+        break;
+
+  case "cut":
+        CLIPBOARD = {mode: data.cmd, data: node};
+        break;
+
+  case "copy":
+        CLIPBOARD = {
+          mode: data.cmd,
+          data: node.toDict(function(n){
+            delete n.key;
+          })
+        };
+        break;
+
+  case "clear":
+        CLIPBOARD = null;
+        break;
+
+  case "paste":
+        if( CLIPBOARD.mode === "cut" ) {
+          // refNode = node.getPrevSibling();
+          CLIPBOARD.data.moveTo(node, "child");
+          CLIPBOARD.data.setActive();
+        } else if( CLIPBOARD.mode === "copy" ) {
+          node.addChildren(CLIPBOARD.data).setActive();
+        }
+        break;
+        
+  default:
+    alert("Unhandled command: " + data.cmd);
+    return;
+  }
+
+}

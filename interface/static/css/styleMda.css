@@ -1,0 +1,140 @@
+/* Dropdown Button */
+.dropbtn {
+
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  width: 250%;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd;}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {background-color: #3e8e41;}
+
+
+.keys {
+    text-align: center;
+    line-height: 5.2rem;
+
+  }
+
+  .keys div {
+    font-size: 2.4rem;
+    display: inline-block;
+    margin: 0 0.5rem;
+    height: 4rem;
+    width: 4rem;
+    line-height: 2.6rem;
+    text-align: center;
+    color: white;
+    border-style: solid;
+    border-width: 0.4rem 0.45rem 0.6rem;
+    border-radius: 0.8rem;
+    border-color: #99e6bd #64b98c #64b98c #74d2a0;
+    background: #7de3ad;
+    -moz-transition: all 80ms ease;
+    -o-transition: all 80ms ease;
+    -webkit-transition: all 80ms ease;
+    transition: all 80ms ease;
+  }
+
+  .keys .pressed {
+    border-bottom-width: 0.4rem;
+    text-shadow: 0 0 10px white;
+  }
+
+/* parameters */
+
+.params_panel {
+
+    display: hidden;
+    position: fixed;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 50px;
+    font-size: 14px !important;
+    right: 50px;
+    top: 50px;
+    width: 300px;
+    height: 400px;
+    background-color: #ffffff;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 10000;
+
+  }
+
+.inp {
+
+    width: 100px !important;
+    border:none;
+    font-size: 14px !important;
+
+}
+
+#save_prot_params {
+
+    position: absolute;
+    bottom: 50px;
+    left: 120px;
+
+}
+
+#are_you_sure_to_delete {
+
+    /* message to be sure before deleting the protocol */
+
+    position: absolute;
+    top: 340px;
+    right: 20%;
+    z-index: 50;
+
+}
+
+#input_duplicate_rename {
+
+    height: 33px;
+
+}
+
+#launch_mda_tree {
+
+    /* Launch the protocol from the tree */
+
+    position: absolute;
+    top: 200px;
+    right: 17%;
+    z-index: 50;
+
+}
+
+.select_mask> .bootstrap-select  {
+          width: 170px;
+          left: 100px;
+    }

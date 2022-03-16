@@ -1,0 +1,80 @@
+function define_keys(){
+
+  return function(e){
+    var cmd = null;
+
+    // console.log(e.type, $.ui.fancytree.eventToString(e));
+
+    switch( $.ui.fancytree.eventToString(e) ) {
+
+          case "ctrl+shift+b":
+            cmd = "addChild";
+            break;
+
+          case "ctrl+b":
+            cmd = "addSibling";
+            break;
+
+          case "meta+shift+n": // mac: cmd+shift+n
+            cmd = "addChild";
+            break;
+
+          case "ctrl+c":
+          case "meta+c": // mac
+            cmd = "copy";
+            break;
+
+          case "ctrl+v":
+          case "meta+v": // mac
+            cmd = "paste";
+            break;
+
+          case "ctrl+x":
+          case "meta+x": // mac
+            cmd = "cut";
+            break;
+
+          case "ctrl+n":
+          case "meta+n": // mac
+            cmd = "addSibling";
+            break;
+
+          //------------------------
+
+          case "del":
+          case "meta+backspace": // mac
+            cmd = "remove";
+            break;
+
+          // case "f2":  // already triggered by ext-edit pluging
+          //   cmd = "rename";
+          //   break;
+
+          case "ctrl+up":
+            cmd = "moveUp";
+            break;
+
+          case "ctrl+down":
+            cmd = "moveDown";
+            break;
+
+          case "ctrl+right":
+          case "ctrl+shift+right": // mac
+            cmd = "indent";
+            break;
+
+          case "ctrl+left":
+          case "ctrl+shift+left": // mac
+            cmd = "outdent";
+    }
+
+    if( cmd ){
+      $(this).trigger("nodeCommand", {cmd: cmd});
+      // e.preventDefault();
+      // e.stopPropagation();
+      return false;
+    }
+
+  };
+
+}

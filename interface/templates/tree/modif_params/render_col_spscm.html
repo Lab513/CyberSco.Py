@@ -1,0 +1,23 @@
+else if (node.type == 'SPSCM') {
+
+      var timestamp = new Date().getTime().toString();
+      node.key = timestamp;
+      if (node.data.setting_channel_name == "undefined" &&
+          node.data.mosaic_mask_name == "undefined" &&
+          node.data.exposure_time == 0)
+           {
+              if ($("#setting-channel-to-apply :selected").text() != "Select a setting channel...") {
+                node.data.setting_channel_name = $("#setting-channel-to-apply :selected").text();
+              }
+              if ($("#mosaic-mask-to-apply :selected").text() != "Select a mosaic mask...") {
+                node.data.mosaic_mask_name = $("#mosaic-mask-to-apply :selected").text();
+              }
+              node.data.exposure_time = parseInt( $("#exposure-time").val() );
+         }
+      $tdList.eq(1).html('<button onClick="editTree();"><img src="/static/icons/tree/icons/wrench.png"></button>');
+      $tdList.eq(4).html('<div id="SPSCM' + node.key + "-info" +
+                  '">SC: ' + node.data.setting_channel_name +
+                   ' MM: ' + node.data.mosaic_mask_name +
+                   ' ET: '+ node.data.exposure_time + 'ms</div>');
+
+}

@@ -1,0 +1,202 @@
+ body {
+     background-color: #ffffff;
+ }
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #9abc5e;
+    border-color:#8bb049;
+    background-image: linear-gradient(to bottom, #ffffff 0%, #9abc5e 100%);
+    z-index: 20;
+}
+.centering {
+    text-align: center;
+}
+
+.retrieve {
+    margin-top: -50 px;
+    margin-left: 10%;
+}
+
+.centering_foot {
+    margin-left: 45%;
+}
+
+.centered {
+    position: absolute;
+    top: 50%;
+}
+
+/*
+###### Panel (blue) with all names of the file to be processed
+*/
+
+div.folders{
+
+    /* box-shadow: 0.5em 0.5em 0.7em; */
+    /*max-width: 800px;*/
+    width: 500px;
+    height: 400px;
+    background-color: #fffff;/*#f0f5f5 ; #99ccff*/
+    font-size:85%;
+    font-color:#fff;
+    /* overflow-y: scroll; */
+    z-index: 20;
+    }
+
+.dropzone {
+   /*width: 10%; Changing size of the dropzone*/
+   margin-top: 5%;
+   height: 100px; /*Changing size of the dropzone*/
+   min-height: 0px !important;
+}
+
+.dz-message {
+    position: relative;
+    top: -20%;
+}
+
+
+#list_files {
+   /* icon for parameters*/
+    position: absolute;
+    top: 10%;
+    left:10%;
+  }
+
+.listfiles {
+
+    position: absolute;
+    top: 300px;
+    left: 33%;
+    font-size: 15px;
+    width: 500px;
+
+    }
+
+.dz-details {
+
+    height: 50px;
+    width: 50px;
+
+}
+
+.params {
+      position: absolute;
+      top: 200px;
+      right: 80px;
+      height: 300px;
+      width: 150px;
+    }
+
+/* Processings address */
+
+#addr_save_text {
+
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-top: 10px;
+    height: 30px;
+    width: 380px;
+
+}
+
+  /*
+   Button for launching the MDA
+  */
+
+  #launch_mda {
+
+       margin-left: 10px;
+       padding-left: 5px;
+       padding-top: 10px;
+       position: absolute;
+       top: 700px;
+       right: 50px;
+       width:120px;
+       height:40px;
+
+  }
+
+  .trig_mda {
+
+       z-index: 10;
+  }
+
+  /* options for processing */
+
+  .proc_opts {
+
+       position: absolute;
+       box-shadow: 0.5em 0.5em 0.7em;
+       top: 150px;
+       right: 50%;
+       height: 250px;
+       width: 300px;
+       padding-left: 50px;
+       padding-top: 50px;
+       background-color: white;
+       z-index: 20;
+
+    }
+
+    #model  {
+          position: absolute;
+          top: 50px;
+          right: 100px;
+          width: 50px;
+    }
+
+    /* model select */
+
+    #model > .bootstrap-select  {
+          width: 120px;
+    }
+
+    /* positions  params */
+
+    .pos_params {
+
+         position: absolute;
+         box-shadow: 0.5em 0.5em 0.7em;
+         top: 100px;
+         right: 10%;
+         height: 180px;
+         width: 200px;
+         padding-left: 50px;
+         padding-top: 50px;
+         background-color: white;
+         z-index: 20;
+
+      }
+
+    #set_pos_params{
+
+         margin: 15px;
+
+      }
+
+      .butt_param_pos{
+          bottom: 10%;
+        }
+
+    /* gates */
+
+    .input_gate {
+        width: 40px;
+      }
+
+
+      /* steps */
+
+  .pos_reload {
+
+      /* reload the positions */
+       position: absolute;
+       bottom: 10px;
+       left: 130px;
+       z-index: 1;
+
+  }

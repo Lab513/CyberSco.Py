@@ -1,0 +1,27 @@
+for (elem of lprotocol){                                // drag functions
+
+      var span = $('.' +  elem).find('span')
+      span.addClass('drag-source')
+      span.attr('draggable','true')
+      Object.keys( dic_icons[elem] ).forEach( function(key) {
+          span_id = $('#' + key)
+          //alert("key is " + key)
+          span_id.attr('ondragstart',"event.dataTransfer.setData('text/plain','"   +  key  +   "' );")
+          if ( elem == 'take_pic' ){
+              span_id.append($('<img />').attr('src', "/static/icons/tree/icons/" + dic_icons[elem][key][0] ))
+              span_id.append( " " + dic_icons[elem][key][1] )
+          }
+          else{
+              span_id.append($('<img />').attr('src', "/static/icons/tree/icons/" + dic_icons[elem][key] ))
+              span_id.append( " " + key )
+          }
+          if (elem == 'take_pic'){
+             dic_assign_icons[key] = dic_icons[elem][key][0]
+          }
+          else{
+             dic_assign_icons[key] = dic_icons[elem][key]
+          }
+
+      });
+
+}

@@ -1,0 +1,13 @@
+/*
+Change the AF method
+*/
+
+$('#select_AF').change(function(){
+    socket.emit('change_AF',$(this).val())                                      // change the objective of the Olympus
+})
+
+socket.on('curr_AF_meth', function(rep){
+
+    $('#select_AF option[value=' + rep + ']').prop('selected', true);           // set the select to AF value
+
+  })

@@ -1,0 +1,130 @@
+var dic_title = {
+                    'LOOP':'Sequence',
+                    'XYZ':'XYZ',
+                    'ZSSC':'ZS+SC',
+                    'ZSSCM':'ZS+SC+M',
+                    'SPSC':'SP+SC',
+                    'SPSCM':'SP+SC+M',
+                    'GROUP':'Group-Position',
+                    'DELAY':'Delay',
+                    'AF':'Autofocus',
+                    'FUNC':'Function',
+                    'MFV':'MicroFlu-Valves',
+                    'LIGHT':'Light',
+                    'CAMERA': 'Simple picture'
+                  }
+
+function editTree(){
+
+    var node = $("#tree").fancytree("getActiveNode");
+    $('.params_panel').show()                                               // show parameters panel
+    $('#params_title').text(dic_title[node.type])
+
+    $('.inj').hide()
+
+    if(node.type === 'PROT'){                                               // Protocol
+
+    }
+
+    if(node.type === 'LOOP'){                                               // Sequence
+
+        $('.sequence').show()
+        $('#nb_repetition').val(node.data.nb_repetition)
+        $('#time_per_repetition').val(node.data.time_per_repetition)
+
+    }
+
+    if(node.type === 'XYZ'){                                                // Position, X, Y, Z
+
+        $('.xyz').show()
+        $('#xPosition').val(node.data.xPosition)
+        $('#yPosition').val(node.data.yPosition)
+        $('#zPosition').val(node.data.zPosition)
+        $('#gate').val(node.data.gate)                                      // associated gate
+
+    }
+
+    if(node.type === 'AF'){                                                 // Autofocus
+
+       $('.autofocus').show()
+       $('#select_AF').val( node.data.select_AF )
+       $('#objectif').val( node.data.objectif )
+       $('#zoffset').val( node.data.zoffset )
+
+    }
+
+    if(node.type === 'DELAY'){                                              // Delay
+
+        $('.delay').show()
+        $('#time').val(node.data.time)
+
+    }
+
+    if(node.type === 'ZSSC'){                                              // Z stack, Setting channels
+
+        //alert('show ZSSC')
+
+        $('.pzssc').show()
+        //$('#zssc_near_limit').val( node.data.near_limit )
+        //$('#zssc_far_limit').val( node.data.far_limit )
+        //$('#zssc_step').val( node.data.step )
+        $('#zssc_setting_channel_name').val( node.data.setting_channel_name )
+        $('#zssc_exposure_time').val( node.data.exposure_time )
+        //$('#zssc_shut').val( node.data.shut )
+
+    }
+
+    if(node.type === 'ZSSCM'){                                             // Z stack, Setting channels , Mosaic
+
+        $('.pzsscm').show()
+        //$('#zsscm_near_limit').val( node.data.near_limit )
+        //$('#zsscm_far_limit').val( node.data.far_limit )
+        //$('#zsscm_step').val(node.data.step)
+        $('#zsscm_setting_channel_name').val(node.data.setting_channel_name)
+        $('#zsscm_exposure_time').val(node.data.exposure_time)
+        //$('#zsscm_shut').val(node.data.shut)
+
+        //$('#mosaic-mask-zs-sc-mm-modal option:first').text(node.data.mosaic_mask_name);
+        //$('#keep-shutter-on-zs-sc-mm-modal').prop("checked", node.data.keep_shutter_on_wzs);
+
+    }
+    if(node.type === 'SPSC'){                                              // Simple Picture, Setting channels
+
+        $('.pspsc').show()
+        //$('#spsc_near_limit').val(node.data.near_limit)
+        //$('#spsc_far_limit').val(node.data.far_limit)
+        //$('#spsc_step').val(node.data.step)
+        $('#spsc_setting_channel_name').val( node.data.setting_channel_name )
+        $('#spsc_exposure_time').val(node.data.exposure_time)
+        //$('#spsc_shut').val( node.data.shut )
+
+    }
+    if(node.type === 'SPSCM'){                                             // Simple Picture, Setting channels, Mosaic
+
+        $('.pspscm').show()
+        //$('#spscm_near_limit').val(node.data.near_limit)
+        //$('#spscm_far_limit').val(node.data.far_limit)
+        //$('#spscm_step').val(node.data.step)
+        $('#spscm_setting_channel_name').val(node.data.setting_channel_name)
+        $('#spscm_exposure_time').val(node.data.exposure_time)
+        //$('#spscm_shut').val(node.data.shut)
+
+    }
+    if(node.type === 'GROUP'){
+
+    }
+    if(node.type === 'FUNC'){                                               // Function
+
+    }
+    if(node.type === "MFV") {                                               // Microfluidic valves
+
+          $('.microflu').show()
+          $('#valve_1').val(node.data.valve_1)
+          $('#valve_2').val(node.data.valve_2)
+          $('#valve_3').val(node.data.valve_3)
+          $('#valve_4').val(node.data.valve_4)
+          $('#valve_5').val(node.data.valve_5)
+
+    }
+
+}

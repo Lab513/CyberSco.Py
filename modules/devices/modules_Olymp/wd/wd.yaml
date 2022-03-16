@@ -1,0 +1,9 @@
+# working distance in 0.1 mm
+# https://www.olympus-lifescience.com/data/olympusmicro/brochures/pdfs/ix71.pdf p14
+
+4x: 130    # UPlanApo
+10x: 31    # UPlanSApo
+20x: 6     # UPlanSApo
+40x: 1.8   # PlanSApo
+60x: 1.5   # UPlanApoN O
+100x: 1.3  #

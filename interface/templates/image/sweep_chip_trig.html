@@ -1,0 +1,36 @@
+//------- Sweep chip
+
+$('#sweep_chip_btn').click(function(){
+
+     var sweepx = $('#sweepx').val()
+     var sweepy = $('#sweepy').val()
+     dic_sweep = { 'sweepx':sweepx, 'sweepy':sweepy }
+
+     socket.emit('sweep_chip', JSON.stringify( dic_sweep ))
+
+   })
+
+// ----------------------- sweep direction
+
+var sweep_angle = 45
+
+//---- rotate jquery function
+
+jQuery.fn.rotate = function(degrees) {
+    $(this).css({'transform' : 'rotate('+ degrees +'deg)'})
+    return $(this)
+}
+
+//------------- change of direction..
+
+$('#sweep_dir_btn').click(function(){
+
+    socket.emit('sweep_dir', 'left')
+    sweep_angle += 90;
+    $('#sweep_dir').rotate(sweep_angle);
+
+  })
+
+// rotate sweep orientation 45° south east at the beginning
+
+ $('#sweep_dir').rotate(sweep_angle)

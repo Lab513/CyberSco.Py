@@ -1,0 +1,11 @@
+// Load new protocol
+
+function initFancyTreeFromJSON(my_json) {
+
+      var newJson = JSON.parse(my_json);
+      var tree = $("#tree").fancytree('getTree');
+      tree.reload(newJson);
+      $("#tree").fancytree("getTree").findFirst("protocol").setActive();
+      $("#tree").fancytree("getTree").findFirst("protocol").setFocus(true);
+
+}

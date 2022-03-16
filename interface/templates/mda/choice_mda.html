@@ -1,0 +1,94 @@
+<div id="mda_panel" hidden >
+
+   <!-- close button -->
+
+   <img id='mda_panel_close'  src="static/icons/capicon/svg/057.svg">  </img>
+
+  <h3 id="title_predef" > MDAs scenarii </h3>
+
+  <br>
+  <hr>
+
+  <div id="mda_exp_descript" hidden>
+     <h4 id="title_description"></h4>
+     <div id="mda_exp_descript_text"></div>
+  </div>
+
+  <script >
+
+    socket.on('predef_mdas', function(dic_presets){
+        //alert(dic_pred)
+        //alert( dic_presets )
+        dic_predef = JSON.parse(dic_presets)              // dictionary with preset exepriments and associated infos
+
+        for ( name_exp in dic_predef ){
+           //alert(name_exp)
+           var curr_exp = dic_predef[name_exp]
+           //alert(curr_exp)
+           var name_plugin = curr_exp.name_plugin                                                            // plugin name
+           var descr_plugin = curr_exp.descr_plugin                                                          // plugin description
+           if ( $('#' + name_plugin ).length == 0){                                                          // if does not exist
+
+                 //alert( 'descr_plugin ' + descr_plugin )
+                 $('#mda_panel').append(
+                        $("<div/>").addClass("checkbox col-xs-12").css( { 'margin-left' : '10px' } )
+                                   .append( $('<span/>').text(name_exp).attr( 'id', name_plugin + '_name' )
+                                                                       .attr( 'description', descr_plugin )
+                                                                       .attr( 'name_exp', name_exp )
+                                                                       .addClass("name_exp")
+                                      )
+                                   .append( $('<h5/>').addClass("check")
+                                                      .css( { 'margin': '0', 'padding' : '0', 'height': '13px' } )
+                                                      .append($('<input/>').addClass("check mda_scenario")
+                                                                           .attr('id', name_plugin)
+                                                                           .css( { 'line-height' : '10%', 'top': '-2px' } )
+                                                                           .attr( 'type', "checkbox" )
+                                                                           .attr( 'name', " " )
+                                            ) // end append
+                                 ) // end append
+                          ) // end append
+                  } // end if
+
+
+           } // end for
+
+           $('.mda_scenario').change( function(){
+               if ( $(this).is(':checked') ){
+                   $('.mda_scenario:not(#' + $(this).attr('id') + ')' ).attr('checked', false)    // deselect if not same Id
+                   socket.emit('choice_mda_scenario', 'select ' + $(this).attr('id'))             // send the choice of scenario to the server
+                   $('#predef_mda_name').text( ' : ' + $(this).attr('id') )                       // show the name of the predf mda
+                   $('#mda_panel').fadeOut(600)                                                      // hide the mda panel
+                   }
+               else{
+                   //alert('deselect ' + $(this).attr('id'))
+                   socket.emit('choice_mda_scenario', 'deselect ' + $(this).attr('id'))            // remove scenario choice..
+                   $('#predef_mda_name').text( '' )                                                // remove the name of the predf mda
+                   $('#predefined_mda_params').hide()                                              // hide button for predef params (always hidden, not in use currently)
+               }
+           })
+
+           $('#predefined_mda_params_panel').hide()                                                 // hidding predefined params panel
+
+           $('.name_exp').mouseenter( function(){
+                     //alert( $(this).attr('description') )
+                     var descript = $(this).attr('description')
+                     if ( descript.length > 10 ){                    // do not show if no description
+                        $('#mda_exp_descript').show()
+                     }
+                     $('#title_description').text( $(this).attr('name_exp') )
+                     $('#mda_exp_descript_text').text( descript )
+
+                     offset = $(this).offset()
+                     //alert('offset.left ' + offset.left)
+                     $('#mda_exp_descript').css( { 'top': offset.top-300, 'left': offset.left-100 } )
+           }).mouseleave(function() {
+                     $('#mda_exp_descript').hide()
+             })
+
+
+      } )  // end socket
+
+   </script>
+
+
+</div>

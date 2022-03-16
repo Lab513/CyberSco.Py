@@ -1,0 +1,56 @@
+function dnd(){
+
+  //var node = data.node;
+  //alert('huppp');
+  return {
+
+        preventVoidMoves: true,
+        preventRecursiveMoves: true,
+        autoExpandMS: 400,
+
+        dragStart: function(node, data) {
+          //alert('dragStart');
+          return true;
+        },
+
+        dragEnd: function(node, data) {
+           //alert('dragEnd');
+          },
+
+        dragEnter: function(node, data) {                     //***
+          //alert('dragEnter');
+          data.dataTransfer.dropEffect = "move";
+          return true;
+        },
+
+        dragOver: function(node, data) {                     //***
+          //alert('dragOver');
+          data.dataTransfer.dropEffect = "move";
+        },
+
+        dragLeave: function(node, data) {                    //***
+          //alert('dragLeave');
+        },
+
+        dragDrop: function(node, data) {
+            var transfer = data.dataTransfer;
+            //alert('dragDrop');
+            node.debug("drop", data);
+            if( data.otherNode ) {
+              var sameTree = (data.otherNode.tree === data.tree);
+              data.otherNode.moveTo(node, data.hitMode);
+            }
+            else if( data.otherNodeData ) {
+              node.addChild(data.otherNodeData, data.hitMode);
+            }
+            else {
+
+              var typeOfNode = determine_typeOfNode(transfer)
+              init_node_with_typeOfNode(typeOfNode, node, transfer, data)
+
+            }
+            node.setExpanded();
+        }
+      }
+
+}

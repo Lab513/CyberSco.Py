@@ -1,0 +1,8 @@
+$('#setzxy').click(function(){
+    var valx = $('#fast_x_pos').val()
+    var valy = $('#fast_y_pos').val()
+    //alert("valx "+ valx)
+    //alert("valy "+ valy)
+    dic_pos_xy = {'x':valx, 'y':valy}
+    socket.emit('fast_xy_pos', JSON.stringify(dic_pos_xy))
+})      //

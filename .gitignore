@@ -1,0 +1,28 @@
+symbol: global
+
+debug.log
+.DS_Store
+.ipynb_checkpoints
+*.pyc
+
+# interface folders
+interface/static/mda_pics/*
+interface/static/curr_pic/modules/*.tiff
+interface/static/snapped/
+interface/static/sweep_chip
+interface/settings/
+interface/static/curr_pic/
+interface/static/mda_protocols/
+interface/static/dmd
+
+# models folder
+models/
+
+# results folder
+mda_experiments/
+mda_temp/
+
+# tests folders
+test_code/
+test/
+test_cyber

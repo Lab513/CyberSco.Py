@@ -1,0 +1,58 @@
+/*
+ Set, save, return to position
+*/
+
+ //------------------ Change pos z directly
+
+$('#pos_z').change( function(){
+  var valz = parseFloat( $('#pos_z').val() )*100
+  //alert('pos_z ' + valz)
+  socket.emit('fast_z_pos', valz)
+})      //
+
+//------------------ Save z pos
+
+$('#savez').click(function(){                                                    // save the z value in memory
+  var valz = parseFloat( $('#pos_z').val() )*100
+  socket.emit('save_z_pos', valz)
+})      //
+
+//------ return to  z pos
+
+$('#return_to_z').click(function(){                                              // return to z from the z value saved in memory
+   socket.emit('return_z_pos', '')
+})      //
+
+//------ save to  z pos
+
+socket.on('saved_z',  function(posz){
+    $("#savez_value").text(posz)                                                 // saved value in #savez_value
+})
+
+//------ show z pos saved
+
+$("#savez, #return_to_z").mouseenter(function() {                                // show/hide saved z value
+      $("#savez_value").show();
+}).mouseleave(function() {
+      $("#savez_value").hide();
+ });
+
+//--------------------------------------- Steps
+
+//--------------- z step
+
+ $('#input_step_z').change( function(){                                          // z step
+   var valdz = parseInt($('#input_step_z').val()*100)
+   //alert('valdz ' + valdz)
+   dic_stepz = { 'stepz': valdz }
+   socket.emit( 'set_stepz', JSON.stringify( dic_stepz ) )
+ })      //
+
+//--------------- x,y step
+
+ $('#input_step_xy').change( function(){                                          // xy step
+   var valdxy = parseInt($(this).val()*100)
+   //alert('valdxy ' + valdxy)
+   dic_stepxy = {'stepxy': valdxy}
+   socket.emit( 'set_stepxy', JSON.stringify( dic_stepxy ) )
+ })      //

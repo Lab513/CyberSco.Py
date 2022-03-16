@@ -1,0 +1,94 @@
+
+$("#tree").fancytree({
+
+      source: function(event, data) {
+          return default_source()                                             // default source
+      },
+
+
+      checkbox: false,
+      tooltip: function(event, data) {
+          return assign_tooltips(data)                                        // tooltips
+      },
+
+
+      icon: function(event, data) {
+          return assign_icons(data)                                           // icons
+      },
+
+
+      titlesTabbable: true,
+      quicksearch: true,
+      extensions: ["edit", "dnd5", "table", "gridnav","multi"],
+      unselectable: function(event, data) {
+        return data.node.isFolder();
+      },
+
+
+      multi: {
+        mode: "sameParent",
+      },
+
+
+      activate: function(event, data) {
+        $("#lblActive").text("" + data.node + " " + data.node.type);
+      },
+
+
+      dnd5 : dnd(),                                                           // drag and drop
+
+
+      edit: {                                                                 // edit
+        triggerStart: ["dblclick", "f2", "mac+enter", "shift+click"],
+        close: function(event, data) {
+          if( data.save && data.isNew ){
+            $("#tree").trigger("nodeCommand", {cmd: "addSibling"});
+          }
+        }
+      },
+
+
+      table: {
+        indentation: 20,
+        nodeColumnIdx: 0
+      },
+
+
+      gridnav: {
+        autofocusInput: false,
+        handleCursorKeys: true
+      },
+
+
+      createNode: function(event, data) {
+        var node = data.node,
+        $tdList = $(node.tr).find(">td");
+      },
+
+
+      renderColumns: function(event, data) {
+
+          var node = data.node
+          render_columns(node)                                                // deals with columns
+
+  }
+}).on("nodeCommand", function(event, data){
+
+      node_command($(this),data)                                              // operations on the nodes
+
+ }).on("click", function(e){
+   //alert("youpi");//
+   //console.log( e, $.ui.fancytree.eventToString(e) );                       // MORE FANCY TREE LOG HERE
+
+}).on("keydown", define_keys())
+
+//----------------------
+
+setTimeout(function(){
+  $("#tree").fancytree("getTree").findFirst("protocol").setActive();
+  $("#tree").fancytree("getTree").findFirst("protocol").setFocus(true);
+}, 300);
+
+//----------------------
+
+$("#tree").addClass("fancytree-connectors");

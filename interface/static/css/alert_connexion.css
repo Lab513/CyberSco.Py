@@ -1,0 +1,18 @@
+
+
+#panel_connexion {
+
+    /* alert if not connected */
+
+     position: absolute;
+     box-shadow: 0.5em 0.5em 0.7em;
+     top: 10px;
+     left: 350px;
+     width: 300px;
+     height: 180px;
+     padding-top: 50px;
+     padding-left: 50px;
+     background-color: #ff9999;
+     z-index: 500;
+
+}

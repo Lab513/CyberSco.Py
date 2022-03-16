@@ -1,0 +1,25 @@
+// Offset and refocus
+
+$('#offset').click(function(){  socket.emit('offset', 'right') })      // search the offset
+$('#refocus').click(function(e){                                       // refocus
+      //e.preventDefault()
+      socket.emit('refocus', 'left')
+ })        // image left
+
+ socket.on('offset', function(offset){                                 // refresh value of offset in offset value panel
+    $('#offset_value').text( parseInt(offset)/100 + ' µm' )
+ })
+
+ //------------- current offset
+
+ $("#offset").mouseenter(function() {                                  // show/hide the current offset
+       $("#offset_value").show();
+ }).mouseleave(function() {
+       $("#offset_value").hide();
+ });
+
+//--------------- hiding offset and refocus..
+
+$('#refocus').hide()
+$("#offset").hide()
+$(".z_panel").css({'height':'120px'})
