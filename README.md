@@ -172,7 +172,7 @@ BF 60x             |  BF with segmentation 60x
 
 In the current *CyberSco.py* version, the tracking for a given cell is simply done by selecting
 the cell the nearest from one image to the following.  
-When changing of position, the tracking is performed using correlation between images. 
+When changing of position, the tracking is performed using correlation between images.
 
 <details>
 <summary> Tracking image example, Click here to expand</summary>
@@ -376,10 +376,10 @@ class PROTOCOL_SUCROSE(MDA):
 
 </details>
 
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-
 ## Contact
 
 Pascal Hersen pascal.hersen@curie.fr
+
+## License
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Licence Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />Ce(tte) œuvre est mise à disposition selon les termes de la <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 4.0 International</a>.
