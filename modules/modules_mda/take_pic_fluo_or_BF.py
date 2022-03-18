@@ -96,6 +96,8 @@ class TAKE_PIC_FLUO_OR_BF():
         '''
         addr_pic = self.snap_cases()
         addr_snap = 'interface/static/snapped'
+        if not os.path.exists(addr_snap):
+            os.mkdir(addr_snap)
         addr_targ = opj(addr_snap, f'snap_{self.date()}.png')  # snap with date
         addr_curr = opj(addr_snap, f'snap_curr.png')           # frame0.png
         print(addr_targ)

@@ -35,9 +35,14 @@ elif cam_used == 'Zyla':      # use the Zyla camera
 
 static = opj(os.getcwd(), 'interface', 'static')
 addr_pic = opj(static, 'curr_pic', 'frame0.png')
+addr_curr_pic = opj(static, 'curr_pic')
+if not os.path.exists(addr_curr_pic):
+    os.mkdir(addr_curr_pic)
 addr_pic_read = addr_pic
 mda_pic_addr = opj(static, 'mda_pics')
 mda_imgs_pos = opj(static, 'mda_pics', 'imgs_pos')
+if not os.path.exists(mda_imgs_pos):
+    os.mkdir(mda_imgs_pos)
 if not os.path.exists(mda_imgs_pos):
     os.mkdir(mda_imgs_pos)
 livecam = True

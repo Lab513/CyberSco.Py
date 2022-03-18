@@ -115,8 +115,12 @@ class MDA(POS, MA, MVP, MTP):
         Mail for sending information during the experiment
         '''
         self.gm = GMAIL()
-        with open('interface/settings/mail_addresses.yaml') as f_r:
-            self.dic_dest = yaml.load(f_r, Loader=yaml.FullLoader)
+        try:
+            with open('interface/settings/mail_addresses.yaml') as f_r:
+                self.dic_dest = yaml.load(f_r, Loader=yaml.FullLoader)
+        except:
+            self.dic_dest = {}
+            print('mail_addresses.yaml not found !!!')
 
     def send_to(self, *lnames):
         '''
