@@ -97,9 +97,8 @@ class MDA(POS, MA, MVP, MTP):
     def load_main_model(self):
         '''
         '''
-        with open('modules/settings/model_obj.yaml') as f_r:
-            obj = self.ldevices[0].objective
-            curr_mod = yaml.load(f_r, Loader=yaml.FullLoader)[obj]
+        with open('modules/settings/curr_model.yaml') as f_r:
+            curr_mod = yaml.load(f_r, Loader=yaml.FullLoader)
             self.curr_mod = self.load_model(curr_mod)        # main model
 
     def load_event_model(self):
