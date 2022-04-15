@@ -79,8 +79,9 @@ class POS(MV, CP, TR, HG):
         self.list = []
         self.title = title
         self.num = title
-        self.dic_displ_obj = {'10x': 1.560, '20x': 0.780, '40x': 0.390,
-                              '60x': 0.260, '100x': 0.156}  # original
+        # original
+        self.dic_displ_obj = {'4x': 3.9, '10x': 1.560, '20x': 0.780,
+                              '40x': 0.390, '60x': 0.260, '100x': 0.156}
         # budding cells history via segm
         self.dic_buds_hist = defaultdict(lambda: defaultdict(lambda: []))
         self.list_buds_hist_rep = defaultdict(list)
