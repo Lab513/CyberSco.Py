@@ -1,4 +1,4 @@
-from time import sleep
+from time import sleep, time
 
 
 class LOOP():
@@ -20,7 +20,13 @@ class LOOP():
         execute the loop
         '''
         for _ in range(self.nb_rep):
+            t0 = time()
             for elem in self.list:
                 elem.loop()                   # trigger the loop of elem
             # delay between the iterations in minutes
-            sleep(self.time_rep*60)
+            t1 = time()
+            t_meas = round(t1-t0,2)
+            print(f'time for measurement is {t_meas}')
+            # removing measurement time from repetition delay..
+            tsleep = self.time_rep*60-t_meas
+            sleep(tsleep)
