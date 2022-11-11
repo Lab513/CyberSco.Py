@@ -90,7 +90,7 @@ python3 –m pip install .
 
 </details>
 
-### Installing Python dependencies
+### Installing the Python dependencies
 
 Open an Anaconda terminal in *CyberSco.py* folder,
 activate the *virtual environment* and run:
