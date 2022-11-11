@@ -25,8 +25,9 @@ class TEST_MOSAIC(MDA):
         self.take_pic()                   # add take pic
         #self.make_mask()                  # Make the mask for the Mosaic
         # add take pic fluo, yfp filter 4
+        # simple_square
         self.take_pic_fluo('xcite',
-                            mask='simple_square',
+                            mask='square_round',
                             mask_exp_time=5)
         ##
         self.analyse_pic()                # analyse the pic

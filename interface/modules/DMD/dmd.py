@@ -2,12 +2,13 @@
 DMD
 '''
 
+import base64
 from interface.flask_app import *
 from interface.modules.misc_import import *
 
 def sending_masks(debug=[]):
     '''
-    Send the masks names
+    Send the masks names for refreshing the list in the interface
     '''
     if 0 in debug:
         print('sending the masks')
@@ -29,13 +30,25 @@ def name_img_DMD(name_img_mosaic):
     name_img_dmd = name_img_mosaic
 
 
+def try_create_dmd_folder(dmd):
+    '''
+    Create the DMD folder if it does not exist..
+    '''
+    if not os.path.exists(dmd):
+        os.mkdir(dmd)
+
+
 @socketio.on('image_canvas')
 def save_png_for_DMD(b64):
     '''
     Save the base64 image as png image for DMD
     '''
     b64 = b64.split('base64,')[1]
-    im = Image.open(BytesIO(base64.b64decode(b64)))
-    im.save(opj('interface', 'static', 'dmd',
-                f'{name_img_dmd}.png'), 'PNG')
-    sending_masks()                    # refresh masks list
+    decoded = base64.b64decode(b64)
+    path_dmd = opj('interface', 'static', 'dmd')
+    try_create_dmd_folder(path_dmd)
+    img_addr = opj(path_dmd, f'{name_img_dmd}.png')
+    with open(img_addr, 'wb') as fb:
+        fb.write(decoded)
+    # refresh masks list
+    sending_masks()

@@ -40,7 +40,7 @@ class define_page(object):
         # Footer
 
         self.footer['background'] = op.join('static/img/black.jpg')
-        self.footer['copyright'] = "CyberScoPy version 0.9"
+        self.footer['copyright'] = "CyberScoPy version 1.0"
 
 
 class define_firstpage(define_page):
@@ -49,7 +49,7 @@ class define_firstpage(define_page):
         Welcome page with link for login.
         '''
         define_page.__init__(self)
-        self.header['main_title'] = 'CyberSco.py'
+        self.header['main_title'] = 'CyberSco.Py'
         self.header['mess'] = 'Conditional Microscopy'
         self.header['presentation_interface'] = 'A more flexible Microscopy'
         ###
