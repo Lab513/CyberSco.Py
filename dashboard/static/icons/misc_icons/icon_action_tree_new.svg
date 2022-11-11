@@ -1,0 +1,28 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+
+ <g>
+  <title>Layer 1</title>
+  <rect id="svg_1" height="35" width="33" y="251" x="172.5" stroke="#000" fill="#fff"/>
+  <line id="svg_2" y2="357" x2="189.5" y1="286" x1="188.5" stroke="#000" fill="none"/>
+  <rect id="svg_3" height="19" width="19" y="317.99999" x="224.5" stroke="#000" fill="#fff"/>
+  <rect id="svg_4" height="19" width="19" y="355.99999" x="228.5" stroke="#000" fill="#fff"/>
+  <rect id="svg_5" height="19" width="19" y="393.99999" x="229.5" stroke="#000" fill="#fff"/>
+  <line id="svg_6" y2="326" x2="223.5" y1="326" x1="189.5" stroke="#000" fill="none"/>
+  <line id="svg_7" y2="326" x2="332.5" y1="327" x1="331.5" stroke="#000" fill="none"/>
+  <line id="svg_9" y2="326" x2="223.5" y1="326" x1="189.5" stroke="#000" fill="none"/>
+  <line id="svg_10" y2="420" x2="190.5" y1="357" x1="189.5" stroke="#000" fill="none"/>
+  <line id="svg_12" y2="365" x2="228.5" y1="365" x1="189.5" stroke="#000" fill="none"/>
+  <line id="svg_13" y2="405" x2="190.5" y1="404" x1="229.5" stroke="#000" fill="none"/>
+  <line id="svg_15" y2="448" x2="238.5" y1="411" x1="238.5" stroke="#000" fill="none"/>
+  <line id="svg_17" y2="382" x2="237.5" y1="374" x1="237.5" stroke="#000" fill="none"/>
+  <line id="svg_19" y2="381" x2="285.5" y1="381" x1="239.5" stroke="#000" fill="none"/>
+  <line id="svg_20" y2="446" x2="287.5" y1="446" x1="238.5" stroke="#000" fill="none"/>
+  <line id="svg_22" y2="489" x2="238.5" y1="445" x1="238.5" stroke="#000" fill="none"/>
+  <line id="svg_24" y2="381" x2="237.5" y1="381" x1="254.5" stroke="#000" fill="none"/>
+  <rect id="svg_25" height="19" width="17" y="372" x="285.5" stroke="#000" fill="#fff"/>
+  <rect id="svg_26" height="21" width="19" y="435" x="285.5" stroke="#000" fill="#fff"/>
+  <line id="svg_27" y2="478" x2="283.5" y1="478" x1="238.5" stroke="#000" fill="none"/>
+  <rect id="svg_30" height="1" width="0" y="470" x="427.5" stroke="#000" fill="none"/>
+  <rect id="svg_31" height="21" width="19" y="467" x="285.5" stroke="#000" fill="#fff"/>
+ </g>
+</svg>

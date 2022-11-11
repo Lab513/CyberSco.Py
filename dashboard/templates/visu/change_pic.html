@@ -1,0 +1,112 @@
+function repl_pic(pic, num) {
+
+    return pic.replace(/frame\d{1,2}_t\d+\.png/, 'frame'+ frame_index  +'_t' + (num) + '.png')               // change image name with current frame index
+    }
+
+var img_up_dwn = function(arg){
+
+    /*
+    Go up and down in the images..
+    */
+
+    //--------
+    var curr_pic = $('#curr_proc_pic').attr('src').split('?')[0]
+    //alert('curr_pic ' + curr_pic )
+
+    frame_time = curr_pic.match(/frame\d{1,2}_t(\d+?)\.png/)[1]                              // frame index
+    //alert('curr_pic ' + curr_pic + 'frame_time ' + frame_time)
+    //--------
+    var num = parseInt(frame_time)
+    $('#win_num_im').text((num+1) + '/' + max_nb_im)                                                               // curr / max
+    try{
+        $('#win_time_im').text(dic_cyber['pic_time'][frame_time][frame_index])
+        }catch(err){}
+
+    //--------
+    if (arg == 'down'){if (num > 0){curr_pic = repl_pic(curr_pic, num-1)}}                             // decrement
+    else if (arg == 'up') {if (num < max_nb_im-1) {curr_pic =  repl_pic(curr_pic, num+1)} }            // increment
+    $('#curr_proc_pic').attr('src', curr_pic + '?' + new Date().getTime())
+
+    frame_time = curr_pic.match(/frame\d{1,2}_t(\d+?)\.png/)[1]                              // refresh frame index
+    $("#pospic").bootstrapSlider('setValue', frame_time)                            // slider follows
+
+}
+
+ var img_dir = null;
+
+ function change_pic(delay, dir){
+                 //alert('delay ' + delay + ' dir ' +dir)
+                 img_dir = setInterval(function(){img_up_dwn(dir)}, delay)
+
+                 }
+
+ // speed  of image changement when hovering the arrows
+ var delay_pic = 80
+
+ function arrow_hover(){                   // change of image when hovering on the arrow
+     //alert('bind with hover !!! ')
+     $('#butt_img_up').mouseenter(function(){change_pic(delay_pic, 'up')})
+                      .mouseleave(function(){clearInterval(img_dir)})
+     $('#butt_img_down').mouseenter(function(){change_pic(delay_pic, 'down')})
+                        .mouseleave(function(){clearInterval(img_dir)})
+
+}
+
+ function arrow_click(){                                             // change of image when clicking on the arrow
+     //alert('bind with click !!! ')
+     $('#butt_img_up').click(function(){img_up_dwn('up')})
+     $('#butt_img_down').click(function(){img_up_dwn('down')})
+
+}
+
+ function unbind_arrows(){                                           // unbind the arrows
+     //alert('unbinding !!! ')
+     $('#butt_img_up').unbind()
+     $('#butt_img_down').unbind()
+}
+
+ arrow_hover()                                                                        // hover at initialization
+
+ //------------------- Bootstrap slider for the pics
+
+ $('#pospic').bootstrapSlider({                                                      // Bootstrap slider
+      formatter: function(num) {
+            //$('#snap_panel').css({'opacity':value})
+            var curr_pic = $('#curr_proc_pic').attr('src').split('?')[0]
+            //alert('curr_pic in bslider is ' + curr_pic)
+            $('#slider_value').text(num)
+            var curr_pic = repl_pic(curr_pic, num)
+            $('#curr_proc_pic').attr('src', curr_pic + '?' + new Date().getTime())
+            // current acquisition index on total acquisitions..
+            $('#win_num_im').text((num+1) + '/' + max_nb_im)
+            frame_time = curr_pic.match(/frame\d{1,2}_t(\d+?)\.png/)[1]                       // refresh frame index
+            try{
+                $('#win_time_im').text(dic_cyber['pic_time'][frame_time][frame_index])
+                }catch(err){}
+
+            return 'Current value: ' + num;
+          }
+});
+
+
+//------------------- Prevent from dragging
+
+$('#curr_proc_pic').on('dragstart', function(event) {event.preventDefault();});              // prevent image drag
+// $('#curr_proc_pic').on('dragstart', false);
+
+//------------------- Change the view (BF, fluo1, fluo2, tracking, lineage etc..)
+
+$('#select_view').on('change', function() {                                                   // select the view BF, fluo etc..
+
+  curr_view = $(this).val()
+  $('#curr_proc_pic').attr('src', '/static/mda_temp_' + dic_cyber['user'] + '/monitorings/' + curr_view + '/frame'+ frame_index  +'_t0.png')            // change of folder
+  $("#pospic").bootstrapSlider('setValue', frame_time)                                      // slider follows the index
+
+});
+
+// change the selected position..
+$('#select_pos_num').on('change', function() {
+
+   frame_index = $(this).val()
+
+});

@@ -12,7 +12,7 @@ except:
 
 class GATES(SB):
     '''
-    port COM7
+    port COM8
 
     code Arduino :
 

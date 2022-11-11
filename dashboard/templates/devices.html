@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Main page for the Dashboard -->
+
+{% include 'header_footer/index_head.html' %}
+
+
+
+<body>
+
+{% include 'basics/navbar.html' %}
+
+ <!-- include 'header_doc_exit.html'  -->
+
+<!-- socket -->
+
+{% include 'socket.html' %}
+
+<!-- Connected user -->
+
+{% include 'connect/current_user.html' %}
+
+
+<div style="margin-right:50px; margin-left:50px;
+            position:relative; top:100px">
+
+    <!-- Columns list -->
+
+    {% set dic_titles={'Equipement':'equip',
+                       'Devices':'device'}%}
+    <!-- Equipements list -->
+
+    {% set lequip=['Miss_Marple','Dr_Who','Sherlock']%}
+
+    <!-- Main table -->
+
+    <table class="table table-bordered">
+      <thead>
+        <!-- titles Columns -->
+          <tr >
+            {% for k,val in dic_titles.items() %}
+                <th class="elem_board_title">{{k}}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+
+        <!-- values for equipement, user etc.. -->
+
+        <tbody>
+
+              <!-- Go through each equipement -->
+
+              {% for equip in lequip %}
+
+                <tr >
+                  {% for k,val in dic_titles.items() %}
+                      <!-- first element is at index 1 -->
+                      {% if loop.index == 1 %}
+                          <th class="elem_board" id='equip_{{equip}}'  > {{equip}} </th>
+                      {% else %}
+                          <th class="elem_board" id='{{val}}_{{equip}}'> </th>
+                      {% endif %}
+                  {% endfor %}
+                  </tr>
+
+              {% endfor %}
+
+        </tbody>
+    </table>
+
+</div>
+
+
+
+
+<script>
+
+
+
+$('#refresh').hide()
+
+</script>
+
+<!-- footer -->
+
+{% include 'header_footer/footer.html' %}
+
+</body>
+</html>

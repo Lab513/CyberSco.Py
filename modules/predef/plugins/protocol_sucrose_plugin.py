@@ -23,7 +23,7 @@ class PROTOCOL_SUCROSE(MDA):
     def define(self, debug=[0]):
         '''
         '''
-        self.refocus()                         # add refocusing
+        self.focus()                         # add refocusing
         self.take_pic()                        # add take BF pic
         ##
         self.analyse_pic()                     # analyse the pic

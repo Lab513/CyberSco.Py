@@ -1,0 +1,48 @@
+/* Window for the sensors */
+
+#mda_sensors {
+
+      /* panel for following the mda  */
+
+      box-shadow: 0.5em 0.5em 0.7em;
+      position: absolute;
+      top: 100px;
+      left: 30%;
+      padding: 25px;
+      height: 650px;
+      width: 420px;
+      opacity: 1;
+      z-index: 300;
+      background: white;
+
+}
+
+
+#title_mda_sensors {
+
+     font-size: 20px;
+     text-align: center;
+
+}
+
+#sensor_light_img {
+
+      /* sensor curve  */
+
+      position: absolute;
+      top:80px;
+      height: 250px;
+      width: 370px;
+
+}
+
+#sensor_temp_img {
+
+      /* sensor curve  */
+
+      position: absolute;
+      top:350px;
+      height: 250px;
+      width: 370px;
+
+}

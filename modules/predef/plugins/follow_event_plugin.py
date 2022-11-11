@@ -17,7 +17,7 @@ class FOLLOW_EVENT(MDA,TOF):
         '''
 
         '''
-        self.refocus()                       # add refocusing
+        self.focus()                       # add refocusing
         self.take_pic()                      # add take pic
         self.event.name = 'bud'
         ##
@@ -64,5 +64,5 @@ class FOLLOW_EVENT(MDA,TOF):
             self.track_and_fluo_trig_rfp(pos, self.fluo_obs)
             # trigger track if event detected
             pos.track_on_event(pos.list_budding_cells)
-            # reinitialize the tracking of mitosis event                  
+            # reinitialize the tracking of mitosis event
             self.track_and_fluo_reinit(pos)

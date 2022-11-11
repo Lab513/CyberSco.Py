@@ -1,0 +1,31 @@
+/* Dashboard */
+
+
+.elem_board{
+   padding-top:25px;
+   width:20%;
+   height:50px;
+   text-align:center;
+}
+
+.elem_board_title{
+   font-size:17px;
+   width:20%;
+   height:50px;
+   text-align:center;
+}
+
+#devices_state_panel{
+
+   position: absolute;
+   top: 300px;
+   left: 50%;
+   box-shadow: 0.5em 0.5em 0.7em;
+   padding-left: 0px;
+   padding-top: 50px;
+   width:200px;
+   height:300px;
+   z-index: 1111;
+   background:white;
+
+}

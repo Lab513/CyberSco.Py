@@ -1,0 +1,27 @@
+if ($(this).is(':checked')){
+
+      socket.emit('superp', '')
+
+      superp = true
+      timer_superp = setInterval(function(){
+            if (superp){
+
+                  $('#curr_cam_pic').attr('src', 'http://10.40.12.87:2204/video_feed')
+                  setTimeout(function(){
+                        $('#curr_cam_pic').attr('src', '/static/mda_pics/pred_frame0_superp.png' + '?t='  + new Date().getTime())
+                  }, 300)
+
+            } // end superp
+       }, 500); // change src
+      //pred_frame0_superp.png
+    }
+else{
+  $('#curr_cam_pic').attr('src', 'http://10.40.12.87:2204/video_feed')
+  superp = false
+  clearInterval(timer_superp)
+
+}
+
+setTimeout(function(){
+      $('#curr_cam_pic').attr('src', 'http://10.40.12.87:2204/video_feed')
+  }, 200)

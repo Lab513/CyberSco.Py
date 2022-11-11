@@ -1,0 +1,11 @@
+$('#contrast_for_BF').change( function(){
+
+    if ( $(this).is(':checked') ){
+        socket.emit('autocontrast', 'True')
+        }
+    else{
+        socket.emit('autocontrast', 'False')
+    }
+
+
+})      //

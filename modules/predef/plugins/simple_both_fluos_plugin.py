@@ -14,7 +14,7 @@ class SIMPLE_BOTH_FLUOS(MDA):
         '''
         BF + RFP + GFP
         '''
-        self.refocus()                # add refocusing
+        self.focus()                # add refocusing
         self.take_pic()               # add take pic
         self.take_pic_fluo('rfp')     # add take pic RFP
         self.take_pic_fluo('gfp')     # add take pic GFP

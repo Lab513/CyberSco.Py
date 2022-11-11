@@ -5,16 +5,16 @@ import yaml
 try:
     from modules.devices.serial_basics import SERIAL_BASICS as SB
 except:
-    from serial_basics import SERIAL_BASICS as SB
+    from devices.serial_basics import SERIAL_BASICS as SB
 ##
 try:
-    from modules_Olymp.Olymp_lamp import LAMP as LP
-    from modules_Olymp.Olymp_zpos import ZPOS as ZP
-    from modules_Olymp.Olymp_shutter import SHUT as SH
-    from modules_Olymp.Olymp_wheel import WHEEL as WH
-    from modules_Olymp.Olymp_objective import OBJ as OB
-    from modules_Olymp.Olymp_autofocus import AF
-    from modules_Olymp.Olymp_focus_segment import FOCUS_SEGM as FS
+    from devices.modules_Olymp.Olymp_lamp import LAMP as LP
+    from devices.modules_Olymp.Olymp_zpos import ZPOS as ZP
+    from devices.modules_Olymp.Olymp_shutter import SHUT as SH
+    from devices.modules_Olymp.Olymp_wheel import WHEEL as WH
+    from devices.modules_Olymp.Olymp_objective import OBJ as OB
+    from devices.modules_Olymp.Olymp_autofocus import AF
+    from devices.modules_Olymp.Olymp_focus_segment import FOCUS_SEGM as FS
 except:
     from modules.devices.modules_Olymp.Olymp_lamp import LAMP as LP
     from modules.devices.modules_Olymp.Olymp_zpos import ZPOS as ZP
@@ -39,6 +39,7 @@ class OLYMP(SB, LP, ZP, SH, WH, OB, AF, FS):
         self.zpos = -1
         self.zpos_cntrl = 0
         self.offset = 0
+        self.afml_optim = 'max'
         cl_name = self.__class__.__name__
         self.port_init(f'{cl_name}'.lower(), port=port)
         lcls = [SB, LP, ZP, SH, WH, OB, AF, FS]

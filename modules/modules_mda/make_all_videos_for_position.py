@@ -34,37 +34,37 @@ class MAKE_VIDEOS_POSITION():
                 pos.create_video(prefix='superp_with_buds_frame',
                                  name_folder='imgs_for_BF_RFP_videos',
                                  name_movie=f'movie_pos{pos.num}_'
-                                            'BF_fluo_buds.avi')
+                                            f'BF_fluo_buds.avi')
                 # buds via segm area video
                 pos.create_video(prefix='buds_frame',
                                  name_folder='monitorings/tracking',
                                  name_movie=f'monitorings/movie'
-                                            '_tracking_buds{pos.num}.avi')
+                                            f'_tracking_buds{pos.num}.avi')
                 # tracking video
                 pos.create_video(prefix='track_frame',
                                  name_folder='monitorings/tracking',
                                  name_movie=f'monitorings/'
-                                            'movie_tracking{pos.num}.avi')
+                                            f'movie_tracking{pos.num}.avi')
                 # segmentation superposition video
                 pos.create_video(prefix='pred_frame',
                                  name_folder='monitorings/superp_cntrs',
                                  name_movie=f'monitorings/movie'
-                                            '_superp{pos.num}.avi')
+                                            f'_superp{pos.num}.avi')
                 # AF ML
                 pos.create_video(prefix='evol_surf_pred',
                                  name_folder='monitorings/AF/ML',
                                  name_movie=f'monitorings/AF/'
-                                            'movie_AF_ML{pos.num}.avi')
+                                            f'movie_AF_ML{pos.num}.avi')
                 # AF Laplacian
                 pos.create_video(prefix='evol_lap_var',
                                  name_folder='monitorings/AF/Lap',
                                  name_movie=f'monitorings/AF/'
-                                            'movie_AF_Lap{pos.num}.avi')
+                                            f'movie_AF_Lap{pos.num}.avi')
                 # Composite video, BF, RFP, GFP
                 try:
                     pos.create_video(prefix='',
                                      name_folder='',
                                      name_movie=f'composite_bf'
-                                                '_rfp_gfp_pos{pos.num}.avi')
+                                                f'_rfp_gfp_pos{pos.num}.avi')
                 except:
                     print('#### Cannot create composite video !!!')

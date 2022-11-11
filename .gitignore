@@ -21,8 +21,10 @@ models/
 # results folder
 mda_experiments/
 mda_temp/
+mda_temp*/
 
 # tests folders
 test_code/
 test/
 test_cyber
+#dashboard

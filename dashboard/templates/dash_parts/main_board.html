@@ -1,0 +1,84 @@
+<!-- Dashboard board -->
+
+<div id="devices_state_panel" hidden> Devices </div>
+
+<div style="margin-right:50px; margin-left:50px;
+            position:relative; top:100px">
+
+<!-- Columns list -->
+
+{% set dic_board={'Equipement':'equip',
+                  'User':'user','Infos':'infos',
+                  'View experiment':'view',
+                  'Connected devices':'dev_conn',
+                  'Available': 'available',
+                  'Book':'book'} %}
+
+<!-- Equipements list -->
+
+{% set lequip=['Miss_Marple','Dr_Who','Sherlock'] %}
+
+<!-- Main table -->
+
+<table class="table table-bordered">
+    <thead>
+
+      <!-- titles Columns -->
+
+      <tr class='all_board_titles'>
+        {% for k,val in dic_board.items() %}
+            <th class="elem_board_title">{{k}}</th>
+        {% endfor %}
+      </tr>
+
+    </thead>
+
+    <!-- values for equipement, user etc.. -->
+
+    <tbody>
+
+      <!-- Go through each equipement (Miss Marple, Dr Who etc..) -->
+
+      {% for equip in lequip %}
+
+        <tr >
+          {% for k,val in dic_board.items() %}
+
+              <!-- first element is at index 1 -->
+              {% if loop.index == 1 %}
+                  <th class="elem_board" id='equip_{{equip}}'  > {{equip}} </th>
+              {% else %}
+                  <th class="elem_board {{val}}" id='{{val}}_{{equip}}' > </th>
+              {% endif %}
+
+          {% endfor %}
+          </tr>
+
+      {% endfor %}
+
+    </tbody>
+
+</table>
+
+</div>
+
+<!-- book the microscopes -->
+
+{% include 'booking/booking.html' %}
+
+<!-- visu of the running MDAs -->
+
+{% include 'visu/mda_visu.html' %}
+
+
+<script >
+
+  //$('#devices_state_panel').hide()
+  // color of the board titles
+  $('.all_board_titles').css({'background-color':'#fff0b3'})
+  //$('#mda_visu').draggable()
+
+  //alert("In main board...dic_cyber['user'] is " + dic_cyber['user'])
+
+
+</script>

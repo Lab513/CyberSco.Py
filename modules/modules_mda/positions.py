@@ -13,6 +13,7 @@ from modules.util_misc import *
 import time
 import shutil as sh
 
+import interface.modules.init.init_glob_vars as g
 from modules.modules_mda.make_video import MAKE_VIDEO as MV
 from modules.track_segm.cam_pred import CAM_PRED as CP
 from modules.modules_mda.tracking import TRACK as TR
@@ -41,7 +42,7 @@ class POS(MV, CP, TR, HG):
         [cl.__init__(self) for cl in lcls]
         self.ldevices = ldevices
         # load the devices
-        self.ol, self.pr, self.ev, self.co, self.xc, self.ga = ldevices
+        self.ol, self.pr, self.ev, self.co, self.xc, self.ga, self.se = ldevices
         self.curr_mod = curr_mod                   # current segmentation model
         self.ev_mod = ev_mod                       # current event model
         self.list_steps = OrderedDict()
@@ -79,9 +80,9 @@ class POS(MV, CP, TR, HG):
         self.list = []
         self.title = title
         self.num = title
-        # original
-        self.dic_displ_obj = {'4x': 3.9, '10x': 1.560, '20x': 0.780,
-                              '40x': 0.390, '60x': 0.260, '100x': 0.156}
+        self.dic_displ_obj = { '4x': 3.9, '10x': 1.560,
+                               '20x': 0.780, '40x': 0.390,
+                               '60x': 0.260, '100x': 0.156}  # original
         # budding cells history via segm
         self.dic_buds_hist = defaultdict(lambda: defaultdict(lambda: []))
         self.list_buds_hist_rep = defaultdict(list)
@@ -104,20 +105,44 @@ class POS(MV, CP, TR, HG):
         f = open(self.ol.addr_labels, 'w')
         f.close()
 
-    def refocus(self, step=None):
+    def refocus(self, step=None, debug=[1]):
         '''
         Refocus using the AFML or the ZDC, go to the
          optimal position and update in posxyz step..
         '''
-        print(f'**** kind is refocus, refocusing with '
-              f' {self.ol.kind_focus} before taking a pic..')
-        if 'afml' in self.ol.kind_focus:
+        print(f'**** kind is refocus\n'
+              f'for pos{self.num} refocusing with'
+              f' {self.kind_focus} ..')
+        if 'afml' in self.kind_focus:
             # refocus with AFML
-            self.ref_posz = self.ol.afml_refocus(self.ref_posz,
+            if 1 in debug:
+                print(f'self.step_focus = { self.step_focus }')
+                print(f'self.delta_focus = { self.delta_focus }')
+                print(f'self.ref_posz = { self.ref_posz }')
+                print(f'self.focus_nbsteps = { self.focus_nbsteps }')
+                print(f'self.thresh = { self.thresh }')
+            try:
+                # retrieving step_focus and delta_focus from interface
+                self.ol.step_focus = self.step_focus
+                self.ol.delta_focus = self.delta_focus
+                self.ol.focus_nbsteps = self.focus_nbsteps
+                self.ol.thresh = self.thresh
+                if self.num == 0:
+                    ref = self.ref_posz-self.delta_focus
+                    print(f'for self.num == 0, ref = { ref }')
+                else:
+                    ref = self.ref_posz
+                if 1 in debug:
+                    print(f'Using self.ref_posz = {self.ref_posz}')
+                    print(f'Using self.delta_focus = {self.delta_focus}')
+                    print(f'Using ref = {ref}')
+            except:
+                print('self.step_focus is not defined.. ')
+            self.ref_posz = self.ol.afml_refocus(ref,
                                                  num=self.num,
                                                  rep=self.rep)
-            print(self.ref_posz)
-        elif self.ol.kind_focus == 'zdc':
+            print(f'self.ref_posz after refocus is { self.ref_posz }')
+        elif self.kind_focus == 'zdc':
             self.ref_posz = self.ol.zdc_refocus()        # refocus with ZDC
         sleep(1)
         try:
@@ -161,7 +186,7 @@ class POS(MV, CP, TR, HG):
         if self.rep == 0:
             self.x0, self.y0, self.z0 = step.val[0], step.val[1], step.val[2]
             print(f'### Registered position self.x0={self.x0}, '
-                  'self.y0={self.y0}, self.z0={self.z0}  ')
+                  f'self.y0={self.y0}, self.z0={self.z0}  ')
 
     def prepare_channels(self):    # Prepare the channels before BF and fluo
         '''
@@ -169,7 +194,7 @@ class POS(MV, CP, TR, HG):
         '''
         self.co.prepare_channels(self.chan_set['COOL'])
 
-    def retrieve_dic_chan(self, step, kind_fluo, debug=[0, 1]):
+    def retrieve_dic_chan(self, step, kind_fluo, debug=[]):
         '''
         Retrieve the settings channels
         '''
@@ -197,7 +222,8 @@ class POS(MV, CP, TR, HG):
                     dic_chan = yaml.load(f_r, Loader=yaml.FullLoader)
             except:
                 print(f"No curr_SC with name {curr_SC} !!!")
-            print(f'######### dic_chan is {dic_chan}')
+            if 2 in debug:
+                print(f'######### dic_chan is {dic_chan}')
 
         return ET, dic_chan
 
@@ -293,7 +319,7 @@ class POS(MV, CP, TR, HG):
         # if mask
 
         if mask:
-            # If mask, fluo is onl performed with XCite
+            # If there is a mask, the fluo is only performed with XCite
             xcite_intens = dic_chan['Xcite']
             if 2 in debug:
                 print(f'using the DMD with the mask {mask}'
@@ -302,7 +328,10 @@ class POS(MV, CP, TR, HG):
                 print(f'xcite_intens {xcite_intens} ')
             # Set the intensity of the XCite device..
             self.xc.set_intens_level(xcite_intens)
+            # set the filter for the fluo with Xcite
             self.ol.set_wheel_filter(filt)
+            # close the BF
+            self.ol.set_shutter(shut='off')
         else:
             # prepare fluo
             sleep(1)
@@ -334,17 +363,18 @@ class POS(MV, CP, TR, HG):
 
         # take the fluo pic
         # camera exposure time is a blocking operation
-        self.ev.take_pic(addr_pic, bpp=8, exp_time=exp_time)
+        self.ev.take_pic(addr_pic, bpp=8, exp_time=exp_time, allow_contrast=False)
         print(f'filt for fluo is {filt}')
 
         if mask:
+            # stop using the Xcite
             sleep(int(mask_exp_time))
             # return to 0 and shut off
             self.xc.set_intens_level(0)
             sleep(self.delay_xcite)
             self.xc.shut_off()
             sleep(self.delay_xcite)
-            print('Normally intensity is O and shutter off !!!')
+            print('Normally intensity is 0 and shutter off !!!')
 
         # set off
 
@@ -426,16 +456,28 @@ class POS(MV, CP, TR, HG):
                    'curr_pic', f'frame{self.num}.tiff')
         sh.copy(addr_pic, dest)
 
-    def copy_pic_in_curr_imgs_pos(self, addr_pic):
+    def copy_pic_BF(self, addr_pic, rep, debug=[1]):
         '''
         Copy BF pic in : interface/static/mda_pics/imgs_pos
+        and also in mda_temp/monitorings/BF
         Passing from tiff to png
         '''
         curr_pic_BF = f'frame{self.num}'
-        dest = opj(os.getcwd(), 'interface', 'static',
+        dest1 = opj(os.getcwd(), 'interface', 'static',
                    'mda_pics', 'imgs_pos', f'{curr_pic_BF}.png')
+        dest2 = opj(os.getcwd(), 'interface', 'static',
+                    f'{self.dir_mda_temp}', 'monitorings', 'BF', f'frame{self.num}_t{rep}.png')
         img = cv2.imread(addr_pic)
-        cv2.imwrite(dest, img)
+        try:
+            cv2.imwrite(dest1, img)
+        except:
+            if 0 in debug:
+                print('Cannot write BF pic in imgs_pos')
+        try:
+            cv2.imwrite(dest2, img)
+        except:
+            if 1 in debug:
+                print('Cannot write BF pic in monitorings/BF')
 
     def prepare_BF(self, delay_shut=1, debug=[]):
         '''
@@ -454,13 +496,14 @@ class POS(MV, CP, TR, HG):
             self.ol.set_shutter(shut='on')                    # shutter
             sleep(delay_shut)          # delay between shutter and camera
 
-    def make_blur_score(self, addr_pic):
+    def make_blur_score(self, addr_pic, debug=[]):
         '''
         Calculate the score for bluriness
         '''
         img = cv2.imread(addr_pic)
         self.blur = round(cv2.Laplacian(img.astype('uint8'), 3).var(), 1)
-        print(f'bluriness estimated as {self.blur}')
+        if 0 in debug:
+            print(f'bluriness estimated as {self.blur}')
 
     def prepare_imgs_for_BF_fluo(self, rep, debug=[]):
         '''
@@ -534,7 +577,7 @@ class POS(MV, CP, TR, HG):
         except:
             print('Cannot save tiff as png !!')
 
-    def actions_after_BF_pic(self, addr_pic, rep, debug=[0]):
+    def actions_after_BF_pic(self, addr_pic, rep, debug=[]):
         '''
         Handle pictures
         '''
@@ -543,13 +586,11 @@ class POS(MV, CP, TR, HG):
         self.copy_pic_in_test(addr_pic, rep)        # folder for processings
         self.copy_pic_in_curr_pic(addr_pic)         # copy in current pic
         # folder for following the positions
-        self.copy_pic_in_curr_imgs_pos(addr_pic)
+        self.copy_pic_BF(addr_pic, rep)
         # passing from tiff to png in folder imgs_for_videos
         self.img_video_from_tiff_to_png(rep, targ='BF_video')
         # passing from tiff to png for live mode
         self.img_video_from_tiff_to_png(rep, targ='current')
-        # score for assessing if the image is blurred
-        self.make_blur_score(addr_pic)
 
     def make_contour_tracked(self):
         '''
@@ -613,7 +654,7 @@ class POS(MV, CP, TR, HG):
 
     def time_elapsed(self):
         '''
-        Time elapsed from the beginning, in minutes
+        Time elapsed from the beginning of the MDA, in minutes
         '''
         now = datetime.now()
         time_elapsed = str(round((now - self.first_time).seconds/60, 2))
@@ -731,6 +772,42 @@ class POS(MV, CP, TR, HG):
         # copy BF for BF_RFP movie
         self.copy_BF_vid_in_BF_RFP(addr_pic)
 
+    def make_mda_time(self):
+        '''
+        '''
+        ttot = round(time.time()-g.mda_time_start,1)
+        ttot_hrs = int(ttot//3600)
+        sec_rest_hrs = int(ttot%3600)
+        ttot_min = int(sec_rest_hrs//60)
+        sec_rest_min = int(sec_rest_hrs%60)
+        ##
+        mdat_elapsed = f'{ttot_hrs}h{ttot_min}m{sec_rest_min}s'
+
+        return mdat_elapsed
+
+    def save_time_BF(self, debug=[]):
+        '''
+        Dictionary with time for each repetition for each position
+        '''
+        if 0 in debug:
+            print(f'g.mda_time_start is {g.mda_time_start}')
+        if g.mda_time_start:
+            mdat_elapsed = self.make_mda_time()
+        addr_pic_times = opj(self.dir_mda_temp, 'monitorings', 'pic_time.yaml')
+        with open(addr_pic_times) as f_r:
+            dic_pic_time = yaml.load(f_r, Loader=yaml.FullLoader)
+            if 1 in debug:
+                print(f'after open, dic_pic_time is {dic_pic_time}')
+        with open(addr_pic_times, "w") as f_w:
+            try:
+                dic_pic_time[str(self.rep)][str(self.num)] = mdat_elapsed
+            except:
+                dic_pic_time[str(self.rep)] = {}
+                dic_pic_time[str(self.rep)][str(self.num)] = mdat_elapsed
+            if 2 in debug:
+                print(f'dic_pic_time is {dic_pic_time}')
+            yaml.dump(dic_pic_time, f_w)
+
     def taking_picture(self, step=None, rep=None, exp_time=100, debug=[2]):
         '''
         Take a picture in BF mode
@@ -749,13 +826,27 @@ class POS(MV, CP, TR, HG):
         self.prepare_BF()
         name_pic, addr_pic = self.name_pic(rep)
         # take the pic, 8 bytes per pixel, 500 ms of exposure
-        self.ev.take_pic(addr_pic, bpp=8, exp_time=exp_time)
-        ##
+        # allow_contrast=True
+        self.ol.set_shutter(shut='on')
+        # take BF pic
+        # autocontrast driven from interface..
+        self.ev.take_pic(addr_pic, bpp=8, exp_time=exp_time,
+                         allow_contrast=self.ev.autocontrast)
+        self.save_time_BF()
+        ## close the shutter
+        self.ol.set_shutter(shut='off')
+        #
         self.list_time_axis += [float(self.time_elapsed())]
         self.actions_after_BF_pic(addr_pic, rep)
         ##
         emit('take_pic', '')
         server.sleep(ts_sleep)
+
+    def delay(self, time_delay):
+        '''
+        Delay expressed in the Tree in milliseconds
+        '''
+        sleep(time_delay/1000)
 
     def name_pic(self, rep, kind_fluo=''):
         '''
@@ -814,7 +905,7 @@ class POS(MV, CP, TR, HG):
         t0, t1 : beginning and ending times for cells counting..
         '''
         print(Fore.RED + f'###  nb of cells for pos'
-              ' {self.num} at rep {self.rep} is {self.nb_cells} !!!!')
+              f' {self.num} at rep {self.rep} is {self.nb_cells} !!!!')
         print(Style.RESET_ALL)
         print(f'time elapsed for iteration {self.rep} for '
               ' performing all the operations after '
@@ -868,16 +959,17 @@ class POS(MV, CP, TR, HG):
         t1 = time.time()
         self.message_analysis(t0, t1)
 
-    def make_steps(self, rep, debug=[1]):
+    def make_steps(self, rep, ind_pos, debug=[1]):
         '''
         Perform the successive steps for each position
         '''
         self.rep = rep
+        self.num = ind_pos
         # if self.ol.offset or self.ol.offset == 0 :        # offset decided
         for _, step in self.list_steps.items():
             if step:
                 if 1 in debug:
-                    print(f'**---** current step is {step.kind} ')
+                    print(f'##### current step is {step.kind} ')
                 if step.kind == 'posxyz':
                     self.positionxyz(step)               # go to x,y,z
                 elif step.kind == 'chan_set':
@@ -894,9 +986,9 @@ class POS(MV, CP, TR, HG):
                     self.cells_analysis(step, rep)
         self.enrich_pic(rep)
 
-    def loop(self, debug=[1, 2]):                      # loop for tree
+    def loop(self, debug=[]):                      # loop for tree
         '''
-        Loop in position's elements
+        Loop in position's elements, reading the Tree
         '''
         print('----------------')
         print(f'dealing with position : {self.title} ')
@@ -920,7 +1012,9 @@ class POS(MV, CP, TR, HG):
                     elem[0](exp_time=elem[1])
                     if 2 in debug:
                         print(f'Using exposure time {elem[1]} for BF')
+                elif elem[0].__name__ == 'delay':
+                    elem[0](elem[1])
             else:
-                elem()
+                elem()                      # elem is directly a function
             if elem == self.list[-1]:
                 self.rep += 1               # increment the counter if elem is

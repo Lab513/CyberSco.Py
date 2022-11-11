@@ -19,7 +19,7 @@ class DETECT_RARE_FLUO(MDA):
         '''
         BF + Tracking rare fluo events,
         '''
-        self.refocus()                # add refocusing
+        self.focus()                # add refocusing
         self.take_pic()               # add take pic
         self.take_pic_fluo('rfp')     # add take pic fluo
         self.event.name = 'rfp'

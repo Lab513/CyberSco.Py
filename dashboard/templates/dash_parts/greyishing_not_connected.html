@@ -1,0 +1,24 @@
+
+
+function grey_not_connected_equip(){
+
+    $('.view').each(function(){
+        if ($(this).html().length == 1){
+            // color grey and transparency for not connected equipements
+            $(this).parent().css({'background-color':'#e0ebeb',
+                                  'opacity':0.5})
+        }
+        else{
+            $(this).parent().css({'background-color':'white',
+                                  'opacity':1})
+        }
+    })
+
+}
+
+setInterval(function(){
+
+    //alert('greyishing the lines !!!')
+    grey_not_connected_equip()
+
+ },  10000); //

@@ -1,0 +1,184 @@
+/* follow mda */
+
+#monitoring_title{
+  position: absolute;
+  top: 30px;
+  left: 40%;
+  font-size: 25px;
+}
+
+#mda_visu {
+
+      /* panel for following the mda  */
+
+      box-shadow: 0.5em 0.5em 0.7em;
+      position: absolute;
+      top: 100px;
+      left: 0px;
+      padding-top: 50px;
+      padding-left: 30px;
+      height: 1000px;
+      width: 1000px;
+      opacity: 1;
+      z-index: 300;
+      background: white;
+
+}
+
+/* slider for going through the images...  */
+
+#slider_mda {
+      position: absolute;
+      bottom: 15px;
+}
+
+/* got to image with higher index..  */
+
+#butt_img_up {
+
+     position: absolute;
+     box-shadow: 0.5em 0.5em 0.7em;
+     top: 50%;
+     right: 10px;
+     width:22px;
+     height:22px;
+     z-index: 1;
+
+ }
+
+/* got to image with lower index..  */
+
+#butt_img_down {
+
+     position: absolute;
+     box-shadow: 0.5em 0.5em 0.7em;
+     top: 50%;
+     left: 10px;
+     width:22px;
+     height:22px;
+     z-index: 1;
+
+}
+
+/* index of the current image */
+
+#win_num_im {
+
+     position: absolute;
+     bottom: 10px;
+     left: 280px;
+     width:22px;
+     height:22px;
+     z-index: 1;
+
+}
+
+/* time of acquisition of the current image */
+
+#win_time_im {
+
+     position: absolute;
+     bottom: 10px;
+     left: 350px;
+     width:22px;
+     height:22px;
+     z-index: 1;
+
+}
+
+/* width for the selector for how to span the view */
+
+#kind_view > .bootstrap-select  {
+        width: 120px;
+ }
+
+/* width of the selector for the positions */
+
+#select_pos > .bootstrap-select  {
+       width: 50px;
+}
+
+/*  */
+
+#kind_tool > .bootstrap-select  {
+      width: 120px;
+}
+
+#kind_read_pics{
+
+  position: absolute;
+  bottom: 10px;
+  right: 50px;
+
+}
+
+#kind_read_pics > .bootstrap-select  {
+        width: 120px;
+ }
+
+#experim_title {
+
+     position: absolute;
+     top: 20px;
+     left: 50px;
+     width: 300px;
+     background-color: white;
+
+ }
+
+ #curr_proc_pic {
+
+     /* Current picture */
+
+     height: 500px;
+     width: 500px;
+
+ }
+
+ /* Panel for examinating the results */
+
+ .proc_pics_panel {
+
+      position: absolute;
+      box-shadow: 0.5em 0.5em 0.7em;
+      top: 80px;
+      left: 200px;
+      height: 600px;
+      width: 600px;
+      padding-left: 50px;
+      padding-top: 50px;
+      background-color: white;
+      z-index: 20;
+
+  }
+
+#close_mda_visu_panel {
+
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      height: 15px;
+      width: 15px;
+      z-index: 20;
+
+}
+
+#speed_hover {
+
+      box-shadow: 0.5em 0.5em 0.7em;
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      padding: 8px;
+      height: 40px;
+      width: 45px;
+      background-color: white;
+      z-index: 20;
+
+}
+
+#speed_hover_mda_visu {
+
+      width: 30px;
+
+}

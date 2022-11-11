@@ -7,18 +7,40 @@ $('#snap').click(function(){
 
 })
 
+// retrieve the snap address from the databse when initialising
+
+socket.on('init_snap_addr', function(snap_addr){
+    $('#inp_snap_addr').val(snap_addr)
+    socket.emit('snap_addr', snap_addr) // retrieve the address
+})
+
+socket.on('snap_overview', function(){
+    $('#snap_overview').show()
+    $('#snap_overview').attr('src', 'static/snapped/snap_curr.png' + '?t='  + new Date().getTime() )
+    setTimeout(function(){
+       $('#snap_overview').fadeOut(5000)
+    },2000)
+
+})
+
+//'interface/static/snapped/snap_curr.png'
+
 // Context menu for changing exposure time
 
 $("#snap").bind('contextmenu', function(event) {
 
-     if (event.which == 3){ // can also use button instead of which.
+     if (event.which == 3){   // can also use button instead of which.
          // prevent default action.
          event.preventDefault();
          //alert("context!!!")
-         $('#snap_exposure').toggle()
-         if( $('#snap_exposure').is(":hidden") ){
+         $('#snap_params').toggle()
+         if( $('#snap_params').is(":hidden") ){
              var snap_exp_time = $('#inp_snap_exp_time').val()
              socket.emit('snap_exp_time', snap_exp_time)
+             var snap_addr = $('#inp_snap_addr').val()
+             socket.emit('snap_addr', snap_addr)
+             // alert('snap_addr is ' + snap_addr)
+             // alert('emitted snap params')
          }
 
      }

@@ -30,7 +30,7 @@ class FOLLOW_EVENT_WITH_BUD_SIZE(MDA,TOF):
         '''
 
         '''
-        self.refocus()                               # add refocusing
+        self.focus()                               # add refocusing
         self.take_pic()                              # add take pic
         self.event.name = 'bud_with_size'
         self.cond = 'follow_event_with_segm'
@@ -93,5 +93,5 @@ class FOLLOW_EVENT_WITH_BUD_SIZE(MDA,TOF):
             self.track_and_fluo_trig_rfp(pos, self.fluo_obs)
             # trigger track if event detected
             pos.track_on_event(pos.list_budding_cells)
-            # reinitialize the tracking for mitosis event                         
+            # reinitialize the tracking for mitosis event
             self.track_and_fluo_reinit(pos)

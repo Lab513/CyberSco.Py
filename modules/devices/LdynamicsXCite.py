@@ -10,7 +10,7 @@ from time import sleep
 try:
     from modules.devices.serial_basics import SERIAL_BASICS as SB
 except:
-    from serial_basics import SERIAL_BASICS as SB
+    from devices.serial_basics import SERIAL_BASICS as SB
 
 class XCITE(SB):
     '''
@@ -116,7 +116,7 @@ class XCITE(SB):
         if 0 in debug:
             print(f'unit status is {answer}')
 
-    def shut_on(self, debug=[0]):
+    def shut_on(self, debug=[]):
         '''
         Shutter on
         '''
@@ -124,7 +124,7 @@ class XCITE(SB):
         if 0 in debug:
             print(f'shutter on')
 
-    def shut_off(self, debug=[0]):
+    def shut_off(self, debug=[]):
         '''
         Shutter off
         '''

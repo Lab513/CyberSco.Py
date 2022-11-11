@@ -3,6 +3,7 @@ Translate tree protocol from the corresponding
 yaml file to CyberScoPy instructions
 '''
 
+from colorama import Fore, Style         # Color in the Terminal
 from datetime import datetime
 import oyaml as yaml
 import os
@@ -40,7 +41,8 @@ class MDA_TREE_PROTOCOL(RTP):
         ##
         self.first_time = datetime.now()
         if 1 in debug:
-            print('will build the tree recursively !!')
+            print(Fore.YELLOW +  f'building the tree recursively !! ')
+            print(Style.RESET_ALL)
         self.iterdict(self, [yaml_file])    # recursively build the protocol
 
     def launch(self):
@@ -48,8 +50,9 @@ class MDA_TREE_PROTOCOL(RTP):
         Launch the protocol
         '''
         self.loop()                                # launch the first loop
+        print(f'In launch, self.dash_monitor_addr is {self.dir_mda_temp_dash}')
 
-    def iterdict(self, obj, l, debug=[0,2]):
+    def iterdict(self, obj, l, debug=[]):
         '''
         Applying recursivity for building the MDA hierarchical object
         '''
@@ -86,3 +89,11 @@ class MDA_TREE_PROTOCOL(RTP):
                 # Autofocus
                 if k == 'type' and v == 'AF':
                     self.retrieve_AF(d, obj)
+
+                # Delay
+                if k == 'type' and v == 'DELAY':
+                    self.retrieve_delay(d, obj)
+
+            # Case where AF not defined in the tree for predef..
+            if len(self.lxyz) > len(self.list_AF):
+                self.list_AF.append(None)

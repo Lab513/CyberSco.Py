@@ -17,7 +17,7 @@ class SIMPLE_RFP_FLUO(MDA):
         '''
         if 0 in debug: print('####### Applying define !!! ########')
         ##
-        self.refocus()                    # add refocusing
+        self.focus()                    # add refocusing
         self.take_pic()                   # add take pic
         self.take_pic_fluo('rfp')         # add take pic fluo
         ##

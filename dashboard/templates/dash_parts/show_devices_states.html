@@ -1,0 +1,108 @@
+/*
+ Devices state
+*/
+
+//-----------------------
+
+var dic_ndev = {
+            'prior': 'Prior :',
+            'olympus': 'Olympus :',
+            'coolled': 'Coolled :',
+            'xcite' : 'XCite :',
+            'gate': 'Gate :',
+            'sensors': 'Sensors'
+           }
+
+function device_icon_state(device, state){
+
+        //------------ icons
+
+        var img_conn = $('<img />').attr('src',"static/icons/capicon/svg/326.svg")       // connected
+                                   .addClass('dev_conn_img')
+                                   .attr('id', 'conn_' + device)
+                                    //.hide()
+
+        var img_unconn = $('<img />').attr('src',"static/icons/capicon/svg/057.svg")    // unconnected
+                                     .attr('id', 'unconn_' + device)
+                                     .css({'width':'10px','height':'10px'})
+                                      //.hide()
+        if (state == 'connected'){
+           var span_state = $('<span/>').append(img_conn)
+        }
+        else{
+           var span_state = $('<span/>').append(img_unconn)
+        }
+
+        var div_state = $('<div/>').text( dic_ndev[device] )
+                                   .append( span_state )
+                                   .css({'margin-left': '25px'})
+
+        return  div_state
+}
+
+
+function fill_connexion_panel(dic_state_devices, panel){
+
+      tit = $('<div/>').text('Devices')
+                       .css({'text-align': 'center'})
+      panel.append(tit)
+      panel.append($('<br>')).append($('<br>'))
+      var nb_conn = 0
+      var nb_unconn = 0
+
+
+      for([key, val] of Object.entries(dic_state_devices)) {
+          //var dev_state = key +':' + val
+          if (val=='connected'){nb_conn += 1}
+          else{nb_unconn += 1}
+
+          div_state = device_icon_state(key,val)
+          panel.append(div_state)
+      }
+      // number of conencted and unconnected devices..
+      var conn_unconn = 'conn: ' + nb_conn + ', unconn: ' + nb_unconn
+
+      return conn_unconn
+
+}
+
+function set_devices_connected(dic_cyber){
+
+      var str_state_devices = dic_cyber['state_devices']
+      //alert('str_state_devices ' + str_state_devices)
+      dic_state_devices = JSON.parse(str_state_devices)
+      var panel = $('#devices_state_panel')
+      var dev_conn_id = '#dev_conn_' + dic_cyber['equip']
+      var table_elem = $(dev_conn_id)
+
+      // empty the table and the panel
+
+      panel.html('')
+      table_elem.html('')
+
+      //------
+      conn_unconn = fill_connexion_panel(dic_state_devices, panel)
+
+      //------ fill table
+      var div_conn = $('<div/>').text(conn_unconn)
+      var span_conn = $('<span/>').text('...')
+      table_elem.append(div_conn)
+                //.append(span_conn)
+                               //.append(span_conn)
+
+      //------ Show the panel when clicking on the table element
+
+      $(dev_conn_id).click(function(){
+                var offset = $(this).offset();
+                panel.toggle()
+                var y = offset.top + (-200)
+                x = offset.left + (-200)
+                var dic_pos_panel = {'top':y, 'left':x}
+                panel.css(dic_pos_panel)
+      })
+
+      panel.click(function(){       // hide the connexion panel by clicking on it.. 
+        $(this).hide()
+      })
+
+}

@@ -7,7 +7,7 @@ import time
 try:
     from modules.devices.serial_basics import SERIAL_BASICS as SB
 except:
-    from serial_basics import SERIAL_BASICS as SB
+    from devices.serial_basics import SERIAL_BASICS as SB
 
 class COOLLED(SB):
     '''
@@ -91,13 +91,14 @@ class COOLLED(SB):
         print(f'self.shut {self.shut}')
         print(f'self.selected {self.selected}')
 
-    def ask_wave_length(self, debug=[]):
+    def ask_wave_length(self, debug=[0]):
         '''
         Ask for the current wavelength
         '''
         self.emit('LAMS')
         answer = self.receive()
-        print(f'## ask_wave_length answer is {answer}')
+        if 0 in debug:
+            print(f'## ask_wave_length answer is {answer}')
 
     def load_wave_length(self, lamb, debug=[]):
         '''

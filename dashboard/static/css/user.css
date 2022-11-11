@@ -1,0 +1,27 @@
+/* user information */
+
+#current_user {
+
+    /* Current user */
+
+     padding-left: 30px;
+     padding-top: 20px;
+     position: absolute;
+     /* box-shadow: 0.5em 0.5em 0.7em; */
+     top: 3px;
+     left: 50px;
+     width:350px;
+     height:80px;
+     z-index: 1;
+     /* font-size: 25px; */
+
+
+}
+
+#username {
+
+    /* Current user name */
+
+     font-size: 25px;
+
+}

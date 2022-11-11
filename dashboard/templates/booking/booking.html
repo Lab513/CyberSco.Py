@@ -1,0 +1,511 @@
+
+<div id="calend" hidden>
+
+    <!-- <div center > Calendar</div> -->
+    <div id="month" > </div>
+
+    <div id="overflow_day" >
+         <div id="days" > </div>
+    </div>
+    <br><br>
+    <!-- style="overflow:auto;height:350px;" -->
+    <div id="overflow_day_hours" >
+         <div id="days_hours" > </div>
+    </div>
+</div>
+
+<div id="schedule_form" hidden>
+
+     <div id="equip_choice" >
+
+      <select id="select_equip"  class="selectpicker"  >
+
+          <option value="Miss_Marple"> Miss_Marple </option>
+          <option value="Dr_Who"> Dr_Who </option>
+
+      </select>
+
+    </div>
+
+      <br>
+
+      <div class="input-group mb-3">
+        <input type="text" id='book_username' class="form-control" placeholder="Username">
+      </div>
+
+      <br>
+
+      <div class="input-group mb-3">
+        <input id='book_time_range' type="text" class="form-control" placeholder="time">
+
+      </div>
+
+      <input id='book_id' value='none' hidden>
+
+      <button class="btn btn-success"  id="save_booking" > save </button>
+
+      <button class="btn btn-warning"  id="cancel_booking" > cancel </button>
+
+</div>
+
+<!-- Edit erase -->
+
+<div id="edit_erase_form" hidden>
+
+      <div id='edit_erase_tit'> Booking infos </div>
+
+      <button class="btn btn-alarm"  id="erase_booking" > erase </button>
+
+      <button class="btn btn-secondary"  id="cancel_edit_booking" > cancel </button>
+
+      <button class="btn btn-warning"  id="edit_booking" > edit </button>
+
+</div>
+
+<!-- <div id="calendar" style="position:absolute; height: 600px; width:600px;"></div> -->
+
+<!-- <div class="timetable"></div> -->
+
+<script >
+
+$('#schedule_form').draggable()
+
+function repeat(arr, len) {
+    while (arr.length < len) arr = arr.concat(arr.slice(0, len-arr.length));
+    return arr;
+}
+
+var dic_equip = {'Miss_Marple': {'vpos':'220', 'col':'red'},
+                 'Dr_Who': {'vpos':'240', 'col': 'blue'}
+                }
+var selected_date = ''
+var shiftday
+var curr_month
+var elem_days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+// ldays = ['', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+lmonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
+           'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+var num_month
+var date_format = 'M/DD hh:mm A'
+var cell_name_width = 50
+var cell_all_day_width = 50
+var socket
+//var book_infos = {'Miss_Marple':{}, 'Dr_Who':{}}
+var book_infos = {}
+
+var zeroPad = (num, places) => String(num).padStart(places, '0')
+var nb_days = 14
+ldays = [''].concat(repeat(elem_days, nb_days))
+var list_equip
+
+$('#calend').draggable()
+
+// name of the days with num..
+
+function make_name_days(){
+
+      var curr_date = moment().format('llll')
+      //alert(curr_date)
+      curr_dt_split = curr_date.split(',')
+      curr_day = curr_dt_split[0]
+      curr_num_day = curr_dt_split[1].split(' ')[2]
+      curr_month = curr_dt_split[1].split(' ')[1]
+      num_month = lmonths.indexOf(curr_month) + 1
+      // alert(curr_day)
+      // alert('curr_num_day is ' + curr_num_day)
+
+      $('#month').text(curr_month)
+
+      pos_day = parseInt(ldays.indexOf(curr_day))
+      // alert(pos_day)
+      shift_day = curr_num_day-pos_day
+      // alert(shift_day)
+
+      var tab = $('<table/>').addClass('table') //  table-bordered
+      tab.css({'margin-bottom':'0px'}) // , 'table-layout':'fixed', 'width':'100%'
+
+      var tab_head = $('<thead/>')
+      tab.append(tab_head)
+      tr_day = $('<tr/>')
+      tab_head.append(tr_day)
+      for (i=0; i < nb_days; i++){
+          th = $('<th/>').addClass('name_day') //  day_info
+          if (i > 0){
+              txti = $('<span/>').text(i + shift_day).css({'font-size':'30px'})
+              txtn = $('<span/>').text(' ' + ldays[i]).css({'font-size':'12px'})
+              if (i == 1){
+                txti.css({'color':'red'})
+                txtn.css({'color':'red'})
+              }
+
+              th.append(txti).append(txtn)
+            }
+          th.css({'width':cell_name_width+'px', 'height':'60px',
+                  'text-align':'center',
+                  'padding-bottom':'10px'})
+          tr_day.append(th)
+      }
+      $('#days').append(tab)
+
+  }
+
+// cells of the days and hours..
+
+function make_all_days(){
+
+      var tab = $('<table/>').addClass('table table-bordered') //
+      tab.css({'margin-bottom':'0px'})
+      var tab_head = $('<thead/>')
+      tab.append(tab_head)
+      tr_day = $('<tr/>')
+      tab_head.append(tr_day)
+      for (i=0; i<nb_days; i++){
+
+          th = $('<th/>').addClass('name_day') //  day_info
+          txt_tit = $('<span/>').text(' All Day').css({'font-size':'12px'})
+          if (i==0){
+              th.append(txt_tit)
+              }
+          th.css({'width': cell_all_day_width + 'px', 'height':'140px',
+                  'text-align':'center',
+                  'padding-bottom':'60px'})
+          id_all_day = 'm' + num_month + 'd' + (i + shift_day)
+          th.attr('id', id_all_day)
+          tr_day.append(th)
+      }
+      $('#days').append(tab)
+
+}
+
+// set the day and hours picker
+
+function set_date_picker(){
+
+    $('#book_time_range').daterangepicker({
+               locale: {format: date_format},
+               timePicker:true,
+               startDate: selected_date
+              });
+
+}
+
+// set the position of the date picker above the cell
+
+function place_schedule_form(elem){
+
+      $('#schedule_form').show()
+      var offset = elem.offset();
+      var y = offset.top + (-300)
+      x = offset.left + (-100)
+      var dic_pos_panel = {'top': y, 'left': x}
+      $('#schedule_form').css(dic_pos_panel)
+
+}
+
+// set the position of the edit erase form
+
+function place_edit_erase_form(elem){
+
+      $('#edit_erase_form').show()
+      var offset = elem.offset();
+      var y = offset.top + (+100)
+      x = offset.left + (+50)
+      // alert('in place_edit_erase_form ')
+      // alert('x is ' + x)
+      // alert('y is ' + y)
+      var dic_pos_panel = {'top': y, 'left': x}
+      $('#edit_erase_form').css(dic_pos_panel)
+
+}
+
+// table containing the cells day and hours..
+
+function make_day_hours(){
+
+      var tab = $('<table/>').addClass('table table-bordered') //
+      tab.css({'margin-bottom':'0px'})
+      var tab_head = $('<thead/>')
+      tab.append(tab_head)
+
+      for (i=0; i<24; i++){
+          tr_day = $('<tr/>')
+          tab_head.append(tr_day)
+          for (j=0; j<nb_days; j++){
+
+              th = $('<th/>').addClass('name_day')    //  day_info
+              if (i<12){
+                 var nameh = i + ' am'
+                 var nameh2 = zeroPad(i,2) + ':' + '00' + ' AM'
+              }
+              else{
+                 var ifrmt = i-12
+                 var nameh = (i-12) + ' pm'
+                 var nameh2 = zeroPad(i-12,2) + ':' + '00' + ' PM'
+              }
+              txt_tit = $('<span/>').text(nameh).css({'font-size':'12px'})
+              if (j==0){
+                  th.append(txt_tit)
+                  }
+              th.css({'width':'65px', 'height':'20px',
+                      'text-align':'center',
+                      'padding-bottom':'10px'})
+              tr_day.append(th)
+              //cell_id = (j + shift_day) + '-' + i
+              selected_date =   num_month + '/' + zeroPad((j + shift_day),2) + ' ' + nameh2
+              th.attr('id', selected_date)
+              th.click(function(){
+                  place_schedule_form($(this))
+                  //alert($(this).attr('id'))
+                  selected_date = $(this).attr('id')
+                  set_date_picker()
+              })
+          }
+      }
+      $('#days_hours').append(tab)
+
+  }
+
+  function x_offset(id, hr_ratio){
+
+      //alert('id is ' + id)
+      var offset_cal = $('#calend').offset();
+      xcalend = offset_cal.left  // calendat pos
+      var offset = $('#'+ id).offset();
+      var shift_days = hr_ratio*85*8/nb_days
+      x = offset.left - xcalend + shift_days
+      //alert('offset.left ' + offset.left + ', xcalend ' + xcalend + ', shift_days '+ shift_days)
+
+      return x
+  }
+
+  function make_id_from_date(dt){
+
+      //alert(dt)
+      dt = dt.trim()
+      var md = dt.split(' ')[0]
+      //alert(md)
+      var md_spl = md.split('/')
+      //alert('md_spl ' + md_spl)
+      var m = md_spl[0]
+      var d = md_spl[1].replace('0','')
+
+      var id = 'm' + m + 'd' + d
+
+      return id
+
+  }
+
+  function ratio_hours(dt){
+
+      //alert(dt)
+      dt = dt.trim()
+      var hrs = dt.split(' ')[1]
+      var ampm = dt.split(' ')[2]
+      //alert('hrs ' + hrs)
+      hr = parseInt(hrs.split(':')[0])
+      if (ampm == 'PM'){
+        hr += 12
+      }
+      //alert('hr ' + hr)
+      mm = parseInt(hrs.split(':')[1])
+      //alert('mm ' + mm)
+      hr_ratio = (hr + mm/60)/24
+      //alert(hr_ratio)
+      //alert('hr_ratio ' + hr_ratio)
+
+      return hr_ratio
+
+  }
+
+  function make_busy_range(beg, range, name_user, dic_equip,
+                           name_equip, id, book_infos){
+
+    //alert('beg is ' + beg + ', range is ' + range)
+
+    $('#calend').append($('<div/>').css({ 'position':'absolute',        // booking range bar
+                                          'height':'5px',
+                                          'width': range + 'px',
+                                          'background-color':dic_equip[name_equip]['col'],
+                                          'top':dic_equip[name_equip]['vpos'] + 'px',
+                                          'left': beg + 'px' })
+                                   .addClass('busy_range')
+                                   .attr('equip', name_equip)
+                                   .attr('user', book_infos[name_equip][id]['user'])
+                                   .attr('time_range', book_infos[name_equip][id]['time_range'])
+                                   .attr('book_id', id)
+                                   .attr('id','bar_'+id)
+                                   .click(function(){
+                                           $("#select_equip").val($(this).attr('equip')).change();
+                                           $('#book_username').val($(this).attr('user'))
+                                           $('#book_time_range').val($(this).attr('time_range'))
+                                           $('#book_id').val($(this).attr('book_id'))
+                                           place_edit_erase_form($(this))
+                                   }))
+                .append($('<div/>').css({ 'position':'absolute',       // name of the user
+                                          'font-size':'12px',
+                                          'height':'15px',
+                                          'margin-bottom':'10px',
+                                          'width': name_user + 'px',
+                                          'background-color':'white',
+                                          'top':(dic_equip[name_equip]['vpos']-15) + 'px',
+                                          'left': (beg+range/2-(name_user.length*7)/2) + 'px' })
+                                     .text(name_user)
+                                     .attr('id','name_'+id)
+                                     .addClass('busy_range')
+                                     )
+
+      }
+
+function extract_beg_range(dt0,dt1){
+
+      //alert(dt0 + ' ' + dt1)
+      id0 = make_id_from_date(dt0)
+      //alert('id0 is ' + id0)
+      id1 = make_id_from_date(dt1)
+      //alert('id1 is ' + id1)
+      var hr_ratio_dt0 = ratio_hours(dt0)
+      var hr_ratio_dt1 = ratio_hours(dt1)
+      //alert('hr_ratio_dt0 ' + hr_ratio_dt0 + 'hr_ratio_dt1 ' + hr_ratio_dt1)
+      xd0 = x_offset(id0, hr_ratio_dt0)
+      xd1 = x_offset(id1, hr_ratio_dt1)
+      var beg = Math.round(xd0,2)
+      var range = Math.round( xd1-xd0 ,2) // + 85
+
+      return [beg,range]
+
+}
+
+function make_range(book_time_range, name_equip,
+                    id, name_user, dic_equip, beg=0, range=0){
+
+        var book_time_split = book_time_range.split('-')
+        var dt0 = book_time_split[0]
+        var dt1 = book_time_split[1]
+
+        if (beg==0 & range==0){
+            var [beg,range] = extract_beg_range(dt0,dt1)
+        }
+        book_infos[name_equip][id] = { 'user' : name_user,
+                                       'time_range' : dt0 + '-' + dt1,
+                                       'beg':beg,
+                                       'range':range }
+
+
+        //alert('dt0 is ' + dt0 + ', dt1 is ' + dt1)
+        //alert('xd0 xd1-xd0 ' + beg + ' ' + range)
+        //alert('offset id0 is ' + x)
+        json_book_infos = JSON.stringify(book_infos)
+        //alert( 'in save booking..' + json_book_infos)
+        socket.emit('book_infos', json_book_infos)
+
+        make_busy_range(beg, range, name_user,
+                        dic_equip, name_equip, id,
+                        book_infos)
+       $('#book_id').val('none')
+
+}
+
+function save_booking(){
+
+    $('#save_booking').click(function(){
+         //alert('in save booking...')
+         $('#schedule_form').hide()
+         var book_time_range = $('#book_time_range').val()
+
+         var name_equip = $('#select_equip').val()
+         var name_user = $('#book_username').val()
+         var book_id = $('#book_id').val()
+         //alert('book_id is ' + book_id)
+
+         //alert('dt0 is ' + dt0)
+         if (book_id == 'none'){                       // new range
+              var id = Math.floor(Math.random() * 1000)
+         } else {
+               id = book_id
+               $('#bar_'+id).remove()
+               $('#name_'+id).remove()
+          }
+         //alert('id is ' + id)
+         //alert('book_infos is ' + book_infos)
+         make_range(book_time_range, name_equip,
+                    id, name_user, dic_equip)
+
+    })
+
+}
+
+function edit_erase(){
+
+      $('#erase_booking').click(function(){
+            $('#edit_erase_form').hide()
+            var id = $('#book_id').val()
+            $('#bar_' + id).remove()
+            $('#name_' + id).remove()
+            var equip = $('#select_equip').val()
+            delete book_infos[equip][id]           // erase from dictionary
+            json_book_infos = JSON.stringify(book_infos)
+            //alert( 'in save booking..' + json_book_infos)
+            socket.emit('book_infos', json_book_infos)
+      })
+
+      $('#cancel_edit_booking').click(function(){
+            $('#edit_erase_form').hide()
+      })
+
+      $('#edit_booking').click(function(){
+            $('#edit_erase_form').hide()
+            $('#schedule_form').show()
+      })
+
+}
+
+
+socket.on('list_equip', function(leq){
+    list_equip = JSON.parse(leq)
+    for (eq of list_equip){
+        book_infos[eq] = {}
+    }
+    socket.emit('ask_book_infos')
+
+})
+
+socket.on('curr_book_infos', function(booking){
+   //alert(booking)
+   if (booking != '{}' ){
+      book_infos = JSON.parse(booking)
+
+      for (var [equip,v] of Object.entries(book_infos)) {
+            //alert(equip)
+            for (var [id,vv] of Object.entries(book_infos[equip])) {
+                 name_user = book_infos[equip][id]['user']
+                 time_range = book_infos[equip][id]['time_range']
+                 beg = book_infos[equip][id]['beg']
+                 range = book_infos[equip][id]['range']
+                 // fill the range on the board..
+                 make_range(time_range, equip, id, name_user, dic_equip, beg, range)
+            }
+          }
+
+   }
+   else{
+     alert('book is empty..')
+   }
+
+})
+
+save_booking()
+make_name_days()
+make_all_days()
+make_day_hours()
+
+$('#cancel_booking').click(function(){
+    $('#schedule_form').hide()
+})
+
+//------ edit erase..
+
+edit_erase()
+
+
+
+</script>

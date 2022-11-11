@@ -1,5 +1,5 @@
 /*
-AUtofocus
+Autofocus
 */
 
 else if (node.type == 'AF') {
@@ -13,16 +13,18 @@ else if (node.type == 'AF') {
                  ' Z-Offset: ' + node.data.zoffset +
                   '</div>');
 
-      if (node.data.objectif == "undefined" && node.data.zoffset == 0) {
-        updateAutoFocus(node.key + "-info", node.key)
-      }
+      // if (node.data.objectif == "undefined" && node.data.zoffset == 0) {
+      //   updateAutoFocus(node.key + "-info", node.key)
+      // }
 
       socket.on( 'update_af_infos', function( nodeidaf ){
 
            var infos = nodeidaf.split(';')
            var nodeid = infos[0]                                               // node id
            new_af = infos[1]                                                   // new offset
+           new_obj = infos[2]                                                  // new objective
            if ( node.key == nodeid ){
+                 node.data.objectif = new_obj
                  node.data.zoffset = new_af
              }
 

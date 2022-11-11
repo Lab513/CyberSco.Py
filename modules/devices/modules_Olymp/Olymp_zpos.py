@@ -80,7 +80,7 @@ class ZPOS():
             res = self.try_set_zpos(val, move_type=move_type)
             nbtry += 1
 
-    def set_zpos(self, val, move_type='d'):
+    def set_zpos(self, val, move_type='d', debug=[]):
         '''
         Set the position of the objective in absolute or relatively
         val : pos z in hundredth of µm
@@ -89,8 +89,9 @@ class ZPOS():
             N : relative toward the slide
             F : relative far from the slide
         '''
-        print(Fore.YELLOW +  f'in set_zpos, val is {val}')
-        print(Style.RESET_ALL)
+        if 0 in debug:
+            print(Fore.YELLOW +  f'in set_zpos, val is {val}')
+            print(Style.RESET_ALL)
         z_init = self.ask_zpos()
         res = self.try_set_zpos(val, move_type=move_type)
 
@@ -106,7 +107,8 @@ class ZPOS():
             cnd = res != int(z_init + val)
             self.while_cnd_try(val, cnd, move_type)
         # try until relative near position is found
-        print(f'final zpos for set_pos, val is {res}')
+        if 1 in debug:
+            print(f'final zpos for set_pos, val is {res}')
 
     def go_zpos(self, val, move_type='d', ask=False, debug=[0]):
         '''

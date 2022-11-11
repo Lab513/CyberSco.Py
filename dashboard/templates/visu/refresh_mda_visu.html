@@ -1,0 +1,62 @@
+var choice_pos = true
+
+setInterval(function(){
+        //alert("Refresh  image")
+        if ((dic_cyber['mda_launched']=='true') &
+             (dic_cyber['equip'] == mda_assoc_equip)){
+
+              $('#curr_proc_pic').attr('src', '/static/mda_temp_'+
+                      dic_cyber['user'] +'/monitorings/BF/frame' +
+                      frame_index  + '_t'+ frame_time  + '.png?' + new Date().getTime())                 // init the view on BF images
+              var new_title = ' user: ' + dic_cyber['user'] + ', microscope: ' + dic_cyber['equip']
+              //alert("Resetting the title with new_title = " + new_title )
+              $('#experim_title').text( new_title )
+              //-----
+              var nb_rep = parseInt(dic_cyber['nb_rep'])
+              if (nb_rep > 0){
+                  max_nb_im = parseInt(dic_cyber['nb_rep'])
+              } else {
+                  max_nb_im = 0
+              }
+
+              $("#pospic").bootstrapSlider('setAttribute', 'max', max_nb_im - 1)                  // slider size
+              var num = parseInt(frame_time)
+              $('#win_num_im').text((num+1) + '/' + max_nb_im)                     // curr/max
+              try{
+                  $('#win_time_im').text(dic_cyber['pic_time'][frame_time][frame_index])
+                  }catch(err){}
+              $("#pospic").bootstrapSlider('setValue', num)
+
+              /*
+              select position
+              Fill the number of position in the selector..
+              */
+
+              if (choice_pos & (dic_cyber['nb_pos'] != 'none') & (nb_rep>0)){
+                    choice_pos = false
+                    for ( var p=1; p < parseInt(dic_cyber['nb_pos']); p++ ){
+                          //alert(p)
+                          var opt = '<option value="' + p + '">' + p + '</option>'
+                          $( "#select_pos_num" ).append(opt)
+                    }
+                    $('.selectpicker').selectpicker('refresh');
+              }
+
+
+        }
+
+  }, 1000)
+
+  setInterval(function(){
+
+            /*
+            Sensors
+            */
+
+            $('#mda_sensor_light_img').attr('src', '/static/mda_temp_'+
+                    dic_cyber['user'] +'/monitorings/light_curve.html?' + new Date().getTime())                 // light intensity
+
+            $('#mda_sensor_temp_img').attr('src', '/static/mda_temp_'+
+                    dic_cyber['user'] +'/monitorings/temp_curve.html?' + new Date().getTime())                 // temperature
+
+    }, 60000)

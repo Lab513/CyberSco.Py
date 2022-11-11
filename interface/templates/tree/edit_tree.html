@@ -91,23 +91,17 @@ function editTree(){
     if(node.type === 'SPSC'){                                              // Simple Picture, Setting channels
 
         $('.pspsc').show()
-        //$('#spsc_near_limit').val(node.data.near_limit)
-        //$('#spsc_far_limit').val(node.data.far_limit)
-        //$('#spsc_step').val(node.data.step)
         $('#spsc_setting_channel_name').val( node.data.setting_channel_name )
         $('#spsc_exposure_time').val(node.data.exposure_time)
-        //$('#spsc_shut').val( node.data.shut )
+
 
     }
     if(node.type === 'SPSCM'){                                             // Simple Picture, Setting channels, Mosaic
 
         $('.pspscm').show()
-        //$('#spscm_near_limit').val(node.data.near_limit)
-        //$('#spscm_far_limit').val(node.data.far_limit)
-        //$('#spscm_step').val(node.data.step)
         $('#spscm_setting_channel_name').val(node.data.setting_channel_name)
         $('#spscm_exposure_time').val(node.data.exposure_time)
-        //$('#spscm_shut').val(node.data.shut)
+
 
     }
     if(node.type === 'GROUP'){

@@ -1,0 +1,164 @@
+
+/* calendar */
+
+#calend {
+
+      /* Main calendar window */
+
+      box-shadow: 0.5em 0.5em 0.7em;
+      position: absolute;
+      top: 50px;
+      right: 25%;
+      height: 720px;
+      width: 700px;
+      opacity: 1;
+      z-index: 100;
+      background-color: white;
+
+}
+
+#month {
+
+      /* day header.. */
+
+      /* box-shadow: 0.5em 0.5em 0.7em; */
+      top:50px;
+      left: 300px;
+      position: absolute;
+      height: 50px;
+      width: 150px;
+      opacity: 1;
+      font-size: 25px;
+
+}
+
+#days {
+
+      /* day header.. */
+
+      /* box-shadow: 0.5em 0.5em 0.7em; */
+      top:100px;
+      position: relative;
+      height: 150px;
+      width: 690px;
+      opacity: 1;
+
+}
+
+#overflow_day{
+      overflow-y:scroll;
+      overflow-x:hidden;
+      /* overflow if more than height */
+      height:330px;
+}
+
+#day_hours {
+
+      /*  hours table */
+
+      /* box-shadow: 0.5em 0.5em 0.7em; */
+      top:260px;
+      position: relative;
+      height: 350px;
+      width: 690px;
+      opacity: 1;
+      display:inline-block;
+
+}
+
+#overflow_day_hours{
+      overflow:auto;
+      height:300px;
+}
+
+/* schedule form */
+
+#schedule_form {
+
+      /* panel with time picker..  */
+
+      box-shadow: 0.5em 0.5em 0.7em;
+      position: absolute;
+      top: 100px;
+      right: 25%;
+      padding-top: 50px;
+      padding-left: 30px;
+      height: 300px;
+      width: 300px;
+      opacity: 1;
+      z-index: 300;
+      background: white;
+
+}
+
+#equip_choice > .btn-group {
+     width: 140px !important;
+   }
+
+.day_cell {
+      width: 50px;
+}
+
+#timepicker {
+      width: 50px;
+}
+
+#save_booking {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+}
+
+#cancel_booking {
+      position: absolute;
+      bottom: 20px;
+      left: 50px;
+}
+
+#book_time_range {
+    width: 250px;
+}
+
+/* booking edit erase */
+
+#edit_erase_form {
+
+      /*   */
+
+      box-shadow: 0.5em 0.5em 0.7em;
+      position: absolute;
+      top: 100px;
+      right: 25%;
+      padding-top: 10px;
+      height: 100px;
+      width: 300px;
+      opacity: 1;
+      z-index: 300;
+      background: white;
+
+}
+
+#edit_booking {
+      position: absolute;
+      bottom: 20px;
+      right: 30px;
+}
+
+#erase_booking {
+      position: absolute;
+      bottom: 20px;
+      left: 30px;
+}
+
+#cancel_edit_booking {
+      position: absolute;
+      bottom: 20px;
+      left: 120px;
+}
+
+#edit_erase_tit {
+      /*   */
+      position: absolute;
+      left: 110px;
+
+}

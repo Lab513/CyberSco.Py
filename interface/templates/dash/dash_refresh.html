@@ -1,0 +1,42 @@
+/*
+Refresh the Dashboard..
+*/
+
+
+//----------- Dashboard infos..
+
+//-------- retrieve the infos from the server side.
+
+inter_dic = {}
+
+socket.on('infos_dash', function(dic_infos){
+
+      dic_infos_dashboard = dic_infos
+      $.post('http://' + ip_addr + ':2001/infos_cyber', dic_infos_dashboard)
+
+})
+
+/*
+Send regularly the infos to the dashboard..
+Ask the info to index.py
+*/
+
+setInterval(function(){
+
+      socket.emit('ask_infos_dash', '')
+      // var dic_infos_dashboard = inter_dic
+      // $.post('http://' + ip_addr + ':2001/infos_cyber', dic_infos_dashboard)
+
+
+ },  15000); //
+
+// trigger the refresh for dashboard..
+
+ // setTimeout(function(){
+ //
+ //       socket.emit('ask_infos_dash', '')
+ //       // var dic_infos_dashboard = inter_dic
+ //       // $.post('http://' + ip_addr + ':2001/infos_cyber', dic_infos_dashboard)
+ //
+ //
+ //  },  15000); //

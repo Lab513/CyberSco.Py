@@ -26,6 +26,9 @@ socket.on('connexion_state', function(msg){
 
       if ( state != 'connected' ){
              $('#panel_connexion').show()
+             $('#panel_connexion').click(function(){
+               $(this).hide()
+             })
              var div_conn = $('<div/>').attr('alert_unconn', device)
                                        .addClass('alert_not_conn_' + device)
                                        .text( device + ' is not connected !!! ' )
@@ -58,7 +61,8 @@ socket.on('connexion_state', function(msg){
                   'olympus': 'Olympus :',
                   'coolled': 'Coolled :',
                   'xcite' : 'XCite :',
-                  'gate': 'Gate :'
+                  'gate': 'Gate :',
+                  'sensors': 'Sensors:'
                  }
 
       dev.text( dic_ndev[device] ).append( span_conn )

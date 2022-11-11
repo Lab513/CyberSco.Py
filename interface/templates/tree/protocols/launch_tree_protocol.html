@@ -2,22 +2,8 @@
 
 $('#launch_mda_tree').click(function(){
 
+
         socket.emit('launch_mda', '')
-        
-        /*
-        setTimeout(function(){
-
-              $( "#protocol-to-run option:selected" ).each( function() {
-
-                  var name_protocol = $( this ).text().trim()
-                  curr_protocol = name_protocol
-                  socket.emit('launch_tree_protocol', curr_protocol)
-
-                });
-
-        }, 300)
-        */
-
 
 
     });

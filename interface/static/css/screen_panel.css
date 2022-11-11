@@ -4,7 +4,7 @@
 
      position: absolute;
      box-shadow: 0.5em 0.5em 0.7em;
-     top: 80px;
+     top: 120px;
      left: 50px;
      height: 600px;
      width: 600px;
@@ -504,8 +504,8 @@ list of yet existing images for DMD */
      position: absolute;
      box-shadow: 0.5em 0.5em 0.7em;
      top: 130px;
-     right: -30px;
-     width: 110px;
+     right: -40px;
+     width: 120px;
      height: 40px;
      z-index: 30;
 
@@ -535,7 +535,7 @@ list of yet existing images for DMD */
      position: absolute;
      top: 2px;
      left: 50px;
-     width:35px;
+     width:45px;
      height:20px;
      z-index: 1;
      border-style: none;
@@ -551,7 +551,7 @@ list of yet existing images for DMD */
      padding-bottom: 10px;
      position: absolute;
      top: 2px;
-     left: 75px;
+     left: 85px;
      width:45px;
      height:20px;
      z-index: 1;

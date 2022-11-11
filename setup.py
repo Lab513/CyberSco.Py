@@ -32,7 +32,13 @@ setup(
                        'eventlet',
                        'opencv-python',
                        'pymsteams',
-                       'oyaml'
+                       'oyaml',
+                       'flask',
+                       'flask-login',
+                       'Flask-WTF',
+                       'Flask-Admin',
+                       'Flask-SQLAlchemy',
+                       'email_validator'
                       ],
 
 )

@@ -180,7 +180,7 @@ class TRACK(TS, AT):
 
         return x_abs, y_abs
 
-    def make_relative_move(self, dx, dy, debug=[0, 1]):
+    def make_relative_move(self, dx, dy, debug=[]):
         '''
         Relative move for tracking
         '''
@@ -199,7 +199,7 @@ class TRACK(TS, AT):
             self.find_nearest_from_center()
 
     def find_pos_event(self, list_events_cells,
-                       kind_choice='random', debug=[0]):
+                       kind_choice='random', debug=[]):
         '''
         Find the absolute position of the event (bud, mating etc..)
         Take randomly an envent in the list

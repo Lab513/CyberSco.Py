@@ -1,0 +1,16 @@
+
+<script >
+
+    setInterval(function(){
+
+                /*
+                Sensors
+                */
+
+                $('#sensor_light_img').attr('src', '/static/monitorings/light_curve.html?' + new Date().getTime())                 // light intensity
+
+                $('#sensor_temp_img').attr('src', '/static/monitorings/temp_curve.html?' + new Date().getTime())                 // temperature
+
+        }, 15000)
+
+</script>

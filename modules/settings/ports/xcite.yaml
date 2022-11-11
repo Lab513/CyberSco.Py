@@ -1,6 +1,6 @@
 # port for Xcite
 
-port : COM9
+port : COM8
 baudrate : 9600
 bytesize : EIGHTBITS
 parity : PARITY_NONE

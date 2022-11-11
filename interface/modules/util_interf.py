@@ -1,16 +1,14 @@
 '''
 Utilities for the interface
 '''
-import glob
-import subprocess
+
 import os
-import shutil as sh
-import webbrowser
-import threading
 op = os.path
 opd, opb, opj = op.dirname, op.basename, op.join
+import glob
+import shutil as sh
+import subprocess
 from sys import platform as _platform
-
 
 def find_platform(debug=[]):
     '''
@@ -100,46 +98,6 @@ def init(config):
     Prepare interface.
     '''
     rm_make_upload(config)
-
-
-def save_with_date(dest='previous_proc', debug=0):
-    '''
-    Save the processing with full structure in previous_proc
-    Folders saved are Processings and Controls
-    File saved is list_proc.json
-    '''
-    now = datetime.now()
-    path_static = opj(os.getcwd(), 'static')
-    dproc = opj(path_static, 'processings')
-    dctrl = opj(path_static, 'controls')
-    dlist_proc = opj(path_static, 'list_proc.json')
-    dest_path = opj(path_static, dest)
-    try:
-        os.mkdir(dest_path)                    # path for previous processings
-        print("########## made new dest_path !!!! ")
-    except:
-        print("Possible issue with previous_proc")
-    #path_static = opj(os.getcwd(), 'static')
-    date = f"{now.year}-{now.month}-{now.day}-{now.hour}-{now.minute}"
-    ppdate = opj(dest_path, date)
-    try:
-        sh.copytree(dproc, opj(ppdate,'processings'))
-    except:
-        print("yet existing folder")
-    if debug > 0:
-        print("copied dproc")
-    try:
-        sh.copytree(dctrl, opj(ppdate,'controls'))
-    except:
-        print("yet existing folder")
-    try:
-        sh.copy(dlist_proc, ppdate)
-    except:
-        print("yet existing file")
-    if debug > 0:
-        print("copied dlist_proc")
-    sh.make_archive(ppdate, "zip", ppdate) # Zip the archive
-    return ppdate + '.zip'
 
 
 def find_chrome_path(platf):

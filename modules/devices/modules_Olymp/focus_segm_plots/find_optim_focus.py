@@ -19,13 +19,16 @@ class FIND_OPTIM_FOCUS():
         '''
         self.prec_min = 0.05                                                          # precision for the max surface
 
-    def search_optim_simple_sweep(self, ref, rep, AF_train, save_pic=True, corr_ind=0):
+    def search_optim_simple_sweep(self, ref, rep, AF_train,
+                                  save_pic=True, corr_ind=0, debug=[]):
         '''
         Search the optimal AF pos making a simple sweep on fixed range..
         '''
         t0 = time()
         self.go_zpos(ref)
         l_surf, l_lap = self.make_surf_pred_list(ref)                               # make the list of surfaces in function of z
+        if 0 in debug:
+            print(f'l_surf, l_lap are  {l_surf, l_lap}')
         self.max_surf = max(l_surf)                                                 # maximal surface of segmentation
         t1 = time()
         ##

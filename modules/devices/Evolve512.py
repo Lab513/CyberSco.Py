@@ -2,6 +2,10 @@
 Class for controlling the camera Evolve 512
 '''
 
+try:
+    from modules.devices.camera_util.cam_util import CAM_UTIL as CU
+except:
+    from devices.camera_util.cam_util import CAM_UTIL as CU
 from skimage import io
 from PIL import Image
 import numpy as np
@@ -17,60 +21,56 @@ except:
     print('Did not find Evolve pyvcam')
 
 
-class EVOLVE():
+class EVOLVE(CU):
     '''
     '''
-    def __init__(self):
+    def __init__(self, debug=[]):
         '''
+        Open the camera
         '''
+        CU.__init__(self)
         try:
             pvc.init_pvcam()                           # Initialize PVCAM
             # Use generator to find first camera.
             self.cam = next(Camera.detect_camera())
             self.cam.open()                            # Open the camera.
-            print('#####')
-            print(Fore.GREEN + 'opened correctly the Evolve512 camera  !!')
-            print(Style.RESET_ALL)
-            print('#####')
+            if 0 in debug:
+                print('#####')
+                print(Fore.GREEN + 'opened correctly Evolve512 cam  !!')
+                print(Style.RESET_ALL)
+                print('#####')
         except:
             print('###')
-            print(Fore.RED + 'Cannot open the cam Evolve512 !!!')
+            print(Fore.RED + 'Cannot open Evolve512 cam !!!')
             print(Style.RESET_ALL)
             print('###')
 
-    def adapt(self, debug=[]):
-        '''
-        Passing from 16 bits to 8 bits
-        '''
-        low = self.frame.min()       # lowest value in the image
-        high = self.frame.max()      # Highest value in the image
-        maxval = 256
-        alpha = maxval/(high-low)
-        if 1 in debug:
-            print(f'self.frame.max() in 16 bits {self.frame.max()}')
-        # change the image pixels values.
-        self.frame = (self.frame-low)*alpha
-        if 2 in debug:
-            print(f'self.frame.max() in 8 bits {self.frame.max()}')
-
-    def save_pic(self, addr, ext, bpp):
+    def save_pic(self, addr, ext, bpp, contrast=False, debug=[0]):
         '''
         Save the pic in tiff or png format
         '''
+        if 0 in debug:
+            print(f'ext is {ext}')
+            print(f'bpp is {bpp}')
+            print(f'self.frame.min() = {self.frame.min()}')
+            print(f'self.frame.max() = {self.frame.max()}')
+        self.handle_contrast(contrast, bpp)
+        kind_int = f'uint{bpp}'
+        type_int = getattr(np, kind_int)
+        frame = self.frame.astype(type_int)
         if ext == '.tiff':
-            if bpp == 16:
-                io.imsave(addr, self.frame.astype(np.uint16))   # 16 bits
-            elif bpp == 8:
-                self.adapt()
-                io.imsave(addr, self.frame.astype(np.uint8))    # 8 bits
+            io.imsave(addr, frame)
         elif ext == '.png':
-            self.adapt()
-            img = Image.fromarray(self.frame.astype(np.uint8))
+            img = Image.fromarray(frame)
             img.save(addr)
 
-    def take_pic(self, addr=None, bpp=16, exp_time=50, debug=[]):
+    def take_pic(self, addr=None, bpp=16, exp_time=50, allow_contrast=False, debug=[]):
         '''
         Retrieve a pic from Evolv 512 and save it in 16 bytes format
+        addr:
+        bpp: 16 for 16 bits, 8 for 8 bits..
+        exp_time: exposure time
+        allow_contrast: correction on min max and scale for better image..
         '''
         self.cam.speed_table_index = 0
         self.frame = self.cam.get_frame(exp_time=exp_time)
@@ -78,7 +78,7 @@ class EVOLVE():
             name, ext = ospl(addr)
             if 1 in debug:
                 print(f'extension is {ext}')
-            self.save_pic(addr, ext, bpp)
+            self.save_pic(addr, ext, bpp, contrast=allow_contrast)
 
     def close(self):
         '''

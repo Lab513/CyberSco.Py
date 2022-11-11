@@ -23,7 +23,7 @@ class PROTOCOL_SUCROSE(MDA):
         '''
         Sucrose protocole
         '''
-        self.refocus()                         # add refocusing
+        self.focus()                         # add refocusing
         self.take_pic()                        # add take pic
         ##
         self.analyse_pic()                     # analyse the pic
@@ -86,7 +86,7 @@ class PROTOCOL_SUCROSE(MDA):
             print(f'time_from_tblocked {t_from_blocked} sec')
             # plateau duration in minutes
             if t_from_blocked > 60*self.plateau_duration :
-                # glucose in the pipes                    
+                # glucose in the pipes
                 self.ga.set_pos_indices(self.gates_blocked, 0)
                 self.reinit_for_next_plateau()
 

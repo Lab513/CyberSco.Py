@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Main page for the Dashboard -->
+
+{% include 'header_footer/index_head.html' %}
+
+
+
+<body>
+
+{% include 'basics/navbar.html' %}
+
+ <!-- include 'header_doc_exit.html'  -->
+
+<!-- socket -->
+
+{% include 'socket.html' %}
+
+<!-- Connected user -->
+
+{% include 'connect/current_user.html' %}
+
+
+
+
+<script>
+
+$(document).ready(function(){
+
+
+});
+
+$('#refresh').hide()
+
+</script>
+
+<!-- footer -->
+
+{% include 'header_footer/footer.html' %}
+
+</body>
+</html>

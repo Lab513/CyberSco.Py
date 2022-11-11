@@ -1,0 +1,97 @@
+<!-- Panel for visualizing the processings -->
+
+<div class='proc_pics_panel' >
+
+    <!-- Title -->
+
+    <div id='experim_title' class=""> Title </div>
+
+    <!-- inserted image -->
+
+    <img id="curr_proc_pic" style="line-height : 20px;"  ></img>
+
+    <!-- canvas for superimpositions -->
+
+    <canvas id="canvas_area" style="line-height : 20px;" ></canvas>
+
+    <!-- arrows left right for navigating in the pictures  -->
+
+    <img id="butt_img_up"  src="static/icons/capicon/svg/276.svg"  >
+    <img id="butt_img_down"  src="static/icons/capicon/svg/277.svg"  >
+
+    <!-- position of the current frame -->
+
+    <div id='win_num_im' ></div>
+
+    <!-- acq time for pos -->
+
+    <div id='win_time_im' ></div>
+
+    <!-- slider for selecting frame -->
+
+    <div >
+        <input id="pospic" data-slider-id='slider_mda' type="text"
+               data-slider-min="0" data-slider-max="120"
+               data-slider-step="1" data-slider-value="0"/>
+     </div>
+
+     <!-- Method for changing of image, hovering or clicking on the arrows -->
+
+     <div id="kind_read_pics"  >
+
+         <select id="read_pics"  class="selectpicker"  >
+
+               <option  value='click'> click </option>
+               <option  selected  value='hover'> hover </option>
+
+         </select>
+     </div>
+
+     <div id='speed_hover' hidden >
+
+           <input id="speed_hover_mda_visu"  type="text" value="80">
+
+     </div>
+
+
+</div>
+
+<!-- Reinit cells -->
+
+<!-- <button type="button" id='select_all_cells' class="btn btn-primary">select all cells</button> -->
+
+
+<!-- View kind, BF, fluo1, fluo2, tracking, lineage etc.. -->
+
+<br>
+monitoring choice:
+<div id="kind_view"  >
+
+    <select id="select_view"  class="selectpicker"  >
+
+          <option  selected value='BF'> BF </option>
+          <option  value='tracking'> tracking </option>
+          <option  value='afml'> AFML </option>
+
+    </select>
+</div>
+
+<br>
+num position:
+<div id="select_pos"  >
+
+    <select id="select_pos_num"  class="selectpicker"  >
+
+          <option  selected value='0'> 0 </option>
+
+    </select>
+</div>
+
+
+<div id='mda_sensors' >
+   <div id='title_mda_sensors' > Sensors </div>
+   <br>
+   <br>
+   <iframe id="mda_sensor_light_img" ></iframe>
+   <iframe id="mda_sensor_temp_img" ></iframe>
+</div>

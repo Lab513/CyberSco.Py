@@ -50,6 +50,10 @@ min-height: 0px !important;
 
 {% include 'infos/hard_soft_infos.html' %}
 
+<!-- Connected user -->
+
+{% include 'connect/current_user.html' %}
+
 <!-- Utilities for moving the Prior -->
 
 {% include 'image/screen.html' %}
@@ -147,6 +151,10 @@ $(document).ready(function(){
 
     {% include 'settings/sweep_done.html' %}
 
+    //------- Contrast for BF
+
+    {% include 'image/refresh_contrast_BF.html' %}
+
     //------- fast pos for x, y and z
 
     {% include 'image/fast_pos.html'  %}
@@ -226,6 +234,10 @@ $(document).ready(function(){
     //-------- Information about the devices
 
     {% include 'infos/hard_soft_infos_refresh.html' %}
+
+    //------- Refresh the dashboard
+
+    {% include 'dash/dash_refresh.html' %}
 
 });
 

@@ -1,0 +1,14 @@
+
+
+function button_book(dic_cyber){
+
+      book_id = '#book_' + dic_cyber['equip']
+      curr_book = $(book_id)
+      var div_butt = butt_bootstr('booking', 'danger', 'use_cal')
+      curr_book.html('')
+      curr_book.append(div_butt)
+      div_butt.click(function(){
+            $('#calend').toggle()
+      })
+
+}

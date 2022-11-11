@@ -16,3 +16,28 @@ ep15_bact : training_bact-ep15-bs4_date16-09-2021-17-07
 ep30_bact : training_bact-ep30-bs4_date16-09-2021-18-25
 ep15_bact_v1 : training_bact1-ep15-bs4_date17-09-2021-17-28
 ep5_x100 : training_100x-ep5-bs4_date23-09-2021-17-15
+ep5_x100_antifuzzy: training_reject_fuzzy-ep5-bs4_date09-03-2022-11-24
+# iter0_ep5 for AF with fuzz up down
+iter0_ep5: iter0-ep5-bs4_date17-03-2022-20-22
+iter1_ep5: iter1-ep5-bs4_date17-03-2022-20-41
+yeast_100x_ep5: yeast_100x_wout_fuzz-ep5-bs4_date18-03-2022-12-18
+beads_1um_ep15: training_beads_1um-ep15-bs4_date01-04-2022-19-37
+beads_1um_ep15_antifuzz: training_beads_1um_antifuzz-ep15-bs4_date05-04-2022-20-35
+beads_1um_ep15_antifuzz2: beads_1um_antifuzz2-ep15-bs4_date06-04-2022-12-53
+beads_1um_ep15_antifuzz2_ud: beads_antifuzz2_updown-ep15-bs4_date06-04-2022-16-14
+celeg_ep5: training_celegans-ep5-bs4_date15-04-2022-15-21
+celeg_ep10: training_celegans-ep10-bs4_date15-04-2022-15-32
+celeg_ep15: training_celegans-ep15-bs4_date15-04-2022-15-49
+bact_bag_ep40: Training_set_simon-ep40-bs4_date07-04-2022-12-50
+bact_simon: training_bact_Simon-ep30-bs4_date07-03-2022-14-44
+bact_pill_ep10: bact_pillars-ep10-bs4_date12-05-2022-16-17
+bact_pill_ep15: bact_pillars-ep15-bs4_date12-05-2022-16-43
+bact_pill_ep20: bact_pillars-ep20-bs4_date12-05-2022-17-18
+bact_big_ep35: New_training_set-ep35-bs4_date25-05-2022-13-37
+BFMother100x16: MotherBF100_16-ep20-bs4_date09-06-2022-17-14
+PCMother100x16: PC100x16MM1650-ep25-bs4_date10-06-2022-16-22
+PCMother100x16v2: MM160622-ep20-bs4_date16-06-2022-19-00
+PCMotherCroix100x16: MMCroix170622-ep20-bs4_date17-06-2022-14-52
+PCMother100x16v3: ts2-ep20-bs4_date20-07-2022-16-20
+PCMother100x16v4 : AFML100x16mai2022-ep35-bs4_date03-06-2022-15-44
+beads_1umx1pt5 : beads_1umx1pt5-ep50-bs4_date09-11-2022-15-59

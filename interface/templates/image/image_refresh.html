@@ -20,12 +20,30 @@ socket.on('ip_used', function(msg){
 })
 
 
-// send exp time
+// send exposure time for snap
 
 socket.on('send_exp_time', function(time){
 
   //alert('time is ' + time)
   $.post('http://' + ip_addr + ':2204/exp_time', {'data': time})
+
+})
+
+// send snap address
+
+// socket.on('send_snap_addr', function(snap_addr){
+//
+//   //alert('snap_addr is ' + snap_addr)
+//   $.post('http://' + ip_addr + ':2204/snap_addr', {'data': snap_addr})
+//
+// })
+
+// send autocontrast BF value
+
+socket.on('current_contrast', function(autocntrst){
+
+  //alert('autocntrst is ' + autocntrst)
+  $.post('http://' + ip_addr + ':2204/autocontrast', {'val': autocntrst})
 
 })
 
@@ -44,11 +62,14 @@ if (!vid_parall){
 else{
 
     if (live_stream){
-      // 'http://10.40.12.87:2204/video_feed'
+
+      // retrieve from the camera server
       $('#curr_cam_pic').attr( 'src', 'http://' + ip_addr + ':2204/video_feed' + '?t='  + new Date().getTime() )
 
      }
     else {
+
+         // retrieve locally
          $('#curr_cam_pic').attr('src', '/static/curr_pic/frame0.png' + '?t='  + new Date().getTime())
     }
 

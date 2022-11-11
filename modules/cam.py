@@ -3,6 +3,7 @@ Camera imported in CyberSco.py..
 Choice bewtween Evolve512 or Zyla camera
 '''
 
+from colorama import Fore, Style         # Color in the Terminal
 from PIL import Image
 from flask import Flask, Response, request, redirect
 import shutil as sh
@@ -23,7 +24,6 @@ except:
     from modules.track_segm.cam_pred import CAM_PRED
 
 app = Flask(__name__)
-##
 
 with open('interface/settings/cam_used.yaml') as f_r:     # camera in use
     cam_used = yaml.load(f_r, Loader=yaml.FullLoader)
@@ -41,8 +41,8 @@ if not os.path.exists(addr_curr_pic):
 addr_pic_read = addr_pic
 mda_pic_addr = opj(static, 'mda_pics')
 mda_imgs_pos = opj(static, 'mda_pics', 'imgs_pos')
-if not os.path.exists(mda_imgs_pos):
-    os.mkdir(mda_imgs_pos)
+if not os.path.exists(mda_pic_addr):
+    os.mkdir(mda_pic_addr)
 if not os.path.exists(mda_imgs_pos):
     os.mkdir(mda_imgs_pos)
 livecam = True
@@ -67,6 +67,22 @@ def receive_exp_time():
         new_exp_time = request.form.get('data')
         print(f'new exp time is {new_exp_time}')
         exp_time = int(new_exp_time)
+
+    return "Default Message"
+
+
+@app.route('/autocontrast', methods = ['POST'])
+def receive_autocontrast():
+    '''
+    Retrieve autocontrast
+    '''
+    if request.method == 'POST':
+        new_autoc = request.form.get('val')
+        print(f'new autocontrast is {new_autoc}')
+        if new_autoc == 'true':
+            cam.autocontrast = True
+        else:
+            cam.autocontrast = False
 
     return "Default Message"
 
@@ -132,18 +148,22 @@ def laplacian_var(img):
     return cv2.Laplacian(src_gray, cv2.CV_16S, ksize=kernel_size).var()
 
 
-def gen(predict=True, debug=[0]):
+def gen(predict=True, debug=[]):
     while True:
         if livecam:
             try:
                 if 0 in debug:
                     print(f'exp_time is {exp_time}')
-                cam.take_pic(addr_pic, exp_time=exp_time)     # take a new pic
+                if 1 in debug:
+                    print('...')
+                # take a new pic
+                cam.take_pic(addr_pic, exp_time=exp_time, allow_contrast=True)
                 adapt_size(addr_pic)
                 # copy image for making predictions on it after
                 copy_pic_in_mda()
             except:
                 print('Cannot copy to mda folder')
+                print('Check the camera is on !!!')
             if predict:
                 try:
                     cp.predict_and_save()   # predict in real time
@@ -164,6 +184,22 @@ def gen(predict=True, debug=[0]):
             print('Cannot provide a frame !!')
 
 
+def message_at_beginning(host, port, debug_addr_server=False):
+    '''
+    '''
+    print(Fore.GREEN + """
+                ***********************************
+
+                            Camera
+
+                ***********************************
+    """)
+
+
+    if debug_addr_server:
+        print(f'address: {host}:{port}')
+
+
 @app.route('/video_feed')
 def video_feed():
     return Response(gen(),
@@ -174,4 +210,8 @@ if __name__ == '__main__':
     ip = socket.gethostbyname(socket.gethostname())
     PORT = 2204
     HOST = ip
+    message_at_beginning(HOST,PORT)
+    print(Style.RESET_ALL)
+    # remove FLask messages
+    app.env = "development"
     app.run(host=HOST, port=PORT, threaded=True)

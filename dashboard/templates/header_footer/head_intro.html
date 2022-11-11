@@ -1,0 +1,42 @@
+<!-- Background -->
+
+<header class="intro-header" style= "background-image: url('{{header.background}}');
+                                     padding-top:600px; opacity:0.1 "  >
+
+</header>
+
+<!-- Welcom text -->
+
+<div class="container" style= " position:fixed; top:15%; left:20%">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="site-heading">
+
+                <h1 style= "color:#428bca; font-size:80px;" >Welcome</h1>
+                <h1 style= "color:#428bca; font-size:80px; padding-left:20%" >in</h1>
+                <h1 style= "color:#428bca; font-size:80px; margin-left:-7%" >the Dasboard</h1>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Enter button -->
+
+<div >
+    <button class="btn btn-success" id="enter_dash" > Enter </button>
+</div>
+
+<!-- link for the Enter button -->
+
+<script >
+
+   $('#enter_dash').css({'position':'fixed',
+                          'right':'20%',
+                          'top':'70%'
+                         })
+   $('#enter_dash').click(function(){
+       window.location='/interf'
+   })
+
+</script>

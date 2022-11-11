@@ -17,17 +17,19 @@ class SERIAL_BASICS():
         '''
 
         try:
-            addr_yaml = f'../settings/ports/{cl_name_low}.yaml'
+            addr_yaml = f'settings/ports/{cl_name_low}.yaml'
             con = self.load_yaml(addr_yaml)                          # read yaml port file
             if 0 in debug:
                 print('loaded the yaml file'
                       f' for the serial connection of {cl_name_low} ')
+                print(f"con['port'] is {con['port']}")
         except:
             addr_yaml = f'modules/settings/ports/{cl_name_low}.yaml'
             con = self.load_yaml(addr_yaml)
             if 0 in debug:
                 print('loaded the yaml file'
                       f' for the serial connection of {cl_name_low} ')
+                print(f"con['port'] is {con['port']}")
 
         try:
             if port:
@@ -42,9 +44,12 @@ class SERIAL_BASICS():
                 timeout = 3
            )
             self.state = 'connected'  # connexion state
-            print(f'Succeeded serial connection for {cl_name_low} ')
+            if 1 in debug:
+                print(f'Succeeded serial connection for {cl_name_low} ')
         except:
-            print(f'cannot find the port for {cl_name_low} ')
+            if 1 in debug:
+                print(f'cannot find the port for {cl_name_low} ')
+                print('The port is probably yet in used !!!')
             self.ser = 'fake_serial'
             self.state = 'not connected' # connexion state
 

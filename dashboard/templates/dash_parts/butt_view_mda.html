@@ -1,0 +1,58 @@
+
+
+
+function butt_bootstr(title, kind, cl){
+
+      var butt = $('<button/>').addClass("btn btn-" + kind)
+                               .addClass(cl)
+                               .text(title)
+                               .attr('butt_equip', dic_cyber['equip'])
+      var div_butt = $('<div/>').append(butt)
+      div_butt.css({'margin-bottom':'10px'})
+
+      return div_butt
+
+}
+
+// associated equipement to the current MDA..
+var mda_assoc_equip = 'none'
+
+function butt_view_mda(curr_elem, title, color){
+
+      var div_butt = butt_bootstr(title, color, '')
+      curr_elem.html('')
+      curr_elem.append(div_butt)
+      div_butt.click(function(){
+            $('#mda_visu').toggle()
+            var id_equip = $(this).children().attr('butt_equip')
+            if ($("#mda_visu").is(":visible")){
+               mda_assoc_equip = id_equip
+               //alert('mda_assoc_equip is ' + mda_assoc_equip)
+            }
+            else{
+                mda_assoc_equip = 'none'
+            }
+
+      })
+
+}
+
+function make_mda_buttons(is_mda_launched, curr_elem){
+
+      if (is_mda_launched){
+          butt_view_mda(curr_elem, 'watch mda', 'success')
+      }else{
+          butt_view_mda(curr_elem, 'not running', 'secondary')
+      }
+
+}
+
+function button_mda(dic_cyber){
+
+      is_mda_launched = JSON.parse(dic_cyber['mda_launched'])
+      //alert(is_mda_launched)
+      view_id = '#view_' + dic_cyber['equip']
+      curr_view = $(view_id)
+      make_mda_buttons(is_mda_launched, curr_view)
+
+}

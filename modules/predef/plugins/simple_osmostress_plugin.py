@@ -24,7 +24,7 @@ class SIMPLE_OSMOSTRESS(MDA):
     def define(self):                         #
         '''
         '''
-        self.refocus()                               # add refocusing
+        self.focus()                               # add refocusing
         self.take_pic()                              # add take pic
         self.take_pic_fluo('rfp')                    # add take pic RFP
         self.take_pic_fluo('gfp')                    # add take pic GFP
@@ -52,7 +52,7 @@ class SIMPLE_OSMOSTRESS(MDA):
         for pos in self.list_pos:
             pos.curr_exp = 'hog1'
         self.gatepulse = 1                      # gate used for the pulses
-        self.first_time = datetime.now()        # origin of clock
+        self.start_time()
         # delay between measurements for fast observation
         self.delay_obs0 = 0.25
         self.offset_obs0 = 0                    # triggering in advance
@@ -76,14 +76,16 @@ class SIMPLE_OSMOSTRESS(MDA):
         and go back to 6 min BF
         '''
         # current time
-        curr_time_min = int((datetime.now() - self.first_time).seconds/60)
+        self.curr_time()
+        cnd0 = self.curr_time > self.per_pulse/6
+        cnd1 = curr_time_min > self.phi
 
         #--------------------- fast and osmotic shock
 
         # begin the observations fast
         # trigger observations
-        if (curr_time_min + self.phi +
-                self.offset_obs0)%self.per_pulse < self.delay:
+        phase_beg = self.phi + self.offset_obs0
+        if self.trig_per_event(phase_beg):
             print(f'**** Begin the observations at {curr_time_min} min ****')
             self.delay = self.delay_obs0          # passing to faster frequency
             for pos in self.list_pos:
@@ -92,17 +94,16 @@ class SIMPLE_OSMOSTRESS(MDA):
         # Create and osmotic pulse
 
         # trigger the pulse..
-        if (curr_time_min > self.per_pulse/6) and ((curr_time_min +
-                            self.phi)%self.per_pulse < self.delay) :
+        phase0 = self.phi
+        if cnd0 and self.trig_per_event(phase0) :
             print(f'**** send a pulse at {curr_time_min} min !!! ****')
             self.ga.set_pos_indices([self.gatepulse], 1)
 
         #---------------------  medium
 
         # End of fast sampling, medium rate
-
-        if (curr_time_min > self.phi) and (curr_time_min + self.phi
-                            - self.time_obs0)%self.per_pulse < self.delay:
+        phase1 = self.phi - self.time_obs0
+        if cnd1 and self.trig_per_event(phase1):
             print(f'**** Return to medium sampling at {curr_time_min} min ****')
             # repassing to slow frequency
             self.delay = self.delay_obs1
@@ -113,9 +114,8 @@ class SIMPLE_OSMOSTRESS(MDA):
         #--------------------- stop medium and stop osmotic shock
 
         # End of medium sampling, slow rate
-
-        if (curr_time_min > self.phi) and (curr_time_min + self.phi
-                            - self.time_obs1)%self.per_pulse < self.delay:
+        phase2 = self.phi - self.time_obs1
+        if cnd1 and self.trig_per_event(phase2):
             print(f'**** Return to slow sampling at {curr_time_min} min ****')
             # repassing to slow frequency
             self.delay = self.delay_init
@@ -123,6 +123,7 @@ class SIMPLE_OSMOSTRESS(MDA):
         # End of osmotic pulse (after 30min)
 
         # closing the gate
-        if (curr_time_min > self.phi) and (curr_time_min%self.per_pulse < self.delay):
-            print(f'**** Remove osmotic schock at {curr_time_min} min ****')
+        phase_end = 0
+        if cnd1 and self.trig_per_event(phase_end):
+            print(f'**** Remove osmotic shock at {curr_time_min} min ****')
             self.ga.set_pos_indices([self.gatepulse], 0)

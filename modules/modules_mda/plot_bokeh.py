@@ -299,7 +299,7 @@ class BOKEH_PLOT(object):
             if debug > 0:
                 print('added hover !!!')
 
-    def show(self, show_logo=False, save=True, debug=[0]):
+    def show(self, show_logo=False, save=True, debug=[]):
         '''
         Parameters:
             * show_logo : if True show Bokeh logo
@@ -319,7 +319,8 @@ class BOKEH_PLOT(object):
                 dic_logx = {'x_axis_type':"log"}
                 dbk.update(dic_logx)
         except:
-            if 0 in debug: print("## self.plot_type 'logx' does not exist")
+            if 0 in debug:
+                print("## self.plot_type 'logx' does not exist")
         try:
             if self.plot_type == 'logy':
                 dic_logy = {'y_axis_type':"log"}

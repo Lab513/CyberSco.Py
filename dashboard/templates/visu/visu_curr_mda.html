@@ -1,0 +1,75 @@
+
+
+{% include 'visu/window_mda_visu.html' %}
+
+<script >
+
+          click_cell = true
+          select_area = false
+          max_nb_im = 0
+          frame_time = 0
+          frame_index = 0
+
+          $( document ).ready(function() {
+
+                // number of frames
+                max_nb_im = 10
+                // slider size
+                $("#pospic").bootstrapSlider('setAttribute', 'max', max_nb_im)
+                $('#pospic').bootstrapSlider('refresh')
+
+          });
+
+          // init the view on BF images
+
+          $('#curr_proc_pic').attr('src', 'static/mda_temp_' + dic_cyber['user'] +
+                                    '/monitorings/BF/frame0_t0.png?'+ new Date().getTime())
+
+          $("#kind_read_pics").bind('contextmenu', function(event) {
+
+               if (event.which == 3){   // can also use button instead of which.
+                   // prevent default action.
+                   event.preventDefault();
+                   //alert("context!!!")
+                   $('#speed_hover').toggle()
+                   if( $('#speed_hover').is(":hidden") ){
+                        delay_pic = $('#speed_hover_mda_visu').val()
+
+                        }
+                   }
+
+          })
+
+          {% include 'visu/refresh_mda_visu.html' %}
+
+          // Change image
+
+          {% include 'visu/change_pic.html' %}
+
+        //-------------------     Change how the images are read
+
+        // select how images are read (click or hover)
+
+        $('#read_pics').on('change', function() {
+
+            read_pic_kind = $(this).val()
+            //alert(read_pic_kind)
+            unbind_arrows()
+            if (read_pic_kind == 'hover'){
+                    arrow_hover()
+                }
+            else if (read_pic_kind == 'click'){
+                    arrow_click()
+                }
+
+       });
+
+       //---------------- close mda_visu panel
+
+       $('#close_mda_visu_panel').click(function(){
+           $('#mda_visu').hide()
+           mda_assoc_equip = 'none'
+       })
+
+
+</script>

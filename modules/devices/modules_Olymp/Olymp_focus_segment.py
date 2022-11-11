@@ -8,8 +8,8 @@ import shutil as sh
 import yaml
 from matplotlib import pyplot as plt
 try:
-    from modules_Olymp.focus_segm_plots.AF_ML_plots import FOCUS_SEGM_PLOT as FSP
-    from modules_Olymp.focus_segm_plots.find_optim_focus import FIND_OPTIM_FOCUS as FOF
+    from devices.modules_Olymp.focus_segm_plots.AF_ML_plots import FOCUS_SEGM_PLOT as FSP
+    from devices.modules_Olymp.focus_segm_plots.find_optim_focus import FIND_OPTIM_FOCUS as FOF
 except:
     from modules.devices.modules_Olymp.focus_segm_plots.AF_ML_plots import FOCUS_SEGM_PLOT as FSP
     from modules.devices.modules_Olymp.focus_segm_plots.find_optim_focus import FIND_OPTIM_FOCUS as FOF
@@ -28,7 +28,7 @@ class FOCUS_SEGM(FSP, FOF):
     The steepest positive slope is used for finding the optimum.
     '''
     # nb_af_steps=10, step_width=1 # 18,2 for sucrose # 30,1 test AF
-    def __init__(self, nb_af_steps=12, step_width=1):
+    def __init__(self, nb_af_steps=11, step_width=0.25):
         '''
         nb_af_steps : nb of steps
         step_width : z step width in µm
@@ -54,15 +54,17 @@ class FOCUS_SEGM(FSP, FOF):
         # list of the durations for AFML correction
         self.list_AFML_duration = []
         self.prepare_addr_for_AF_ML()
+        self.afml_max_area = 300
+        self.thresh = 127
 
     def prepare_addr_for_AF_ML(self):
         '''
         '''
         self.addr_direct_AF_ML = opj('mda_temp', 'monitorings',
-                            'AF', 'imgs_for_AF_ML_direct_training')
+                                     'AF', 'imgs_for_AF_ML_direct_training')
 
     def take_pic_posz(self, i, val, suffix='', addr=None,
-                                    move_type=None, show=False):
+                                    move_type=None, bpp=8, show=False):
         '''
         take a BF picture at posz =  val
         '''
@@ -80,8 +82,9 @@ class FOCUS_SEGM(FSP, FOF):
         else:
             self.addr_img_optimz = opj('mda_temp', 'monitorings',
                 'AF', 'imgs_for_AF_ML', f'bf_for_optimz{i}{suffix}.tiff')
-        self.cam.take_pic(self.addr_img_optimz, bpp=8, exp_time=100)
-        self.cam.adapt()                # adapt the pixel range
+        self.cam.take_pic(self.addr_img_optimz, bpp=bpp,
+                          exp_time=100, allow_contrast=True)
+        # self.cam.adapt(bpp)                # adapt the pixel range
         if show:
             plt.figure()
             plt.title(f'cam frame {i}')
@@ -96,7 +99,7 @@ class FOCUS_SEGM(FSP, FOF):
         addr_pred = f'pred_uu{i}.png'
         cv2.imwrite(addr_pred, pred)
 
-    def make_pred(self, i, thresh=127, show=False,
+    def make_pred(self, i, show=False,
                 save=True, surf_tot=True, debug=[]):  # thresh in x60 is 253
         '''
         make the prediction and return surface
@@ -113,23 +116,26 @@ class FOCUS_SEGM(FSP, FOF):
         ##
         nbcntrs = 0
         pred_surf = 0
-        ret, thr = cv2.threshold(pred, thresh, 255, 0)
+        # threshold on the prediction
+        ret, thr = cv2.threshold(pred, self.thresh, 255, 0)
         thr = thr.astype(np.uint8)
+        # find contours
         cntrs, _ = cv2.findContours(thr, cv2.RETR_TREE,
-                            cv2.CHAIN_APPROX_SIMPLE)[-2:]    # find contours
+                                    cv2.CHAIN_APPROX_SIMPLE)[-2:]
 
         for c in cntrs:
             carea = cv2.contourArea(c)
-            if carea < 300:                       # removing large shapes
+            # removing large shapes
+            if carea < self.afml_max_area:
                 pred_surf += carea
                 nbcntrs += 1
                 # fill contour
                 cv2.drawContours(mask, [c], -1, (255, 255, 255), -1)
         if nbcntrs == 0 or surf_tot : nbcntrs = 1
-        #len(np.where(pred > thresh)[0]) / nbcntrs
+        #len(np.where(pred > self.thresh)[0]) / nbcntrs
         pred_surf_mean = round(pred_surf / nbcntrs, 1)
         pred_surf_mask_mean = round(len(
-                np.where(mask > thresh)[0]) / nbcntrs, 1)
+                np.where(mask > self.thresh)[0]) / nbcntrs, 1)
         if 1 in debug: self.debug_make_pred(pred_surf_mean, pred)
         if 2 in debug:
             print(f'pred_surf_mean is {pred_surf_mean} ')
@@ -143,14 +149,15 @@ class FOCUS_SEGM(FSP, FOF):
             # address for pred
             addr_pred_af = self.addr_img_optimz[:-5] + 'pred.png'
             if 3 in debug: print(f'save pred at address {addr_pred_af} ')
-            plt.savefig(addr_pred_af)
+            plt.axis('off')
+            plt.savefig(addr_pred_af, bbox_inches='tight', pad_inches=0)
             addr_cntrs_filtered_af = self.addr_img_optimz[:-5] +\
                                                     'cntrs_filtered.png'
             cv2.imwrite(addr_cntrs_filtered_af , mask)
 
         return pred_surf_mean
 
-    def make_surf_pred_list(self, ref):
+    def make_surf_pred_list(self, ref, debug=[1]):
         '''
         List of the prediction surfaces
         '''
@@ -172,7 +179,8 @@ class FOCUS_SEGM(FSP, FOF):
         # register the curve
         if self.rep == 0:
             self.ref_l_surf = l_surf
-            print(f'### self.ref_l_surf is {self.ref_l_surf}')
+            if 1 in debug:
+                print(f'### self.ref_l_surf is {self.ref_l_surf}')
 
         return l_surf, l_lap
 
@@ -181,7 +189,9 @@ class FOCUS_SEGM(FSP, FOF):
         time for focusing, index max found and position chosen for focus
         '''
         print(f'time elapsed for the focus is {round((t1-t0) , 1)} s')
-        print(Fore.YELLOW +  f'ind_optim is {ind_optim}')
+        print(Fore.YELLOW + '------------------')
+        print(f'ind_optim is {ind_optim}')
+        print('------------------')
         print(f'pos_focus is {pos_focus}')
         print(Style.RESET_ALL)
 
@@ -364,7 +374,7 @@ class FOCUS_SEGM(FSP, FOF):
 
     def afml_refocus(self, ref_posz, ref=None, shift=-1, num='', rep='',
                     AF_train=True, reset_ref=True,
-                    debug=[]):
+                    debug=[1,2]):
         '''
         find the focus
         ref : first position for searching
@@ -378,13 +388,18 @@ class FOCUS_SEGM(FSP, FOF):
             ref = ref_posz - self.delta_focus       # begin at position z=ref
             print(f'beginning position is {ref} !!!')
         if rep == 0:
-            print(f'#### At beginning ref_posz = {ref_posz} ...')
-        if self.kind_focus == 'afml_sweep':
+            if 0 in debug:
+                print(f'#### At beginning ref_posz = {ref_posz} ...')
+        if 1 in debug:
+            print(f'In afml_refocus, self.afml_optim is {self.afml_optim}..')
+        if 2 in debug:
+            print(f'In afml_refocus, self.step_focus is { self.step_focus }')
+        if self.afml_optim == 'max':
             # find the optimum using a full sweep
             pos_focus = self.search_optim_simple_sweep(ref, rep, AF_train)
-        elif self.kind_focus == 'afml_dich':
-            # find the optimum using dichotomy
-            pos_focus = self.optim_with_dichotomy(rep, AF_train)
+        # elif self.afml_optim == 'afml_dich':
+        #     # find the optimum using dichotomy
+        #     pos_focus = self.optim_with_dichotomy(rep, AF_train)
         self.go_zpos(pos_focus, 'd')      # go to the focused z position
         if reset_ref:
             ref_posz = pos_focus          # update ref_posz

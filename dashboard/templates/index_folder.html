@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Main page for the Dashboard -->
+
+{% include 'header_footer/index_head.html' %}
+
+
+<body>
+
+{% include 'basics/navbar.html' %}
+
+ <!-- include 'header_doc_exit.html'  -->
+
+<!-- socket -->
+
+{% include 'socket.html' %}
+
+<!-- Connected user -->
+
+{% include 'connect/current_user.html' %}
+
+{% include 'dash_parts/refresh_from_cyber.html' %}
+
+{% include 'dash_parts/main_board.html' %}
+
+
+<!-- footer -->
+
+{% include 'header_footer/footer.html' %}
+
+</body>
+
+</html>

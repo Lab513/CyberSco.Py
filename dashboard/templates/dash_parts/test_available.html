@@ -1,0 +1,25 @@
+
+
+
+function available_test_color(is_available, curr_available){
+
+      if (is_available){
+        curr_available.css({'color':'#79ff4d'})
+        curr_available.text('yes')
+      }
+      else{
+        curr_available.css({'color':'red'})
+        curr_available.text('no')
+      }
+
+}
+
+function available_or_not(dic_cyber){
+
+      available_id = '#available_' + dic_cyber['equip']
+      curr_available = $(available_id)
+      is_available = JSON.parse(dic_cyber['available'])
+      curr_available.html('')
+      available_test_color(is_available, curr_available)
+
+}

@@ -107,7 +107,8 @@ class OBJ():
         if prefix == '1OB':
             num_obj = int(answer.split()[1].strip())
             curr_obj = self.dic_pos_obj[num_obj]
-            print(f'curr_obj is {curr_obj}')
+            if 2 in debug:
+                print(f'curr_obj is {curr_obj}')
         else:
             curr_obj = self.objective      # keep the current objective..
         self.emit('2LOG OUT')

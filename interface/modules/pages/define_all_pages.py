@@ -6,8 +6,11 @@ Build the variables used by jinja needed for the views
 """
 
 import glob
+import re
+import os
 import os.path as op
 opd, opb, opj = op.dirname, op.basename, op.join
+
 
 Interface_subtitle = ""
 
@@ -57,13 +60,28 @@ class define_firstpage(define_page):
 
 
 class define_index_page(define_page):
-    def __init__(self):
+    def __init__(self, user=None, debug=[]):
         '''
         Page (index_folder.html) for entering
          the parameters and launching the processings.
         '''
         define_page.__init__(self)
         # list of the protocols
+        path_protoc = 'interface/static/mda_protocols'
+        if not os.path.exists(path_protoc):
+            os.mkdir(path_protoc)
         self.prot = [opb(f).split('.yaml')[0] for f
                      in glob.glob('interface/static/mda_protocols/*.yaml')]
-        self.prot.remove('temp0')
+        if 0 in debug:
+            print(f'self.prot is {self.prot}')
+        try:
+            self.prot.remove('temp0')
+        except:
+            print('no temp0 file')
+        if 1 in debug:
+            print(f'User is {user}')
+
+
+        # extract the username from <User username> format..
+        username = re.findall('\<User\\s*(\\w+?\\s*\\w*)\\s*\>', str(user))[0]
+        self.current_user = username

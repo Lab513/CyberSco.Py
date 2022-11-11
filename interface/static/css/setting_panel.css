@@ -87,7 +87,7 @@
      padding-left: 30px;
      position: absolute;
      box-shadow: 0.5em 0.5em 0.7em;
-     top: 80px;
+     top: 120px;
      left: 650px;
      height: 300px;
      width: 80px;
@@ -432,32 +432,58 @@ img.cntrl_ML {
 
 /* Panel for snap time exposure */
 
-#snap_exposure {
+#snap_params {
 
       /*
       Panel for live exposure time
       */
 
-     padding-left: 30px;
+
      position: absolute;
      box-shadow: 0.5em 0.5em 0.7em;
      top: 610px;
      left: 650px;
-     height: 70px;
-     width: 150px;
-     padding-left: 10px;
-     padding-top: 25px;
+     height: 120px;
+     width: 300px;
+     padding-left: 30px;
+     padding-top: 30px;
      background-color: white;
      z-index: 20;
 
-
   }
+
+#snap_overview {
+
+       /*
+       Overview for controlling the snap..
+       */
+
+       position: absolute;
+       box-shadow: 0.5em 0.5em 0.7em;
+       top: 20px;
+       right: 20px;
+       height: 200px;
+       width: 200px;
+       padding: 3px;
+       background-color: white;
+       z-index: 20;
+
+    }
 
   /* input snap time exposure */
 
   #inp_snap_exp_time {
 
-    width: 40px;
+    width: 30px;
+    border-style: none;
+
+  }
+
+  /* input snap address */
+
+  #inp_snap_addr {
+
+    width: 200px;
     border-style: none;
 
   }

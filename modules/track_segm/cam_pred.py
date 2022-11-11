@@ -5,26 +5,32 @@ Used in Mda and Live modes
 
 '''
 
+import os
+# Tensorflow verbosity, tensorflow mute
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # or any {'0', '1', '2'}
+
+try:
+    from modules.util_server import find_platform, chose_server
+    platf = find_platform()
+    server = chose_server(platf)
+    from modules.util_misc import *
+except:
+    print("no socket")
+
 from pathlib import Path
+# console colors
 from colorama import Fore, Style
+# tensorflow
 from tensorflow.keras import models
-from modules.modules_mda.tracking import TRACK as TR
 import tensorflow.keras as tfk
+# Tracking
+from modules.modules_mda.tracking import TRACK as TR
 import shutil as sh
 import yaml
 import re
 import numpy as np
-import os
 op = os.path
 opj, opd, opb = op.join, op.dirname, op.basename
-
-try:
-    from modules.util_server import find_platform, chose_server
-    from modules.util_misc import *
-    platf = find_platform()
-    server = chose_server(platf)
-except:
-    print("no socket")
 
 import cv2
 
@@ -33,11 +39,16 @@ class CAM_PRED(TR):
     '''
     Film and predict
     '''
-    def __init__(self, dir_pred=None, mode='mda', events=True):
+    def __init__(self, dir_pred=None,
+                       mode='mda',
+                       events=True,
+                       debug=[]):
         '''
+        mode: mda or predefined_mda
         '''
         TR.__init__(self)
-        print(f'########### mode is {mode} ')
+        if 0 in debug:
+            print(f'########### mode is {mode} ')
         self.dir_pred = dir_pred
         self.mode = mode
         self.load_curr_model()
@@ -61,23 +72,27 @@ class CAM_PRED(TR):
         '''
         Load the current model
         '''
-        print('## In load_curr_model !!!!!! ')
+        if 0 in debug:
+            print('## In load_curr_model !!!!!! ')
         with open('modules/settings/curr_model.yaml') as f_r:
             curr_mod = yaml.load(f_r, Loader=yaml.FullLoader)
             if 0 in debug:
                 print(f'####** curr_mod = {curr_mod} ')
         # load the main cell segmentation model
         self.curr_mod = self.load_model(curr_mod)
-        print(f'################ In cam pred, curr_mod {curr_mod}')
+        if 1 in debug:
+            print(f'################ In cam pred, curr_mod {curr_mod}')
 
-    def load_event_model(self):
+    def load_event_model(self, debug=[]):
         '''
         Load the model for event detection
         '''
         with open('modules/settings/event_model.yaml') as f_r:
             ev_mod = yaml.load(f_r, Loader=yaml.FullLoader)
-            self.ev_mod = self.load_model(ev_mod)                  # model
-        print(f'################ In cam pred, event model {ev_mod}')
+            # event model
+            self.ev_mod = self.load_model(ev_mod)
+        if 0 in debug:
+            print(f'################ In cam pred, event model {ev_mod}')
 
     def image_contours(self, img, cntrs, debug=[]):
         '''
@@ -277,7 +292,7 @@ class CAM_PRED(TR):
         '''
         if 0 in debug:
             print(Fore.YELLOW + f'### kind prediction is {kind} ')
-        print(Style.RESET_ALL)
+            print(Style.RESET_ALL)
         self.predf = f"{kind}_{f[:-5]}.png"
         # mda mode
         if self.mode == 'mda':
@@ -339,15 +354,16 @@ class CAM_PRED(TR):
             dic_mod = yaml.load(f_r, Loader=yaml.FullLoader)
         return dic_mod
 
-    def load_model(self, mod, debug=[0]):
+    def load_model(self, mod, debug=[]):
         '''
         mod : name of the model
         ep5_v3 : segmentation model for 100x
         ep15_x20_otsu : segmentation model for 20x
         '''
         dic_mod = self.load_dict_models()
-        print(Fore.YELLOW + f'*** loading {mod} ... ')
-        print(Style.RESET_ALL)
+        if 0 in debug:
+            print(Fore.YELLOW + f'*** loading {mod} ... ')
+            print(Style.RESET_ALL)
         # dic_mod[mod] : model used
         model_loaded = models.load_model(Path('models') / dic_mod[mod])
         if 0 in debug:

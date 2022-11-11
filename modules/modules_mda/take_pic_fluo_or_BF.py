@@ -89,34 +89,41 @@ class TAKE_PIC_FLUO_OR_BF():
         sleep(1)
         self.ol.set_shutter(shut='on')             # open the shutter for BF
 
-    def save_snap(self, debug=[1]):
+    def save_snap(self, snap_addr=None, debug=[0,1]):
         '''
         Save the snap in interface/static/snapped
         and in Downloads
         '''
+        if 0 in debug:
+            print(f'In save_snap, snap_addr {snap_addr} ')
         addr_pic = self.snap_cases()
-        addr_snap = 'interface/static/snapped'
-        if not os.path.exists(addr_snap):
-            os.mkdir(addr_snap)
-        addr_targ = opj(addr_snap, f'snap_{self.date()}.png')  # snap with date
-        addr_curr = opj(addr_snap, f'snap_curr.png')           # frame0.png
+        addr_snap_server = 'interface/static/snapped'
+        if not os.path.exists(addr_snap_server):
+            os.mkdir(addr_snap_server)
+        addr_targ = opj(addr_snap_server, f'snap_{self.date()}.png')  # snap with date
+        addr_curr = opj(addr_snap_server, f'snap_curr.png')           # frame0.png
         print(addr_targ)
         sh.copy(addr_pic, addr_targ)
         sh.copy(addr_pic, addr_curr)
-        dpath = str(Path.home() / '.jupyter' / "Downloads")
+        if not snap_addr:
+            dpath = str(Path.home() / '.jupyter' / "Downloads")
+        else:
+            dpath = snap_addr
         # if not os.path.exists(dpath):
         #     os.makedirs(dpath)              # make download folder for snaps
         # sh.copy(addr_pic, dpath)
-        sh.copy(addr_targ, dpath)             # save the snap in Downloads
+        sh.copy(addr_targ, dpath)             # save the snap in Downloads or other address
         addr_targ
         if 1 in debug:
             print(f'save the snap in {dpath} ')
 
-    def take_pic(self, SC_val, snap_mode=True, debug=[]):
+    def take_pic(self, SC_val, snap_mode=True, snap_addr=None, debug=[0]):
         '''
         Snap, Take an image online
         '''
         ####
+        if 0 in debug:
+            print(f'In take_pic, snap_addr is {snap_addr}')
         if 1 in debug:
             print(f'SC_val is {SC_val} ')
         if 'FP' in SC_val :
@@ -142,12 +149,12 @@ class TAKE_PIC_FLUO_OR_BF():
             sleep(1)
             ##
             if snap_mode:
-                self.save_snap()
+                self.save_snap(snap_addr)
             self.return_to_BF()
             self.emit('snapped', 'fluo')
         else:
             if snap_mode:
-                self.save_snap()
+                self.save_snap(snap_addr)
             self.emit('snapped', 'BF')
 
     def illuminate(self, SC_val, snap_mode=True, debug=[1]):

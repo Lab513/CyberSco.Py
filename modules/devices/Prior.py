@@ -5,7 +5,7 @@ from time import sleep
 try:
     from modules.devices.serial_basics import SERIAL_BASICS as SB
 except:
-    from serial_basics import SERIAL_BASICS as SB
+    from devices.serial_basics import SERIAL_BASICS as SB
 
 class PRIOR(SB):
     '''

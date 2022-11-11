@@ -1,0 +1,49 @@
+
+<script>
+
+{% include 'dash_parts/greyishing_not_connected.html' %}
+
+{% include 'dash_parts/butt_view_mda.html' %}
+
+{% include 'dash_parts/butt_book.html' %}
+
+{% include 'dash_parts/test_available.html' %}
+
+{% include 'dash_parts/set_user_name.html' %}
+
+{% include 'dash_parts/set_time_elapsed.html' %}
+
+{% include 'dash_parts/show_devices_states.html' %}
+
+dic_cyber = {'user':'none'}
+
+function refresh_board(dic_cyber){
+
+      try{
+            dic_cyber['pic_time'] = JSON.parse(dic_cyber['pic_time'])
+          } catch (err){
+            dic_cyber['pic_time'] = {'0':{'0':'0'}}
+          }
+      set_user_name(dic_cyber)
+      set_time_elapsed(dic_cyber)
+      button_mda(dic_cyber)
+      available_or_not(dic_cyber)
+      button_book(dic_cyber)
+      set_devices_connected(dic_cyber)
+      // recenter and resize the element
+      $('.elem_board').css({'padding-top':'25px', 'height':'43px'})
+      //alert('In refresh, dic_cyber user is ' + dic_cyber['user'])
+
+}
+
+socket.on('infos_dash', function(infos_cyber){
+
+    //alert('infos_cyber is ' + infos_cyber)
+    dic_cyber = JSON.parse(infos_cyber)
+    refresh_board(dic_cyber)
+
+
+  })
+
+
+</script>

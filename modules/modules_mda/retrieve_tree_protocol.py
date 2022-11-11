@@ -49,19 +49,26 @@ class RETRIEVE_TREE_PROTOCOL():
             print(f'pos.x, pos.y, pos.z are {pos.x, pos.y, pos.z}....')
         if pos.x != 0 and pos.y != 0:
             pos.list.append(pos.goto_xy)  # x,y position
-        pos.ol.kind_focus = self.kind_focus     # kind focus from mda to pos
-        pos.ol.afml_optim = self.afml_optim     # optim metho from mda to pos
+        #pos.ol.kind_focus = self.kind_focus     # kind focus from mda to pos
+        pos.ol.afml_optim = self.afml_optim     # optim method from mda to pos
         pos.ref_posz = pos.z                    # position reference for afml
         ##
         obj.list.append(pos)
         ## retrieving predefined parameters
+        self.make_lists_for_predef(pos)
+        ##
+        self.iterdict(pos, d['children'])
+
+    def make_lists_for_predef(self, pos):
+        '''
+        Lists from the Tree for predef experiments
+        '''
         self.lpos_id.append(pos.tree_id)
         self.lxyz.append([pos.x, pos.y, pos.z])     # list_pos for predefined
         self.list_gates.append(pos.gate)          # list_gate for predefined
         # list of the Settings channels with exposition time..
         self.list_SC_ET.append([])
-        ##
-        self.iterdict(pos, d['children'])
+        # self.list_AF.append(pos.kind_focus)
 
     def retrieve_take_picture(self, d, obj, mask, debug=[]):
         '''
@@ -84,7 +91,7 @@ class RETRIEVE_TREE_PROTOCOL():
             print(f'*** mask_exp_time is {mask_exp_time} *** ')
         try:
             addr_SC = self.settings_folder /\
-                    'settings_channels' / f'{SC_name}.yaml'
+                      'settings_channels' / f'{SC_name}.yaml'
             print(f'addr_SC is {addr_SC} ')
             with open(addr_SC) as f_r:                             # current SC
                 set_chan = yaml.load(f_r, Loader=yaml.FullLoader)
@@ -108,31 +115,36 @@ class RETRIEVE_TREE_PROTOCOL():
         self.list_SC_ET[-1].append({'name': SC_name,
                                     'exp_time': exp_time})
 
-    def retrieve_loop(self, d, obj, debug=[0]):
+    def retrieve_loop(self, d, obj, debug=[]):
         '''
         From tree to mda object for loop
         '''
         if 0 in debug:
             print('dealing with Loop')
             print(f'### d is {d} ')
+
         nb_rep, delay = d['data']['nb_repetition'],\
-            d['data']['time_per_repetition']
-        print(Fore.GREEN + f'### nb_rep {nb_rep}, '
-                    ' time per repetition {delay} min ')
-        print(Style.RESET_ALL)
+                        d['data']['time_per_repetition']
+        if 1 in debug:
+            print(Fore.GREEN + f'\n### nb_rep {nb_rep}, '
+                        f' time per repetition {delay} min ')
+            print(Style.RESET_ALL)
         loop = LOOP(nb_rep, delay)
         obj.list.append(loop)
         self.iterdict(loop, d['children'])
 
-    def retrieve_AF(self, d, obj, debug=[0]):
+    def retrieve_AF(self, d, obj, debug=[0,1,2]):
         '''
         From tree to mda object for Autofocus
+        obj = POS()
         '''
         if 0 in debug:
             print('dealing with Autofocus')
-        obj.list.append(obj.refocus)                # make the Autofocus
+        # make the Autofocus
+        obj.list.append(obj.refocus)
         try:
-            obj.offset = d['data']['zoffset']           # offset from the tree
+            # offset from the tree
+            obj.offset = d['data']['zoffset']
         except:
             obj.offset = 0
             print('Offset not defined in the interface, set to 0')
@@ -143,14 +155,45 @@ class RETRIEVE_TREE_PROTOCOL():
         except:
             print(f"d['data']['select_AF'] not defined")
             print('setting to default value: afml_sweep')
-        obj.kind_focus = 'afml_sweep'      # default value for AF
+            obj.kind_focus = 'afml_sweep'      # default value for AF
+
+        if obj.kind_focus == None: # select_AF = null in the tree by default..
+            obj.kind_focus = 'afml_sweep'
+
+        if 1 in debug:
+            print(f'obj.kind_focus = {obj.kind_focus}')
+
+        if obj.kind_focus == 'afml_sweep':
+            obj.focus_nbsteps = int(d['data']['nb_steps_afml'])
+            step_width = float(d['data']['step_afml'])
+            thresh = int(d['data']['thresh'])
+            obj.delta_focus = round(obj.focus_nbsteps*step_width*50,2)
+            obj.step_focus = int(2*obj.delta_focus / obj.focus_nbsteps)
+            obj.thresh = thresh
+            if 2 in debug:
+                print(f'#####  obj.step_focus = {obj.step_focus}')
+                print(f'#####  obj.focus_nbsteps = {obj.focus_nbsteps}')
+                print(f'#####  obj.thresh = {obj.thresh}')
 
         # list of kind of AF for predefined
-        self.list_AF.append(obj.kind_focus)
         if 1 in debug:
-            print(f'self.list_AF is {self.list_AF}')
+            print(f'self.list_AF before is {self.list_AF} !!!')
+        self.list_AF += [ [obj.kind_focus, obj.step_focus,
+                          obj.delta_focus, obj.focus_nbsteps,
+                          obj.thresh] ]
+        if 1 in debug:
+            print(f'self.list_AF after is {self.list_AF}')
 
-    def retrieve_protocol(self, d, obj, debug=[0]):
+    def retrieve_delay(self, d, obj, debug=[0]):
+        '''
+        Delay in the protocol
+        '''
+        delay = int(d['data']['time'])
+        if 0 in debug:
+            print(f'in retrieve_tree delay is {delay}')
+        obj.list.append([obj.delay, delay])
+
+    def retrieve_protocol(self, d, obj, debug=[]):
         '''
         From tree to mda object for Protocol
         '''
