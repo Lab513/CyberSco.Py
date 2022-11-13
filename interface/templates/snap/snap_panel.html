@@ -1,0 +1,52 @@
+<!-- Snap panel -->
+
+<div id='snap_panel' class="btn btn-warning" >
+
+   <img id="curr_snap_pic" width="88%" style="line-height : 20px;" ></img>
+
+</div>
+
+<!-- Close snap -->
+
+<div id="snap_div_close">
+
+    <img id='snap_panel_close'  src="static/icons/capicon/svg/057.svg">  </img>
+
+</div>
+
+<!-- Slider snap -->
+
+<div id="slider_div_snap">
+
+  <div class="">
+     <input id="slider_snap" data-slider-id='snapSlider' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="0.7"/>
+  </div>
+
+</div>
+
+<!-- Snap opacity -->
+
+<script >
+
+    $('#snap_panel').hide()
+    $('#snap_div_close').hide()
+    $('#slider_div_snap').hide()
+    //$('#snap_panel').draggable()
+
+    $('#slider_snap').bootstrapSlider({                            // slider for opacity
+      	formatter: function(value) {
+             $('#snap_panel').css( { 'opacity':value } )
+             $('#slider_value').text(value)
+          		return 'Current value: ' + value;
+          	}
+      });
+
+    $('#snap_panel_close').click(function(){
+
+         $('#snap_panel').hide()                           // close snap_panel
+         $('#snap_div_close').hide()
+         $('#slider_div_snap').hide()
+
+    })
+
+</script>

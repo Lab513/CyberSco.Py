@@ -34,7 +34,7 @@ class POS(MV, CP, TR, HG):
     '''
     Position on which are made the autofocus, BF, RFP, YFP etc...
     '''
-    def __init__(self, ldevices, curr_mod, ev_mod=None, title='', debug=[0]):
+    def __init__(self, ldevices, curr_mod=None, ev_mod=None, title='', debug=[0]):
         '''
         Position
         '''
@@ -72,7 +72,7 @@ class POS(MV, CP, TR, HG):
         self.insert_rep = True               # insert iteration index
         self.insert_time_elapsed = True      # insert time_elapsed
         self.insert_BF_rate = True           # insert the acquisition rate
-        self.obs_duration = True      # insert the time elapsed for observation
+        self.obs_duration = True             # insert the time elapsed for observation
         self.insert_num_pos = True           # insert the scale in the picture
         self.insert_scale = True             # insert the scale in the picture
         self.nb_tracks = 0

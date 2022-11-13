@@ -6,10 +6,11 @@ socket.on('snapped', function(kind){
 
     if (kind == 'fluo'){
 
-      $('#snap_panel').show()
+      $('#snap_panel').show()          // image
+      $('#snap_div_close').show()      // close
+      $('#slider_div_snap').show()     // slider
       $('#curr_snap_pic').attr('src', '/static/snapped/snap_curr.png' + '?t='  + new Date().getTime())
 
     }
-
 
   })

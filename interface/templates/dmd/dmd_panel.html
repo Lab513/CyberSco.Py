@@ -1,0 +1,53 @@
+<!-- Drawing, select, save panel for DMD -->
+
+
+<!-- Drawing panel for DMD -->
+
+<div class="draw_DMD_panel" hidden>
+
+      <div>
+          <div id="canvas-editor"></div>
+      </div>
+
+</div>
+
+<!-- Select and save drawing -->
+
+<div id="save_select_dmd_pic" hidden>
+
+      <!-- Save DMD drawing for DMD -->
+
+      <div align="center" id='save_name_img_mosaic'>
+          <input type="text" id="name_img_mosaic"  placeholder=" name image for mosaic ">
+          <button  class="btn btn-warning"  id="save_canvas" > Save </button>
+      </div>
+
+      <!-- Select yet existing masks -->
+
+      <div id="select_mask_dmd_panel"  >
+        <select id="curr_mask_name"  class="selectpicker select_mask"  >
+        </select>
+      </div>
+
+      <!-- test DMD picture -->
+
+      <div  id='test_DMD_div'>
+          <button  class="btn btn-success"  id="test_DMD" > DMD test </button>
+      </div>
+
+</div>
+
+<script type="text/javascript">
+
+  $('#canvas-editor').click(function(){
+        $('#test_DMD').hide()
+  })
+
+  $('#curr_mask_name').change(function(){
+        $('#test_DMD').show()
+  })
+
+
+
+
+</script>
