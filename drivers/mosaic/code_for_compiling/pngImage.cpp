@@ -2,7 +2,6 @@
 // load in a .png file.
 #include <iostream>
 #include "pngImage.h"
-#include "pngImage.h"
 
 using namespace std;
 
@@ -70,4 +69,3 @@ void PngImage::getRGB(int x, int y, int &r, int &g, int &b)
 		b = img[4 * y*width + 4 * x + 2];
 	}
  }
-

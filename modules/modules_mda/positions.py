@@ -98,12 +98,15 @@ class POS(MV, CP, TR, HG):
         '''
         image for direct AFML training
         '''
-        addr_direct_AF_ML = opj('mda_temp', 'monitorings',
-                                'AF', 'imgs_for_AF_ML_direct_training')
-        self.ol.addr_labels = opj(addr_direct_AF_ML,
-                                  f'labels_pos{self.num}.txt')
-        f = open(self.ol.addr_labels, 'w')
-        f.close()
+        try:
+            addr_direct_AF_ML = opj('mda_temp', 'monitorings',
+                                    'AF', 'imgs_for_AF_ML_direct_training')
+            self.ol.addr_labels = opj(addr_direct_AF_ML,
+                                      f'labels_pos{self.num}.txt')
+            f = open(self.ol.addr_labels, 'w')
+            f.close()
+        except:
+            print('not making focus labels for training set.. ')
 
     def refocus(self, step=None, debug=[1]):
         '''

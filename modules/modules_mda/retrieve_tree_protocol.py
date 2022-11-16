@@ -162,6 +162,8 @@ class RETRIEVE_TREE_PROTOCOL():
 
         if 1 in debug:
             print(f'obj.kind_focus = {obj.kind_focus}')
+            # list of kind of AF for predefined
+            print(f'self.list_AF before is {self.list_AF} !!!')
 
         if obj.kind_focus == 'afml_sweep':
             obj.focus_nbsteps = int(d['data']['nb_steps_afml'])
@@ -174,13 +176,11 @@ class RETRIEVE_TREE_PROTOCOL():
                 print(f'#####  obj.step_focus = {obj.step_focus}')
                 print(f'#####  obj.focus_nbsteps = {obj.focus_nbsteps}')
                 print(f'#####  obj.thresh = {obj.thresh}')
-
-        # list of kind of AF for predefined
-        if 1 in debug:
-            print(f'self.list_AF before is {self.list_AF} !!!')
-        self.list_AF += [ [obj.kind_focus, obj.step_focus,
-                          obj.delta_focus, obj.focus_nbsteps,
-                          obj.thresh] ]
+            self.list_AF += [ [obj.kind_focus, obj.step_focus,
+                              obj.delta_focus, obj.focus_nbsteps,
+                              obj.thresh] ]
+        else:
+            self.list_AF += [ [obj.kind_focus] ]
         if 1 in debug:
             print(f'self.list_AF after is {self.list_AF}')
 
