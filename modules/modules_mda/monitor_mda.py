@@ -2,6 +2,8 @@ from time import time
 from modules.modules_mda.mail import GMAIL
 from matplotlib import pyplot as plt
 from modules.modules_mda.mail_attachments import MAIL_ATTACH as MA
+from modules.modules_mda.make_all_videos_for_position\
+                                       import MAKE_VIDEOS_POSITION as MVP
 from modules.modules_mda.plot_bokeh import BOKEH_PLOT
 from colorama import Fore, Style
 import os
@@ -11,7 +13,7 @@ import shutil as sh
 import oyaml as yaml
 
 
-class MONITORING():
+class MONITORING(MVP):
     '''
     '''
 
@@ -242,7 +244,6 @@ class MONITORING():
             with open(addr_nb_cells_pos, "w") as f_w:
                 yaml.dump(pos.list_nb_cells, f_w)
 
-
     def copy_monitor(self, root_src_dir, dest_addr, debug=[0]):
         '''
         Copy the MDA in the Dashboard for monitoring at distance..
@@ -266,3 +267,27 @@ class MONITORING():
             print(f'time for copying is {round((t1-t0)/60,2)} min')
         except:
             print('Cannot copy the new acquisiton to the Dashboard folder.. ')
+
+    def actions_after_check_conditions(self,rep):
+        '''
+        Save the monitorings after each repetition..
+        '''
+        self.plot_nbcells_positions(rep)         # plot the number of cells
+        self.save_nb_rep(rep)
+        self.save_time_axis()                    # save the time axis
+        if self.monitor_params:
+            # following messages during mda, monitoring etc..
+            self.messages_after_measurement(rep)
+        self.make_video_positions(rep)         # video of each position
+
+    # Time axis for figures
+
+    def save_time_axis(self):
+        '''
+        Save the times for each frame in a yaml file
+        '''
+        for pos in self.list_pos:
+            addr_time_axis_pos = opj(self.dir_mda_temp,
+                                     f'time_axis_pos{pos.num}.yaml')
+            with open(addr_time_axis_pos, "w") as f_w:
+                yaml.dump(pos.list_time_axis, f_w)

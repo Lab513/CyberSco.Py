@@ -47,18 +47,6 @@ class PREDEF_MDA(MON):
             # progressbar step 1 second
             sleep(1)
 
-    # Time axis for figures
-
-    def save_time_axis(self):
-        '''
-        Save the times for each frame in a yaml file
-        '''
-        for pos in self.list_pos:
-            addr_time_axis_pos = opj(self.dir_mda_temp,
-                                     f'time_axis_pos{pos.num}.yaml')
-            with open(addr_time_axis_pos, "w") as f_w:
-                yaml.dump(pos.list_time_axis, f_w)
-
     def take_elapsed_time(self):
         '''
         Time elapsed since self.first_time
@@ -92,30 +80,16 @@ class PREDEF_MDA(MON):
         '''
         return ((self.curr_time + phase) % self.per_pulse) < self.delay
 
-    def actions_after_check_conditions(self,rep):
-        '''
-        '''
-        self.plot_nbcells_positions(rep)         # plot the number of cells
-        self.save_nb_rep(rep)
-        self.save_time_axis()                    # save the time axis
-        if self.monitor_params:
-            # following messages during mda, monitoring etc..
-            self.messages_after_measurement(rep)
-        self.make_video_positions(rep)         # video of each position
-        self.server.sleep(0.1)
-        # send index of current repetition
-        emit('curr_rep', str(rep))
-
     # end of predef
 
-    def save_experim(self):
-        '''
-        Copy mda_temp in mda_experiments with a date at the end
-        '''
-        name_mda_folder = opb(self.dir_mda_temp)
-        target_dir = opj(os.getcwd(), 'mda_experiments',
-                         name_mda_folder + '_' + self.date())
-        sh.copytree(self.dir_mda_temp, target_dir)
+    # def save_experim(self):
+    #     '''
+    #     Copy mda_temp in mda_experiments with a date at the end
+    #     '''
+    #     name_mda_folder = opb(self.dir_mda_temp)
+    #     target_dir = opj(os.getcwd(), 'mda_experiments',
+    #                      name_mda_folder + '_' + self.date())
+    #     sh.copytree(self.dir_mda_temp, target_dir)
 
     def close_devices(self):
         '''
@@ -130,6 +104,13 @@ class PREDEF_MDA(MON):
                 print(f'cannot close {cl_name}')
 
     ##########  Predefined MDA protocol..
+
+    def infos_server(self):
+        '''
+        '''
+        self.server.sleep(0.1)
+        # send index of current repetition
+        emit('curr_rep', str(rep))
 
     def launch_loop(self):
         '''
@@ -149,6 +130,7 @@ class PREDEF_MDA(MON):
                 sleep(0.1)
             self.check_conditions(rep)           # apply the conditions
             self.actions_after_check_conditions(rep)
+            self.infos_server()
             if rep < self.repeat-1:
                 # respect delay between each beginning of measurement
                 self.delay_sleep()

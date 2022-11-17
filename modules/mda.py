@@ -22,8 +22,7 @@ from modules.modules_mda.load_models import LOAD_MODELS as LM
 from modules.modules_mda.predef_mda import PREDEF_MDA as PDM
 from modules.modules_mda.utils import UTILS as UT
 from modules.modules_mda.mda_tree_protocol import MDA_TREE_PROTOCOL as MTP
-from modules.modules_mda.make_all_videos_for_position\
-                                       import MAKE_VIDEOS_POSITION as MVP
+
 import sys
 import os
 op = os.path
@@ -33,7 +32,7 @@ platf = find_platform()
 server = chose_server(platf)
 
 
-class MDA(POS, MVP, MTP, LM, FOL, PRM, MAC, PDM, UT):
+class MDA(POS, MTP, LM, FOL, PRM, MAC, PDM, UT):
     '''
     Mda experiment
     '''

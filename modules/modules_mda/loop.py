@@ -17,7 +17,7 @@ class LOOP(MON):
         nb_rep : number of repetions of the loop
         time_rep : time between repetitions in the loop (in minutes)
         '''
-        self.list = []                  # list of elements over which to loop
+        self.list = []                         # list of elements over which to loop
         self.nb_rep = int(nb_rep)              # number of repetitions
         self.time_rep = float(time_rep)        # repetition time
 
@@ -64,6 +64,8 @@ class LOOP(MON):
         '''
         execute the loop
         '''
+        self.dir_mda_temp = src_addr
+        self.list_pos = self.list
         t00 = time()
         self.indicate_loop_params()
         for rep in range(self.nb_rep):
@@ -73,6 +75,7 @@ class LOOP(MON):
                 elem.loop()                   # trigger the loop of elem
             if 1 in debug:
                 print(f'In loop, dest_addr is { dest_addr }')
+            self.actions_after_check_conditions(rep)
             self.copy_monitor(src_addr, dest_addr)
             self.handle_delay(t0,t00,rep)
             self.save_nb_rep(rep)
