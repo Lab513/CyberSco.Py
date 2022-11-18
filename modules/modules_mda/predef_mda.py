@@ -82,15 +82,6 @@ class PREDEF_MDA(MON):
 
     # end of predef
 
-    # def save_experim(self):
-    #     '''
-    #     Copy mda_temp in mda_experiments with a date at the end
-    #     '''
-    #     name_mda_folder = opb(self.dir_mda_temp)
-    #     target_dir = opj(os.getcwd(), 'mda_experiments',
-    #                      name_mda_folder + '_' + self.date())
-    #     sh.copytree(self.dir_mda_temp, target_dir)
-
     def close_devices(self):
         '''
         Close serial port on the devices
@@ -136,7 +127,5 @@ class PREDEF_MDA(MON):
                 self.delay_sleep()
             # duplicate mda_temp for monitoring..
             self.copy_monitor(self.dir_mda_temp, self.dir_mda_temp_dash)
-        # save the MDA with the date at the end of the MDA
-        # self.save_experim()
         # close the serial port of all the devices
         self.close_devices()

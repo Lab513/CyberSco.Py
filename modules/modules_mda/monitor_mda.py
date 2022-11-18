@@ -15,6 +15,7 @@ import oyaml as yaml
 
 class MONITORING(MVP):
     '''
+    MDA monitoring..
     '''
 
     def __init__(self):
@@ -166,8 +167,8 @@ class MONITORING(MVP):
         if curr_time % int(self.monitor_params['delay_messages']) < self.delay:
             to = self.send_to('Lionel')
             #attach = opj(self.dir_mda_temp, f'nbcells_until_rep{rep}.png') # addr plot nb cells curves
-            if os.path.exists(self.addr_bokeh_nbcells):
-                self.attach += [self.addr_bokeh_nbcells]
+            if os.path.exists(self.addr_bokeh_nbcells_segm0):
+                self.attach += [self.addr_bokeh_nbcells_segm0]
             for pos in self.list_pos:
                 self.attach_pieces_to_mail(pos, rep)
             if 1 in debug:
@@ -182,7 +183,7 @@ class MONITORING(MVP):
 
     def plot_nbcells_until_rep(self, rep):
         '''
-        Evolution of nb of cells
+        Evolution of nb of cells Mpl plot
         '''
         plt.figure()
         plt.title(f"#cells until rep {rep}")
@@ -203,36 +204,70 @@ class MONITORING(MVP):
         self.folder_nbcells = opj(self.dir_mda_temp, 'monitorings', 'nb_cells')
         # save the list of nb cells in yaml file after each acquisition
         self.save_nbcells_positions()
+        # try:
+        self.plot_nbcells_until_rep(rep)
+        # except:
+        #     print('###### Cannot plot the nb'
+        #           ' of cells with plot_nbcells_until_rep ')
+        # try:
+        self.last_bokeh_plot_nbcells(rep)
+        # except:
+        #     print('Tried to plot bokeh')
+
+    def find_max_bk_plot(self, pos, max_plot):
+        '''
+        '''
+        max_pos = max(pos.list_nb_cells)
+        if max_pos > max_plot:
+            max_plot = max_pos
+
+        return max_plot
+
+    def bokeh_plot_nbcells_segm(self, num_mod, debug=[]):
+        '''
+        Bokeh plot for the cells segmented with model num_mod
+        '''
+        bk = BOKEH_PLOT()
+        bk.title(f"Evolution of the number of cells, model{num_mod}")
+        bk.xlabel('time in min')
+        bk.ylabel('nb of cells')
+        max_plot = 0
+        for pos in self.list_pos:
+            if 1 in debug:
+                print(f'pos.list_nb_cells is {pos.list_nb_cells} ')
+            max_plot = self.find_max_bk_plot(pos, max_plot)
+            bk.plot(pos.list_time_axis, pos.list_nb_cells, label=str(pos.num))
+        bk.ylim(0,max_plot*1.3)
+        addr = opj(self.folder_nbcells, f'nbcells_segm{num_mod}.html')
+        setattr(self, f'addr_bokeh_nbcells_segm{num_mod}', addr)
+        bk.legend()
+        bk.show()
+        bk.savefig(addr)
+
+    def clean_bokehs(self):
+        '''
+        Clean the Bokeh plots of the nb of cells
+        '''
+        for ind in [0,1]:
+            try:
+                name_bokeh = f'addr_bokeh_nbcells_segm{ind}'
+                os.remove(getattr(self, name_bokeh))
+            except:
+                print(f'trying to remove {name_bokeh}')
         try:
-            self.plot_nbcells_until_rep(rep)
+            os.remove(self.addr_bokeh_nbcells_segm1)
         except:
-            print('###### Cannot plot the nb'
-                  ' of cells with plot_nbcells_until_rep ')
-        try:
-            self.last_bokeh_plot_nbcells(rep)
-        except:
-            print('Tried to plot bokeh')
+            print('trying os.remove(self.addr_bokeh_nbcells_segm1)')
 
     def last_bokeh_plot_nbcells(self, rep, debug=[]):
         '''
         Plot Bokeh of the nb of cells in the various positions
         '''
-        try:
-            os.remove(self.addr_bokeh_nbcells)
-        except:
-            print('trying os.remove(self.addr_bokeh_nbcells)')
-        bk = BOKEH_PLOT()
-        bk.title("Evolution of the number of cells")
-        bk.xlabel('time in min')
-        bk.ylabel('nb of cells')
-        for pos in self.list_pos:
-            if 1 in debug:
-                print(f'pos.list_nb_cells is {pos.list_nb_cells} ')
-            bk.plot(pos.list_time_axis, pos.list_nb_cells, label=str(pos.num))
-        self.addr_bokeh_nbcells = opj(self.folder_nbcells, f'nbcells.html')
-        bk.legend()
-        bk.show()
-        bk.savefig(self.addr_bokeh_nbcells)
+        self.clean_bokehs()
+        # bokeh nb cells model 0
+        self.bokeh_plot_nbcells_segm(0)
+        # bokeh nb cells model 1
+        self.bokeh_plot_nbcells_segm(1)
 
     def save_nbcells_positions(self):
         '''
@@ -240,7 +275,12 @@ class MONITORING(MVP):
         '''
         for pos in self.list_pos:
             addr_nb_cells_pos = opj(self.folder_nbcells,
-                                    f'list_nb_cells_pos{pos.num}.yaml')
+                                    f'list_nb_cells_segm0_pos{pos.num}.yaml')
+            with open(addr_nb_cells_pos, "w") as f_w:
+                yaml.dump(pos.list_nb_cells, f_w)
+
+            addr_nb_cells_pos = opj(self.folder_nbcells,
+                                    f'list_nb_cells_segm1_pos{pos.num}.yaml')
             with open(addr_nb_cells_pos, "w") as f_w:
                 yaml.dump(pos.list_nb_cells, f_w)
 

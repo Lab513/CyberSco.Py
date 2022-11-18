@@ -60,19 +60,21 @@ class LOOP(MON):
         with open(opj('mda_temp', 'monitorings', 'nb_rep.txt'),'w') as fw:
             fw.write(str(rep))
 
-    def loop(self, src_addr, dest_addr, debug=[]):
+    def loop(self, src_addr, dest_addr, monitor_params, event, debug=[]):
         '''
-        execute the loop
+        Execute the MDA loop
         '''
         self.dir_mda_temp = src_addr
         self.list_pos = self.list
         t00 = time()
         self.indicate_loop_params()
+        self.monitor_params = monitor_params
+        self.delay = self.time_rep
         for rep in range(self.nb_rep):
             self.indicate_curr_iter(rep)
             t0 = time()
             for elem in self.list:
-                elem.loop()                   # trigger the loop of elem
+                elem.loop(rep, event)                   # trigger the loop of elem
             if 1 in debug:
                 print(f'In loop, dest_addr is { dest_addr }')
             self.actions_after_check_conditions(rep)

@@ -913,7 +913,10 @@ class POS(MV, CP, TR, HG):
         print(f'time elapsed for iteration {self.rep} for '
               ' performing all the operations after '
               f' acquisition is : {round(t1-t0,2)} s')
-        print(f"self.num_gate is {self.num_gate} !!!")
+        try:
+            print(f"self.num_gate is {self.num_gate} !!!")
+        except:
+            pass
 
     def search_event(self, rep, debug=[0, 1, 2]):
         '''
@@ -932,9 +935,8 @@ class POS(MV, CP, TR, HG):
         if 2 in debug:
             print(f'#### iteration is  {rep}')
 
-    def cells_analysis(self, step, rep, curves=False, debug=[]):
+    def cells_analysis(self, rep, curves=False, debug=[]):
         '''
-        step : object with info about actions to perform
         rep : index of repetition
         '''
         print('**** kind is cells_analysis..')
@@ -986,15 +988,19 @@ class POS(MV, CP, TR, HG):
                     self.refocus(step)                 # refocus
                 elif step.kind == 'cells_analysis':
                     # perform cells analysis, retroaction
-                    self.cells_analysis(step, rep)
+                    self.cells_analysis(rep)
         self.enrich_pic(rep)
 
-    def loop(self, debug=[]):                      # loop for tree
+    # loop for augmented MDA
+
+    def loop(self, rep, event, debug=[]):
         '''
         Loop in position's elements, reading the Tree
         '''
         print('----------------')
         print(f'dealing with position : {self.title} ')
+        self.event = event
+        self.event.exists = True
         if 1 in debug:
             print(f'**** free_mda  pos{self.num} self.list is {self.list}')
         for elem in self.list:
@@ -1013,6 +1019,7 @@ class POS(MV, CP, TR, HG):
                                 exp_time=elem[2])
                 elif elem[0].__name__ == 'taking_picture':
                     elem[0](exp_time=elem[1])
+                    self.cells_analysis(rep)
                     if 2 in debug:
                         print(f'Using exposure time {elem[1]} for BF')
                 elif elem[0].__name__ == 'delay':

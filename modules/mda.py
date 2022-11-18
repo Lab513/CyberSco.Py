@@ -91,4 +91,7 @@ class MDA(POS, MTP, LM, FOL, PRM, MAC, PDM, UT):
             print(f'len(self.list) = {len(self.list[0].list)}')
         self.init_nb_pos(len(self.list[0].list))
         # launch the protocol
-        self.list[0].loop(self.dir_mda_temp, self.dir_mda_temp_dash)
+        self.list[0].loop(self.dir_mda_temp,
+                          self.dir_mda_temp_dash,
+                          self.monitor_params,
+                          self.event)

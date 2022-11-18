@@ -305,13 +305,15 @@ class CAM_PRED(TR):
         if self.mode == 'mda':
             # move prediction to mda_temp folder
             self.move_to_mda_temp(f)
+        # count segm 1
         if kind == 'pred_ev':
             self.curr_pred = 'events'
             # contours for events (with threshold) and counting
-            self.find_contours_and_count(meth='thresh', thr=200)
+            self.find_contours_and_count() # meth='thresh', thr=200
         else:
             self.curr_pred = 'BF'
             # make contours and count segmented cells
+            # count segm 0
             self.find_contours_and_count()
 
     def save_pred(self, f, pred, pred_ev=None):
@@ -347,6 +349,7 @@ class CAM_PRED(TR):
 
     def load_dict_models(self):
         '''
+        Dictionary of the models with their aliases.. 
         '''
         # yaml file with all the possible models
         addr_models = Path('modules') / 'settings' / 'models.yaml'
