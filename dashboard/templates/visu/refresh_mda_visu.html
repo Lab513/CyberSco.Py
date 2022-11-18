@@ -47,16 +47,6 @@ setInterval(function(){
 
   }, 1000)
 
-  setInterval(function(){
+{% include 'visu/refresh_dash_sensors.html' %}
 
-            /*
-            Sensors
-            */
-
-            $('#mda_sensor_light_img').attr('src', '/static/mda_temp_'+
-                    dic_cyber['user'] +'/monitorings/light_curve.html?' + new Date().getTime())                 // light intensity
-
-            $('#mda_sensor_temp_img').attr('src', '/static/mda_temp_'+
-                    dic_cyber['user'] +'/monitorings/temp_curve.html?' + new Date().getTime())                 // temperature
-
-    }, 60000)
+{% include 'visu/refresh_dash_nbcells.html' %}

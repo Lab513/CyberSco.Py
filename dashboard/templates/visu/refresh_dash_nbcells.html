@@ -1,0 +1,13 @@
+setInterval(function(){
+
+          /*
+          nb cells
+          */
+
+          $('#mda_nbcells_segm0_img').attr('src', '/static/mda_temp_'+
+                  dic_cyber['user'] +'/monitorings/nb_cells/nbcells_segm0.html?' + new Date().getTime())                 // light intensity
+
+          $('#mda_nbcells_segm1_img').attr('src', '/static/mda_temp_'+
+                  dic_cyber['user'] +'/monitorings/nb_cells/nbcells_segm1.html?' + new Date().getTime())                 // temperature
+
+  }, 60000)
