@@ -1,0 +1,48 @@
+/* nb cells */
+
+#mda_nbcells {
+
+      /* panel for following the nb of cells  */
+
+      box-shadow: 0.5em 0.5em 0.7em;
+      position: absolute;
+      top: 100px;
+      left: 200px;
+      padding: 25px;
+      height: 650px;
+      width: 420px;
+      opacity: 1;
+      z-index: 300;
+      background: white;
+
+}
+
+
+#title_mda_nbcells {
+
+     font-size: 20px;
+     text-align: center;
+
+}
+
+#mda_nbcells_segm0 {
+
+      /* nb cells model 0  */
+
+      position: absolute;
+      top:80px;
+      height: 250px;
+      width: 370px;
+
+}
+
+#mda_nbcells_segm1 {
+
+      /* nb cells model 1  */
+
+      position: absolute;
+      top:350px;
+      height: 250px;
+      width: 370px;
+
+}
