@@ -228,6 +228,7 @@ class MONITORING(MVP):
         Bokeh plot for the cells segmented with model num_mod
         '''
         bk = BOKEH_PLOT()
+        bk.figure()
         bk.title(f"Evolution of the number of cells, model{num_mod}")
         bk.xlabel('time in min')
         bk.ylabel('nb of cells')
