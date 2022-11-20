@@ -57,41 +57,8 @@
 
     $(document).ready(function () {
 
-      var drawer = new DrawerJs.Drawer(null, {
-            texts: customLocalization,
-            plugins: drawerPlugins,
-            // defaultImageUrl: '/images/drawer.jpg',
-            defaultActivePlugin : { name : 'Pencil', mode : 'lastUsed'},
-        }, 500, 500);
-        $('#canvas-editor').append( drawer.getHtml() );
 
-        drawer.onInsert();
-
-        $('#save_canvas').click( function(){
-
-          var base64Output = drawer.api.getCanvasAsImage()                   // retrieve the image from the canvas
-          socket.emit( 'name_img_mosaic', $('#name_img_mosaic').val() )      // name of the image
-          setTimeout(function(){
-              socket.emit( 'image_canvas', base64Output )                    // send the image to the server for saving it
-           }, 100);
-
-        })
-
-        $('#test_DMD').click( function(){
-
-           var currSetChan = $('#select_snap_setting_channel').val()         // setting channel for DMD
-           var infos_dmd = image_test_DMD + '&' + currSetChan
-           socket.emit( 'infos_DMD_test', infos_dmd )
-
-        })
-
-        var image_test_DMD = ''
-
-        $('#curr_mask_name').change(function(){
-              image_test_DMD = $(this).val()
-              $('.editable-canvas-image').attr('src', 'static/dmd/' + image_test_DMD + '.png')
-        })
-
+      {% include 'dmd/dmd_init_draw_and_test.html' %}
 
     });
 
@@ -103,8 +70,6 @@
   $('#curr_cam_pic').attr('src', '/static/curr_pic/frame0.png' + '?'  + new Date().getTime())
   $(".screen_panel")
   $('#panel_nb_cells').hide()
-  $('#canvas-editor').click(function(){
-
-  })
+  //$('#canvas-editor').click(function(){})
 
 </script>

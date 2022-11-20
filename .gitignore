@@ -13,7 +13,7 @@ interface/static/sweep_chip
 interface/settings/
 interface/static/curr_pic/
 interface/static/mda_protocols/
-interface/static/dmd
+interface/static/dmd/
 
 # models folder
 models/

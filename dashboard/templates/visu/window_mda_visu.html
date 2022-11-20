@@ -64,28 +64,8 @@
 <!-- View kind, BF, fluo1, fluo2, tracking, lineage etc.. -->
 
 <br>
-monitoring choice:
-<div id="kind_view"  >
 
-    <select id="select_view"  class="selectpicker"  >
-
-          <option  selected value='BF'> BF </option>
-          <option  value='tracking'> tracking </option>
-          <option  value='afml'> AFML </option>
-
-    </select>
-</div>
-
-<br>
-num position:
-<div id="select_pos"  >
-
-    <select id="select_pos_num"  class="selectpicker"  >
-
-          <option  selected value='0'> 0 </option>
-
-    </select>
-</div>
+{% include 'visu/mda_select_view.html' %}
 
 {% include 'visu/mda_sensors_panel.html' %}
 

@@ -1,0 +1,46 @@
+
+
+var drawer = new DrawerJs.Drawer(null, {
+      texts: customLocalization,
+      plugins: drawerPlugins,
+      // defaultImageUrl: '/images/drawer.jpg',
+      defaultActivePlugin : { name : 'Pencil', mode : 'lastUsed'},
+  }, 500, 500);
+  $('#canvas-editor').append( drawer.getHtml() );
+
+  drawer.onInsert();
+
+  $('#save_canvas').click( function(){
+
+    var base64Output = drawer.api.getCanvasAsImage()                   // retrieve the image from the canvas
+    socket.emit( 'name_img_mosaic', $('#name_img_mosaic').val() )      // name of the image
+    setTimeout(function(){
+        socket.emit( 'image_canvas', base64Output )                    // send the image to the server for saving it
+     }, 100);
+
+  })
+
+  $('#test_DMD').click( function(){
+
+     // setting channel for DMD
+     var currSetChan = $('#select_snap_setting_channel').val()
+
+     // sending image name and SC
+     var infos_dmd = image_test_DMD + '&' + currSetChan
+     socket.emit( 'infos_DMD_test', infos_dmd )
+
+     setTimeout(function(){
+           //$('#dmd_snap_panel').css({'opacity':1})
+           $('#dmd_snap_panel').show()
+           $('#curr_dmd_snap_pic').attr('src','static/dmd/illum/curr_dmd.png'+ '?' + new Date().getTime())
+     }, 9000);
+
+  })
+
+  var image_test_DMD = ''
+
+  $('#curr_mask_name').change(function(){
+        image_test_DMD = $(this).val()
+        $('.editable-canvas-image').attr('src', 'static/dmd/masks/' + image_test_DMD + '.png'+ '?' + new Date().getTime())
+        //$('.editable-canvas-image').attr('src','static/dmd/masks/bub.png')
+  })

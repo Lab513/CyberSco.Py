@@ -50,6 +50,8 @@
 
     }
 
+/* Camera */
+
 #curr_cam_pic {
 
     /* Current picture */
@@ -498,6 +500,39 @@ list of yet existing images for DMD */
      z-index: 100;
 
 }
+
+#dmd_snap_panel {
+
+    /*
+    Panel with the snapped image after DMD illumination
+    */
+
+     position: absolute;
+     top: 9px;
+     left: -4px;
+     height: 590px;
+     width: 600px;
+     padding-left: 20px;
+     padding-top: 40px;
+     background-color: white;
+     z-index: 1;
+     opacity: 1;
+     border: none;
+
+  }
+
+#curr_dmd_snap_pic {
+
+    /*
+    image snap panel dmd
+    */
+
+     position: absolute;
+     margin-left: 35px;
+     height: 500px;
+     width: 500px;
+
+  }
 
 /*---  end of DMD images   ---*/
 

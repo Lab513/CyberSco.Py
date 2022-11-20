@@ -276,7 +276,7 @@ class POS(MV, CP, TR, HG):
         Replace the image for the mask
         '''
         addr_img_dmd = 'modules/devices/DMD/mosaic/image_for_mosaic.png'
-        addr_mask_interf = f'interface/static/dmd/{mask}.png'
+        addr_mask_interf = f'interface/static/dmd/img_calib/{mask}.png'
         if 0 in debug:
             print(f'addr_mask_interf : {addr_mask_interf} !!! ')
         sh.copy(addr_mask_interf, addr_img_dmd)
