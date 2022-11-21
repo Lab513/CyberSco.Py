@@ -18,6 +18,7 @@ class PREDEF_MDA(MON):
     def __init__(self, server=None):
         '''
         '''
+        MON.__init__(self)
         self.server = server
 
     # At beginning

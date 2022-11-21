@@ -17,6 +17,7 @@ class LOOP(MON):
         nb_rep : number of repetions of the loop
         time_rep : time between repetitions in the loop (in minutes)
         '''
+        MON.__init__(self)
         self.list = []                         # list of elements over which to loop
         self.nb_rep = int(nb_rep)              # number of repetitions
         self.time_rep = float(time_rep)        # repetition time

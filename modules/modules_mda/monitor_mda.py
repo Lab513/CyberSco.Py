@@ -21,7 +21,8 @@ class MONITORING(MVP):
     def __init__(self):
         '''
         '''
-        pass
+        # Authorized pattern for copying to the dashboard changing files
+        self.list_patt_auth = ['nbcells_segm']
 
     def mess_num_measurement(self, rep):
         '''
@@ -223,12 +224,13 @@ class MONITORING(MVP):
 
         return max_plot
 
-    def bokeh_plot_nbcells_segm(self, num_mod, debug=[]):
+    def bokeh_plot_nbcells_segm(self, num_mod, debug=[1]):
         '''
         Bokeh plot for the cells segmented with model num_mod
+        Gathering the positions on the same graph..
         '''
         bk = BOKEH_PLOT()
-        bk.figure()
+        # bk.figure()
         bk.title(f"Evolution of the number of cells, model{num_mod}")
         bk.xlabel('time in min')
         bk.ylabel('nb of cells')
@@ -236,8 +238,14 @@ class MONITORING(MVP):
         for pos in self.list_pos:
             if 1 in debug:
                 print(f'pos.list_nb_cells is {pos.list_nb_cells} ')
+                print(f'pos.list_nb_cells_events is {pos.list_nb_cells_events} ')
+                print(f'pos.list_time_axis is  {pos.list_time_axis}')
+                print(f'pos.num is  {pos.num}')
             max_plot = self.find_max_bk_plot(pos, max_plot)
-            bk.plot(pos.list_time_axis, pos.list_nb_cells, label=str(pos.num))
+            if num_mod == 0:
+                bk.plot(pos.list_time_axis, pos.list_nb_cells, label=str(pos.num))
+            else:
+                bk.plot(pos.list_time_axis, pos.list_nb_cells_events, label=str(pos.num))
         bk.ylim(0,max_plot*1.3)
         addr = opj(self.folder_nbcells, f'nbcells_segm{num_mod}.html')
         setattr(self, f'addr_bokeh_nbcells_segm{num_mod}', addr)
@@ -285,38 +293,50 @@ class MONITORING(MVP):
             with open(addr_nb_cells_pos, "w") as f_w:
                 yaml.dump(pos.list_nb_cells, f_w)
 
+    def test_file_in_patt(self,f):
+        '''
+        Find if pattern in the name of file..
+        '''
+        auth = False
+        for patt in self.list_patt_auth:
+            if patt in f:
+                auth = True
+
+        return auth
+
     def copy_monitor(self, root_src_dir, dest_addr, debug=[0]):
         '''
         Copy the MDA in the Dashboard for monitoring at distance..
         '''
-        try:
-            # root_src_dir = opj(os.getcwd(), 'mda_temp')
-            if 0 in debug:
-                print(f'root_src_dir is {root_src_dir}')
-                print(f'dest_addr is {dest_addr}')
-            t0 = time()
-            for src_dir, dirs, files in os.walk(root_src_dir):
-                dst_dir = src_dir.replace(root_src_dir, dest_addr, 1)
-                if not op.exists(dst_dir):
-                    os.makedirs(dst_dir)
-                for file_ in files:
-                    src_file = opj(src_dir, file_)
-                    dst_file = opj(dst_dir, file_)
-                    if not op.exists(dst_file):
-                        sh.copy(src_file, dst_dir)
-            t1 = time()
-            print(f'time for copying is {round((t1-t0)/60,2)} min')
-        except:
-            print('Cannot copy the new acquisiton to the Dashboard folder.. ')
+        # try:
+        # root_src_dir = opj(os.getcwd(), 'mda_temp')
+        if 0 in debug:
+            print(f'root_src_dir is {root_src_dir}')
+            print(f'dest_addr is {dest_addr}')
+        t0 = time()
+        for src_dir, dirs, files in os.walk(root_src_dir):
+            dst_dir = src_dir.replace(root_src_dir, dest_addr, 1)
+            if not op.exists(dst_dir):
+                os.makedirs(dst_dir)
+            for file_ in files:
+                src_file = opj(src_dir, file_)
+                dst_file = opj(dst_dir, file_)
+                test_patt = self.test_file_in_patt(file_)
+                if not op.exists(dst_file) or test_patt:
+                    sh.copy(src_file, dst_dir)
+        t1 = time()
+        print(f'time for copying is {round((t1-t0)/60,2)} min')
+        # except:
+        #     print('Cannot copy the new acquisiton to the Dashboard folder.. ')
 
     def actions_after_check_conditions(self,rep):
         '''
         Save the monitorings after each repetition..
         '''
-        try:
-            self.plot_nbcells_positions(rep)         # plot the number of cells
-        except:
-            print('Cannot plot the nb of cells.. ')
+        # try:
+        self.plot_nbcells_positions(rep)         # plot the number of cells
+        # except:
+        #     print('Cannot plot the nb of cells.. ')
         self.save_nb_rep(rep)
         self.save_time_axis()                    # save the time axis
         if self.monitor_params:
