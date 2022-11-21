@@ -313,7 +313,10 @@ class MONITORING(MVP):
         '''
         Save the monitorings after each repetition..
         '''
-        self.plot_nbcells_positions(rep)         # plot the number of cells
+        try:
+            self.plot_nbcells_positions(rep)         # plot the number of cells
+        except:
+            print('Cannot plot the nb of cells.. ')
         self.save_nb_rep(rep)
         self.save_time_axis()                    # save the time axis
         if self.monitor_params:

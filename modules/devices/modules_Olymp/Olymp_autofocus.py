@@ -206,7 +206,7 @@ class AF():
         new_posz = self.ask_zpos()
         if 1 in debug:
             print(Fore.YELLOW + f'####### new_posz, '
-                            'just after AF is {new_posz} !!! ')
+                            f'just after AF is {new_posz} !!! ')
             print(Style.RESET_ALL)
         try:
             # focus = AF position + offset

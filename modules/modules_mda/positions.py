@@ -18,6 +18,7 @@ from modules.modules_mda.make_video import MAKE_VIDEO as MV
 from modules.track_segm.cam_pred import CAM_PRED as CP
 from modules.modules_mda.tracking import TRACK as TR
 from modules.predef.plugins.plugins_funcs.hog1_curves import HOG1 as HG
+from interface.modules.DMD.calib import apply_calib
 
 import re
 import os
@@ -82,7 +83,7 @@ class POS(MV, CP, TR, HG):
         self.num = title
         self.dic_displ_obj = { '4x': 3.9, '10x': 1.560,
                                '20x': 0.780, '40x': 0.390,
-                               '60x': 0.260, '100x': 0.156}  # original
+                               '60x': 0.260, '100x': 0.156 }  # original
         # budding cells history via segm
         self.dic_buds_hist = defaultdict(lambda: defaultdict(lambda: []))
         self.list_buds_hist_rep = defaultdict(list)
@@ -358,6 +359,7 @@ class POS(MV, CP, TR, HG):
         print(f'exp_time is  {exp_time} ms')
         if mask:
             print('triggering the dmd')
+            apply_calib(mask)
             self.trigger_dmd_image(mask, mask_exp_time)
             sleep(5)                     # delay for loading and triggering
             print('shut Xcite on')
