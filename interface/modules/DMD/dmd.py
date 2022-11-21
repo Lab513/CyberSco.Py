@@ -84,39 +84,61 @@ def closing_devices_after_test():
     print('microscope shutter on..')
 
 
-def init_for_DMD_test():
+def dmd_retrieve_SC(name_SC, debug=[]):
     '''
     '''
+    addr_SC = f'interface/settings/settings_channels/{name_SC}.yaml'
+    if 1 in debug:
+        print(f'addr_SC is {addr_SC} ')
+    with open(addr_SC) as f_r:                           # current SC
+        # Settings channels dictionary
+        dic_chan = yaml.load(f_r, Loader=yaml.FullLoader)
+
+    return dic_chan
+
+
+def init_for_DMD_test(name_SC):
+    '''
+    '''
+    dic_chan = dmd_retrieve_SC(name_SC)
+    filt = int(dic_chan['filter'])
+    xcite_intens = dic_chan['Xcite']
     # filt, kind_fluo = pos.define_filt_kind_with_name(dic_chan)
-    xc.set_intens_level(1)
+    xc.set_intens_level(xcite_intens)
     # set the filter for the fluo with Xcite
-    ol.set_wheel_filter(5)
+    ol.set_wheel_filter(filt)
     # close the BF
     ol.set_shutter(shut='off')
 
 
-def make_DMD_test(name_img_test):
+def dmd_move_images():
     '''
-    Perform the DMD acquisition
     '''
-    init_for_DMD_test()
-
-    mask_exp_time = 5
-
-    # apply calibration to image..
-    # if name_img_test != 'calib':
-    apply_calib(name_img_test)
-    pos.trigger_dmd_image(name_img_test, mask_exp_time)
-    sleep(5)                     # delay for loading and triggering
-    print('shut Xcite on')
-    xc.shut_on()
-    sleep(2)
-    ##
     addr_pic = 'interface/static/curr_pic/frame0.png'    # snap BF
     addr_snap = 'interface/static/snapped/snap_curr.png'
     addr_dmd_illum = 'interface/static/dmd/illum/curr_dmd.png'
     sh.copy(addr_pic, addr_snap)
     sh.copy(addr_pic, addr_dmd_illum)
+
+
+def make_DMD_test(name_img_test, name_SC, debug=[]):
+    '''
+    Perform the DMD acquisition
+    '''
+    init_for_DMD_test(name_SC)
+
+    mask_exp_time = 5
+
+    # apply calibration to image..
+    apply_calib(name_img_test)
+    pos.trigger_dmd_image(name_img_test,mask_exp_time)
+
+    sleep(5)                     # delay for loading and triggering
+    print('shut Xcite on')
+    xc.shut_on()
+    sleep(2)
+    ##
+    dmd_move_images()
 
     if name_img_test == 'calib':
         make_calib()
@@ -127,7 +149,7 @@ def make_DMD_test(name_img_test):
 
 def find_coord_pts(img):
     '''
-    Find coordinated of the shapes
+    Find coordinates of the shapes
     '''
     lpts = []
     ret, thr = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
@@ -178,7 +200,7 @@ def apply_calib(name_img_test):
     img_test = cv2.imread(addr_test,0)
     rows,cols = img_test.shape
     if name_img_test != 'calib':
-        # Apply the Transform
+        # Apply the affine Transform
         dst = cv2.warpAffine(img_test,M,(cols,rows))
     else:
         # no transformation if calibration image
@@ -203,4 +225,4 @@ def test_DMD(infos_dmd):
     print(f'addr img for DMD is { img_addr }')
     print(f'using Setting Channels { name_SC }')
 
-    make_DMD_test(name_img_test)
+    make_DMD_test(name_img_test, name_SC)

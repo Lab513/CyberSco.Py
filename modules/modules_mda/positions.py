@@ -293,9 +293,9 @@ class POS(MV, CP, TR, HG):
         self.project_dmd_image(mask_exp_time)
 
     def taking_picture_fluo(self, step=None, rep=None,
-                            dic_chan=None, exp_time=300,
-                            mask=None, mask_exp_time=None,
-                            kind_fluo=None, debug=[0,2]):
+                                  dic_chan=None, exp_time=300,
+                                  mask=None, mask_exp_time=None,
+                                  kind_fluo=None, debug=[0,2]):
         '''
         Taking a picture in fluorescence
         '''
@@ -367,6 +367,7 @@ class POS(MV, CP, TR, HG):
         # take the fluo pic
         # camera exposure time is a blocking operation
         self.ev.take_pic(addr_pic, bpp=8, exp_time=exp_time, allow_contrast=False)
+
         print(f'filt for fluo is {filt}')
 
         if mask:
