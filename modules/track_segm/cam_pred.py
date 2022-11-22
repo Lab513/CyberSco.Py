@@ -247,7 +247,8 @@ class CAM_PRED(TR):
         imgray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         ret, thresh = cv2.threshold(imgray, thr, 255, 0)
         contours, hierarchy = cv2.findContours(thresh,
-                cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)[-2:]
+                                               cv2.RETR_TREE,
+                                               cv2.CHAIN_APPROX_SIMPLE)[-2:]
         return img, contours
 
     def find_contours_otsu(self, addr, debug=[]):
@@ -309,12 +310,12 @@ class CAM_PRED(TR):
         if kind == 'pred_ev':
             self.curr_pred = 'events'
             # contours for events (with threshold) and counting
-            self.find_contours_and_count() # meth='thresh', thr=200
+            self.find_contours_and_count(meth='thresh', thr=127) # meth='thresh', thr=200
         else:
             self.curr_pred = 'BF'
             # make contours and count segmented cells
             # count segm 0
-            self.find_contours_and_count()
+            self.find_contours_and_count(meth='thresh', thr=127)
 
     def save_pred(self, f, pred, pred_ev=None):
         '''
@@ -349,7 +350,7 @@ class CAM_PRED(TR):
 
     def load_dict_models(self):
         '''
-        Dictionary of the models with their aliases.. 
+        Dictionary of the models with their aliases..
         '''
         # yaml file with all the possible models
         addr_models = Path('modules') / 'settings' / 'models.yaml'
