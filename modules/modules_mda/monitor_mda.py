@@ -215,21 +215,27 @@ class MONITORING(MVP):
         # except:
         #     print('Tried to plot bokeh')
 
-    def find_max_bk_plot(self, pos, max_plot):
+    def find_max_bk_plot(self, pos, max_plot, num_mod):
         '''
         '''
-        max_pos = max(pos.list_nb_cells)
-        if max_pos > max_plot:
-            max_plot = max_pos
+        if num_mod == 0:
+            max_pos = max(pos.list_nb_cells)
+            if max_pos > max_plot:
+                max_plot = max_pos
+        else:
+            max_pos = max(pos.list_nb_cells_events)
+            if max_pos > max_plot:
+                max_plot = max_pos
 
         return max_plot
 
-    def bokeh_plot_nbcells_segm(self, num_mod, debug=[1]):
+    def bokeh_plot_nbcells_segm(self, num_mod, w=300, h=240 , debug=[]):
         '''
         Bokeh plot for the cells segmented with model num_mod
         Gathering the positions on the same graph..
+        num_mod : index of the model
         '''
-        bk = BOKEH_PLOT()
+        bk = BOKEH_PLOT(plot_width=w, plot_height=h)
         # bk.figure()
         bk.title(f"Evolution of the number of cells, model{num_mod}")
         bk.xlabel('time in min')
@@ -241,7 +247,7 @@ class MONITORING(MVP):
                 print(f'pos.list_nb_cells_events is {pos.list_nb_cells_events} ')
                 print(f'pos.list_time_axis is  {pos.list_time_axis}')
                 print(f'pos.num is  {pos.num}')
-            max_plot = self.find_max_bk_plot(pos, max_plot)
+            max_plot = self.find_max_bk_plot(pos, max_plot, num_mod)
             if num_mod == 0:
                 bk.plot(pos.list_time_axis, pos.list_nb_cells, label=str(pos.num))
             else:
@@ -295,7 +301,7 @@ class MONITORING(MVP):
 
     def test_file_in_patt(self,f):
         '''
-        Find if pattern in the name of file..
+        Find if pattern is in the name of file..
         '''
         auth = False
         for patt in self.list_patt_auth:
