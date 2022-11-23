@@ -54,8 +54,9 @@ class MDA(POS, MTP, LM, FOL, PRM, MAC, PDM, UT):
         self.ldevices = ldevices          # list of the devices
         self.folder_exp()                 # folders for experiment
         self.logfile()                    # save stdout in logfile
-        self.load_main_model()            # load current model
-        self.load_event_model()           # load event model
+        # self.load_main_model()            # load current model
+        # self.load_event_model()           # load event model
+        self.load_used_models()
         self.gates_blocked = []
         self.gates_switched = []
         self.load_addr_mails()            # load the mails addresses

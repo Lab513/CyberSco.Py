@@ -15,21 +15,30 @@ class LOAD_MODELS():
         '''
         pass
 
-    def load_main_model(self):
+    def load_used_models(self):
         '''
-        Load the main segmentation model
+        Load the list of models used and load them
         '''
-        with open('modules/settings/curr_model.yaml') as f_r:
-            curr_mod = yaml.load(f_r, Loader=yaml.FullLoader)
-            self.curr_mod = self.load_model(curr_mod)        # main model
+        with open('modules/settings/used_models.yaml') as f_r:
+            used_models = yaml.load(f_r, Loader=yaml.FullLoader)
+            self.curr_mod = self.load_model(used_models['mod0']['id'])        # main model
+            self.ev_mod = self.load_model(used_models['mod1']['id'])
 
-    def load_event_model(self):
-        '''
-        Load the model for event detection
-        '''
-        with open('modules/settings/event_model.yaml') as f_r:
-            ev_mod = yaml.load(f_r, Loader=yaml.FullLoader)
-            self.ev_mod = self.load_model(ev_mod)              # event model
+    # def load_main_model(self):
+    #     '''
+    #     Load the main segmentation model
+    #     '''
+    #     with open('modules/settings/curr_model.yaml') as f_r:
+    #         curr_mod = yaml.load(f_r, Loader=yaml.FullLoader)
+    #         self.curr_mod = self.load_model(curr_mod)        # main model
+    #
+    # def load_event_model(self):
+    #     '''
+    #     Load the model for event detection
+    #     '''
+    #     with open('modules/settings/event_model.yaml') as f_r:
+    #         ev_mod = yaml.load(f_r, Loader=yaml.FullLoader)
+    #         self.ev_mod = self.load_model(ev_mod)              # event model
 
     def load_model(self, mod):
         '''

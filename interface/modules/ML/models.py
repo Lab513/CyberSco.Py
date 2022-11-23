@@ -6,7 +6,7 @@ from interface.flask_app import *
 from interface.modules.misc_import import *
 
 
-def sending_curr_model(debug=[]):
+def sending_used_models(debug=[]):
     '''
     Send to the interface which main segmentation model is used
     '''
@@ -32,7 +32,7 @@ def sending_all_models(debug=[]):
         print(f'sent all_models.keys()'
               f' : {all_models.keys()} to the interface..')
     sleep(1)
-    sending_curr_model()
+    sending_used_models()
 
 
 def sending_event_model(debug=[]):

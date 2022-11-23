@@ -1,0 +1,7 @@
+mod0:
+    id: BactNoYeast
+    name: bacteria
+
+mod1:
+    id: YeastNoBact
+    name: yeasts
