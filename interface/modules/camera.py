@@ -7,9 +7,11 @@ from interface.modules.misc_import import *
 from interface.modules.init.init_paths import *
 from interface.modules.init.init_devices import *
 
-def set_autocontrast(cntrst):
+def set_autocontrast(cntrst, debug=[0]):
     '''
+    Set the value for autocontrast..
     '''
+    print(f'Set autocontrast to {cntrst}')
     with open(settings_folder / 'cam_params.yaml') as f_r:
         dic_cam_params = yaml.load(f_r, Loader=yaml.FullLoader)
     dic_cam_params['autocontrast'] = cntrst

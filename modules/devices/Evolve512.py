@@ -73,6 +73,7 @@ class EVOLVE(CU):
         allow_contrast: correction on min max and scale for better image..
         '''
         self.cam.speed_table_index = 0
+        # 16 bits
         self.frame = self.cam.get_frame(exp_time=exp_time)
         if addr:
             name, ext = ospl(addr)

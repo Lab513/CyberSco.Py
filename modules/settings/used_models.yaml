@@ -1,7 +1,15 @@
+# mod0:
+#     id: BactNoYeast
+#     name: bacteria
+#
+# mod1:
+#     id: YeastNoBact
+#     name: yeasts
+
 mod0:
-    id: BactNoYeast
-    name: bacteria
+    id: beads_1umx1pt5
+    name: beads
 
 mod1:
-    id: YeastNoBact
-    name: yeasts
+    id: beads_1umx1pt5
+    name: beads

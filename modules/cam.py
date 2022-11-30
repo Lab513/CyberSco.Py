@@ -1,6 +1,6 @@
 '''
 Camera imported in CyberSco.py..
-Choice bewtween Evolve512 or Zyla camera
+Choice between Evolve512 or Zyla camera
 '''
 
 from colorama import Fore, Style         # Color in the Terminal
@@ -12,7 +12,7 @@ import yaml
 import cv2
 import os
 op = os.path
-opd, opb, opj = op.dirname, op.basename, op.join
+opd, opb, opj, ope = op.dirname, op.basename, op.join, op.exists
 
 try:
     from devices.Evolve512 import EVOLVE as EV
@@ -172,14 +172,16 @@ def gen(predict=True, debug=[]):
             if 1 in debug:
                 print("took pic")
         try:
+
             if 2 in debug:
                 print(f"addr_pic_read {addr_pic_read}")
-            img = cv2.imread(addr_pic_read)
-            _, jpeg = cv2.imencode('.jpg', img)
-            frame = jpeg.tobytes()
-            # return current frame
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+            if ope(addr_pic_read):
+                img = cv2.imread(addr_pic_read)
+                _, jpeg = cv2.imencode('.jpg', img)
+                frame = jpeg.tobytes()
+                # return current frame
+                yield (b'--frame\r\n'
+                       b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
         except:
             print('Cannot provide a frame !!')
 

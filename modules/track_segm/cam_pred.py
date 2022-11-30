@@ -51,7 +51,6 @@ class CAM_PRED(TR):
             print(f'########### mode is {mode} ')
         self.dir_pred = dir_pred
         self.mode = mode
-        # self.load_curr_model()
         self.load_used_models()
         self.list_nb_cells = []   # list of nb of cells detected in the image
         self.nb_cells = 0
@@ -66,8 +65,6 @@ class CAM_PRED(TR):
         self.show_num_cell = True
         self.which_tracked = 'all'
         self.curr_pred = 'BF'      # initialize prediction with BF segmentation
-        # if events:
-        #     self.load_event_model()     # load the model for event prediction
 
     def load_used_models(self):
         '''
@@ -75,34 +72,8 @@ class CAM_PRED(TR):
         '''
         with open('modules/settings/used_models.yaml') as f_r:
             used_models = yaml.load(f_r, Loader=yaml.FullLoader)
-            self.curr_mod = self.load_model(used_models['mod0']['id'])        # main model
-            self.ev_mod = self.load_model(used_models['mod1']['id'])
-
-    # def load_curr_model(self, debug=[]):
-    #     '''
-    #     Load the current model
-    #     '''
-    #     if 0 in debug:
-    #         print('## In load_curr_model !!!!!! ')
-    #     with open('modules/settings/curr_model.yaml') as f_r:
-    #         curr_mod = yaml.load(f_r, Loader=yaml.FullLoader)
-    #         if 0 in debug:
-    #             print(f'####** curr_mod = {curr_mod} ')
-    #     # load the main cell segmentation model
-    #     self.curr_mod = self.load_model(curr_mod)
-    #     if 1 in debug:
-    #         print(f'################ In cam pred, curr_mod {curr_mod}')
-    #
-    # def load_event_model(self, debug=[]):
-    #     '''
-    #     Load the model for event detection
-    #     '''
-    #     with open('modules/settings/event_model.yaml') as f_r:
-    #         ev_mod = yaml.load(f_r, Loader=yaml.FullLoader)
-    #         # event model
-    #         self.ev_mod = self.load_model(ev_mod)
-    #     if 0 in debug:
-    #         print(f'################ In cam pred, event model {ev_mod}')
+            self.mod0 = self.load_model(used_models['mod0']['id'])        # main model
+            self.mod1 = self.load_model(used_models['mod1']['id'])
 
     def image_contours(self, img, cntrs, debug=[]):
         '''
@@ -429,11 +400,11 @@ class CAM_PRED(TR):
         f: file name for prediction
         '''
         arr = self.array_for_pred(f)
-        res = self.curr_mod.predict(arr)      # prediction for segmentation
+        res = self.mod0.predict(arr)      # prediction for segmentation
         if event:
             if 1 in debug:
-                print(f' type(self.ev_mod) is {type(self.ev_mod)} ')
-            res_ev = self.ev_mod.predict(arr)     # prediction event model
+                print(f' type(self.mod1) is {type(self.mod1)} ')
+            res_ev = self.mod1.predict(arr)     # prediction event model
         ####
         if clear:
             tfk.backend.clear_session()     # avoid freezing

@@ -120,7 +120,6 @@ def test_connect():
     sending_objective()         # send the current objective used
     sending_predef()
     sending_all_models()        # send the aliases of all the models in use
-    sending_event_model()       # send the event model
     sending_snap_addr()         # snap address
     # sending initial position information to the client
     double_sending_pos()

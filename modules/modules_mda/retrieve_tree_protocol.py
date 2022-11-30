@@ -34,8 +34,8 @@ class RETRIEVE_TREE_PROTOCOL():
         if 0 in debug:
             print('dealing with position')
             print(f'###** d is {d} ')
-        pos = POS(self.ldevices, self.curr_mod,
-                  self.ev_mod, title=d['title'])
+        pos = POS(self.ldevices, self.mod0,
+                  self.mod1, title=d['title'])
         pos.dir_mda_temp = self.dir_mda_temp
         pos.first_time = self.first_time
         ##

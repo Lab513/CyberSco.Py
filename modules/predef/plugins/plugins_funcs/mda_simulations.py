@@ -16,7 +16,7 @@ class MDA_SIMU():
         self.plateau_duration = 1              # plateau duration in minutes
         ##
         ##
-        pos = POS(self.ldevices, self.curr_mod)
+        pos = POS(self.ldevices, self.mod0)
         pos.num = 0
         pos.num_gate = 1
         pos.dir_mda_temp = self.dir_mda_temp
@@ -48,7 +48,7 @@ class MDA_SIMU():
         ##
         self.list_pos = []
         for i in range(5):
-            self.list_pos += [POS(self.ldevices, self.curr_mod)]
+            self.list_pos += [POS(self.ldevices, self.mod0)]
             self.list_pos[i].num = i
             self.list_pos[i].thresh_cells = self.lthr_cells[i]
             self.list_pos[i].num_gate = i+1

@@ -35,7 +35,7 @@ class POS(MV, CP, TR, HG):
     '''
     Position on which are made the autofocus, BF, RFP, YFP etc...
     '''
-    def __init__(self, ldevices, curr_mod=None, ev_mod=None, title='', debug=[0]):
+    def __init__(self, ldevices, mod0=None, mod1=None, title='', debug=[0]):
         '''
         Position
         '''
@@ -44,8 +44,8 @@ class POS(MV, CP, TR, HG):
         self.ldevices = ldevices
         # load the devices
         self.ol, self.pr, self.ev, self.co, self.xc, self.ga, self.se = ldevices
-        self.curr_mod = curr_mod                   # current segmentation model
-        self.ev_mod = ev_mod                       # current event model
+        self.mod0 = mod0                   # current segmentation model
+        self.mod1 = mod1                       # current event model
         self.list_steps = OrderedDict()
         self.size = 512                            # images size
         self.nb_cells = 0                          # current number of cells

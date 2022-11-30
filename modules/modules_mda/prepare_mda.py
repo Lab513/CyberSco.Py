@@ -37,7 +37,7 @@ class PREPARE_MDA():
         '''
         self.nb_pos = len(self.lxyz)
         for i in range(self.nb_pos):
-            pos = POS(self.ldevices, self.curr_mod, self.ev_mod)
+            pos = POS(self.ldevices, self.mod0, self.mod1)
             pos.num = i
             pos.dir_mda_temp = self.dir_mda_temp
             pos.mda = self

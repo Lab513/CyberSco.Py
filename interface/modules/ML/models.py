@@ -10,9 +10,13 @@ def sending_used_models(debug=[]):
     '''
     Send to the interface which main segmentation model is used
     '''
-    with open('modules/settings/curr_model.yaml') as f_r:
-        curr_model = yaml.load(f_r, Loader=yaml.FullLoader)
-    emit('curr_model', curr_model, broadcast=True)
+
+    with open('modules/settings/used_models.yaml') as f_r:
+        used_models = yaml.load(f_r, Loader=yaml.FullLoader)
+    dic_mod0 = json.dumps(used_models['mod0'])
+    emit('mod0', dic_mod0, broadcast=True)
+    dic_mod1 = json.dumps(used_models['mod1'])
+    emit('mod1', dic_mod1, broadcast=True)
     if 0 in debug:
         print(f'sent the current model name : {curr_model} to the interface..')
 
@@ -35,24 +39,13 @@ def sending_all_models(debug=[]):
     sending_used_models()
 
 
-def sending_event_model(debug=[]):
-    '''
-    Send to the interface the event model
-    '''
-    with open('modules/settings/event_model.yaml') as f_r:
-        ev_mod = yaml.load(f_r, Loader=yaml.FullLoader)
-    emit('used_event_model', ev_mod, broadcast=True)
-    if 0 in debug:
-        print(f'sent the event model name : {ev_mod} to the interface..')
-
-
 @socketio.on('change_model')
 def change_model(model, debug=[]):
     '''
     Inform the interface about the new loaded model..
     '''
-    with open('modules/settings/curr_model.yaml', 'w') as f_w:
-        yaml.dump(model, f_w)
+    # with open('modules/settings/curr_model.yaml', 'w') as f_w:
+    #     yaml.dump(model, f_w)
     if 0 in debug:
         print(f'Changed model to {model}')
     # emit('curr_model', model, broadcast=True)

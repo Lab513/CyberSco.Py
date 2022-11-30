@@ -2,13 +2,21 @@
 Set current model
 */
 
-socket.on('curr_model', function( model_name ){                                    // select new model
+socket.on('mod0', function( dic_mod0 ){                                    // select new model
 
     //alert( model_name )
 
-    $('#select_model').val( model_name ).change()
+    //$('#select_model').val( model_name ).change()
+    mod0 = JSON.parse(dic_mod0)
+    $('#model0_pred').text( mod0['name'] )
 
   })
+
+  socket.on('mod1', function( dic_mod1 ){                                    // select new model
+      mod1 = JSON.parse(dic_mod1)
+      $('#model1_pred').text( mod1['name'] )
+
+    })
 
 socket.on('new_model', function(mod){                                               // load model
 

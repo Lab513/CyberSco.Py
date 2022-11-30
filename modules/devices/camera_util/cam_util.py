@@ -46,6 +46,8 @@ class CAM_UTIL():
             self.autocontrast = True
             self.adapt(bpp)
         else:
-            # if no contrast and 8 bits resolution
+            if 0 in debug:
+                print('no autocontrast applied..')
+            # if no autocontrast and 8 bits resolution
             if bpp == 8:
                 self.frame = self.frame/256
