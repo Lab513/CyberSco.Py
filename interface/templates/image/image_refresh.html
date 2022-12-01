@@ -7,6 +7,7 @@ Communication with camera during Live
 var vid_parall = true
 var live_stream = true
 var ip_addr = ''
+var refresh_time_mda = 5000
 
 
 // retrieve the IP address
@@ -16,9 +17,33 @@ socket.on('ip_used', function(msg){
   ip_addr = msg
   //alert('ip_addr is ' + ip_addr)
 
+  // Live_streaming
+  if (live_stream){
+      $('#curr_cam_pic').attr( 'src', 'http://' + ip_addr + ':2204/video_feed' + '?t='  + new Date().getTime() )
+  }
 
 })
 
+
+socket.on('watch_currpos', function(msg){
+      $('#curr_pos_param').text( msg )
+ } )
+
+socket.on('close_cam', function(msg){                            //
+     $('#curr_pos_param').text(0)                                // watch the pos 0
+     live_stream = false
+     $('#curr_cam_pic').attr('src', 'http://' + ip_addr + ':2204/quit_live')          // stop livecam
+     setTimeout(function(){
+         socket.emit( 'make_mda', '' )
+         setInterval(function(){
+             curr_pos = $('#curr_pos_param').text()
+             $('#curr_cam_pic').attr('src', '/static/curr_pic/frame'+ curr_pos + '.png' + '?t='  + new Date().getTime() )    // current pic by position
+           }, refresh_time_mda)
+     }, 5000)                // launch the mda
+
+  })
+
+// }
 
 // send exposure time for snap
 
@@ -29,15 +54,6 @@ socket.on('send_exp_time', function(time){
 
 })
 
-// send snap address
-
-// socket.on('send_snap_addr', function(snap_addr){
-//
-//   //alert('snap_addr is ' + snap_addr)
-//   $.post('http://' + ip_addr + ':2204/snap_addr', {'data': snap_addr})
-//
-// })
-
 // send autocontrast BF value
 
 socket.on('current_contrast', function(autocntrst){
@@ -46,48 +62,3 @@ socket.on('current_contrast', function(autocntrst){
   $.post('http://' + ip_addr + ':2204/autocontrast', {'val': autocntrst})
 
 })
-
-
-if (!vid_parall){
-
-    setInterval(function(){
-
-       socket.emit('new_pic', '')            // asking for new pic
-       setTimeout(function(){ $('#curr_cam_pic').attr('src', '/static/curr_pic/frame0.png' + '?t='  + new Date().getTime()) }, 100); // change src
-
-     },  500); // ask for picture
-    // websocket socketio gevent connectionabortederror: [winerror 10053] une connexion établie a été abandonnée par un logiciel de votre ordinateur hôte
-
-}
-else{
-
-    if (live_stream){
-
-      // retrieve from the camera server
-      $('#curr_cam_pic').attr( 'src', 'http://' + ip_addr + ':2204/video_feed' + '?t='  + new Date().getTime() )
-
-     }
-    else {
-
-         // retrieve locally
-         $('#curr_cam_pic').attr('src', '/static/curr_pic/frame0.png' + '?t='  + new Date().getTime())
-    }
-
-    socket.on('watch_currpos', function(msg){
-          $('#curr_pos_param').text( msg )
-     } )
-
-    socket.on('close_cam', function(msg){                            //
-         live_stream = false
-         $('#curr_cam_pic').attr('src', 'http://' + ip_addr + ':2204/quit_live')          // stop livecam
-         setTimeout(function(){
-             socket.emit( 'make_mda', '' )
-             setInterval(function(){
-                 curr_pos = $('#curr_pos_param').text()
-                 $('#curr_cam_pic').attr('src', '/static/curr_pic/frame'+ curr_pos + '.png' + '?t='  + new Date().getTime() )    // current pic by position
-               }, 5000)
-         }, 5000)                // launch the mda
-
-      })
-
-}

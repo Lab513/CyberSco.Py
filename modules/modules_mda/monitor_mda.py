@@ -237,7 +237,9 @@ class MONITORING(MVP):
         '''
         bk = BOKEH_PLOT(plot_width=w, plot_height=h)
         # bk.figure()
-        bk.title(f"Evolution of the number of cells, model{num_mod}")
+        p0 = self.list_pos[0]
+        name_mod = p0.used_models[f'mod{num_mod}']['name']
+        bk.title(f"Number of cells, model {name_mod}")
         bk.xlabel('time in min')
         bk.ylabel('nb of cells')
         max_plot = 0

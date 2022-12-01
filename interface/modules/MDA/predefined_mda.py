@@ -169,7 +169,7 @@ def launch_mda_predef(cam):
                             ldevices=[ol, pr, cam, co, xc, ga, se],
                             user=current_user)
     # attaching the current segmentation model to the microscope for focus
-    ol.mod = mda_protocol.curr_mod
+    ol.mod = mda_protocol.mod0
     mda_params(mda_protocol)
     ##
     passing_from_tree_to_predefined(mda_protocol)

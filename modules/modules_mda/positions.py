@@ -46,6 +46,7 @@ class POS(MV, CP, TR, HG):
         self.ol, self.pr, self.ev, self.co, self.xc, self.ga, self.se = ldevices
         self.mod0 = mod0                   # current segmentation model
         self.mod1 = mod1                       # current event model
+        self.retrieve_models_infos()
         self.list_steps = OrderedDict()
         self.size = 512                            # images size
         self.nb_cells = 0                          # current number of cells
@@ -94,6 +95,13 @@ class POS(MV, CP, TR, HG):
         # conversion factor from image coord to µm according to the objective
         self.fact_micro = self.dic_displ_obj[self.ol.objective]
         self.delay_xcite = 0.5
+
+    def retrieve_models_infos(self):
+        '''
+        Retrieve name and Id for the models
+        '''
+        with open('modules/settings/used_models.yaml') as f_r:
+            self.used_models = yaml.load(f_r, Loader=yaml.FullLoader)
 
     def focus_labels(self):
         '''

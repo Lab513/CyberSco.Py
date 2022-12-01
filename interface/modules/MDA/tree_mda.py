@@ -35,7 +35,7 @@ def launch_mda_tree(cam, debug=[1]):
     mda_protocol = MDA(ldevices=[ol, pr, cam, co, xc, ga, se],
                        user=current_user)
     mda_params(mda_protocol)
-    ol.mod = mda_protocol.curr_mod
+    ol.mod = mda_protocol.mod0
     ol.ref_posz = ol.ask_zpos()
     if 1 in debug:
         print(f'in launch_mda_tree, yaml_prot is {yaml_prot}')

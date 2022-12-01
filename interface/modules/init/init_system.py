@@ -86,12 +86,14 @@ def infos_hard_soft(debug=[]):
         print('probably working out of context')
 
 
-def sending_ip():
+def sending_ip(debug=[0]):
     '''
     Send the Ip for the camera
     '''
     global ip
     ip = socket.gethostbyname(socket.gethostname())
+    if 0 in debug:
+        print(f'sending ip {ip} to the interface.. ')
     emit('ip_used', ip, broadcast=True)
 
 
