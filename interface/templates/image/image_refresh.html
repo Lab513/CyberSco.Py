@@ -4,61 +4,18 @@ Regularly refresh the image coming from the camera
 Communication with camera during Live
 */
 
-var vid_parall = true
+
 var live_stream = true
 var ip_addr = ''
-var refresh_time_mda = 5000
-
 
 // retrieve the IP address
 
 socket.on('ip_used', function(msg){
 
-  ip_addr = msg
-  //alert('ip_addr is ' + ip_addr)
-
-  // Live_streaming
-  if (live_stream){
-      $('#curr_cam_pic').attr( 'src', 'http://' + ip_addr + ':2204/video_feed' + '?t='  + new Date().getTime() )
-  }
+      ip_addr = msg
+      //alert('ip_addr is ' + ip_addr)
+      {% include 'image/image_refresh_live.html'  %}
 
 })
 
-
-socket.on('watch_currpos', function(msg){
-      $('#curr_pos_param').text( msg )
- } )
-
-socket.on('close_cam', function(msg){                            //
-     $('#curr_pos_param').text(0)                                // watch the pos 0
-     live_stream = false
-     $('#curr_cam_pic').attr('src', 'http://' + ip_addr + ':2204/quit_live')          // stop livecam
-     setTimeout(function(){
-         socket.emit( 'make_mda', '' )
-         setInterval(function(){
-             curr_pos = $('#curr_pos_param').text()
-             $('#curr_cam_pic').attr('src', '/static/curr_pic/frame'+ curr_pos + '.png' + '?t='  + new Date().getTime() )    // current pic by position
-           }, refresh_time_mda)
-     }, 5000)                // launch the mda
-
-  })
-
-// }
-
-// send exposure time for snap
-
-socket.on('send_exp_time', function(time){
-
-  //alert('time is ' + time)
-  $.post('http://' + ip_addr + ':2204/exp_time', {'data': time})
-
-})
-
-// send autocontrast BF value
-
-socket.on('current_contrast', function(autocntrst){
-
-  //alert('autocntrst is ' + autocntrst)
-  $.post('http://' + ip_addr + ':2204/autocontrast', {'val': autocntrst})
-
-})
+{% include 'image/image_refresh_mda.html'  %}

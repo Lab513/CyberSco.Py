@@ -1,0 +1,20 @@
+// Live settings.. 
+
+
+// send exposure time for snap
+
+socket.on('send_exp_time', function(time){
+
+  //alert('time is ' + time)
+  $.post('http://' + ip_addr + ':2204/exp_time', {'data': time})
+
+})
+
+// send autocontrast BF value
+
+socket.on('current_contrast', function(autocntrst){
+
+  //alert('autocntrst is ' + autocntrst)
+  $.post('http://' + ip_addr + ':2204/autocontrast', {'val': autocntrst})
+
+})

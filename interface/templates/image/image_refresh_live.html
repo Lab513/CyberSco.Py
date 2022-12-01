@@ -1,0 +1,8 @@
+
+
+// Live_streaming
+if (live_stream){
+    $('#curr_cam_pic').attr( 'src', 'http://' + ip_addr + ':2204/video_feed' + '?t='  + new Date().getTime() )
+}
+
+{% include 'image/image_live_settings.html'  %}
