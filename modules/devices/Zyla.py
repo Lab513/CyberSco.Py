@@ -31,21 +31,21 @@ class ZYLA(CU):
         except:
             print('cannot open the cam')
 
-    def save_pic(self, addr, ext, bpp, contrast=False):
+    def save_pic(self, addr, ext, bpp):
         '''
         Save the pic in tiff or png format
         '''
-        self.handle_contrast(contrast, bpp)
+        self.handle_contrast(bpp)
         kind_int = f'uint{bpp}'
         type_int = getattr(np, kind_int)
         frame = self.frame.astype(type_int)
         if ext == '.tiff':
-            io.imsave(addr, frame)   
+            io.imsave(addr, frame)
         elif ext == '.png':
             img = Image.fromarray(frame)
             img.save(addr)
 
-    def take_pic(self, addr, bpp=16, exp_time=50, allow_contrast=False, debug=[]):
+    def take_pic(self, addr, bpp=16, exp_time=50, debug=[]):
         '''
         Retrieve a pic from the Zyla camera and save it in 16 bytes format
         '''
@@ -53,7 +53,7 @@ class ZYLA(CU):
         if 1 in debug : print(f'extension is {ext}')
         print ("\nGetting image data...")
         self.frame = self.cam.acquire(timeout=20000).image.astype(np.float32)
-        self.save_pic(addr, ext, bpp, contrast=allow_contrast)
+        self.save_pic(addr, ext, bpp)
 
     def close(self):
         '''

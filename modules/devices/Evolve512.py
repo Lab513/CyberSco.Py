@@ -45,16 +45,17 @@ class EVOLVE(CU):
             print(Style.RESET_ALL)
             print('###')
 
-    def save_pic(self, addr, ext, bpp, contrast=False, debug=[0]):
+    def save_pic(self, addr, ext, bpp, debug=[]):
         '''
         Save the pic in tiff or png format
         '''
         if 0 in debug:
             print(f'ext is {ext}')
             print(f'bpp is {bpp}')
+        if 1 in debug:
             print(f'self.frame.min() = {self.frame.min()}')
             print(f'self.frame.max() = {self.frame.max()}')
-        self.handle_contrast(contrast, bpp)
+        self.handle_contrast(bpp)
         kind_int = f'uint{bpp}'
         type_int = getattr(np, kind_int)
         frame = self.frame.astype(type_int)
@@ -79,7 +80,7 @@ class EVOLVE(CU):
             name, ext = ospl(addr)
             if 1 in debug:
                 print(f'extension is {ext}')
-            self.save_pic(addr, ext, bpp, contrast=allow_contrast)
+            self.save_pic(addr, ext, bpp)
 
     def close(self):
         '''

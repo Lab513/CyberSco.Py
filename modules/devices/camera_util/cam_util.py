@@ -19,7 +19,7 @@ class CAM_UTIL():
             if 0 in debug:
                 print(f'########### For BF autocontrast is {self.autocontrast}')
 
-    def adapt(self, bpp, debug=[1]):
+    def adapt(self, bpp, debug=[]):
         '''
         Adapt min max
         '''
@@ -36,14 +36,13 @@ class CAM_UTIL():
             print(f'self.frame.min() = {self.frame.min()}')
             print(f'self.frame.max() = {self.frame.max()}')
 
-    def handle_contrast(self, contrast, bpp, debug=[0]):
+    def handle_contrast(self, bpp, debug=[0]):
         '''
         Handle the contrast or reduce to 8 bits if asked..
         '''
-        if contrast:
+        if self.autocontrast:
             if 0 in debug:
                 print('apply the autocontrast..')
-            self.autocontrast = True
             self.adapt(bpp)
         else:
             if 0 in debug:

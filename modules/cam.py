@@ -25,7 +25,8 @@ except:
 
 app = Flask(__name__)
 
-with open('interface/settings/cam_used.yaml') as f_r:     # camera in use
+# camera in use Evolv or Zyla
+with open('interface/settings/cam_used.yaml') as f_r:
     cam_used = yaml.load(f_r, Loader=yaml.FullLoader)
 
 if cam_used == 'Evolv':       # use the Evolve camera
@@ -45,7 +46,9 @@ if not os.path.exists(mda_pic_addr):
     os.mkdir(mda_pic_addr)
 if not os.path.exists(mda_imgs_pos):
     os.mkdir(mda_imgs_pos)
+
 livecam = True
+# exposure time
 exp_time = 200
 
 # make prediction and find contours
@@ -163,7 +166,7 @@ def gen(predict=True, debug=[]):
                 copy_pic_in_mda()
             except:
                 print('Cannot copy to mda folder')
-                print('Check the camera is on !!!')
+                print('Check if the camera is on !!!')
             if predict:
                 try:
                     cp.predict_and_save()   # predict in real time
