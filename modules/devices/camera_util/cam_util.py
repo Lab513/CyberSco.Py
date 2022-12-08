@@ -12,6 +12,7 @@ class CAM_UTIL():
 
     def retrieve_autocontrast(self, debug=[0]):
         '''
+        Set autocontrast
         '''
         with open('interface/settings/cam_params.yaml') as f_r:
             dic_cam_params = yaml.load(f_r, Loader=yaml.FullLoader)

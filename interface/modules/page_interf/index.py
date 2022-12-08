@@ -266,8 +266,6 @@ def send_infos_dash(msg, debug=[0]):
     global thread_dash_launched
     if not thread_dash_launched:
         socketio.start_background_task(target=lambda: thread_dash())
-        # thread_dash_info = Thread(target=thread_dash)
-        # thread_dash_info.start()
         thread_dash_launched = True
 
 

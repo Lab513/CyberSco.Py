@@ -17,9 +17,10 @@ class MAKE_VIDEO():
     Create video from bunch of images
     '''
 
-    def __init__(self):
+    def __init__(self, snap=False):
         '''
         '''
+        self.snap = snap
 
     def take_num_frame_png(self, elem):
         '''
@@ -106,21 +107,29 @@ class MAKE_VIDEO():
         '''
         List of images for the video
         '''
-        folder = opj(self.dir_mda_temp, name_folder)
+        if self.snap:
+            folder = name_folder
+        else:
+            folder = opj(self.dir_mda_temp, name_folder)
         if name_folder == 'imgs_for_BF_RFP_videos':
             # make fusions between fluo and BF
             self.image_fusion_for_BF_fluo(name_folder)
-
-        ll = glob.glob(opj(folder, f'*{prefix}{self.num}{suffix}_t*.png'))
-        # sorted list
-        list_imgs_sorted = sorted(ll,
-                                  key=lambda elem:
-                                  self.take_num_frame_png(elem))
+        if self.snap:
+            ll = glob.glob(opj(folder, f'snap_*.png'))
+            self.list_imgs_sorted = sorted(ll,
+                                           key=lambda elem:
+                                           int(re.findall('snap_(\\d+).png', elem)[0]))
+        else:
+            ll = glob.glob(opj(folder, f'*{prefix}{self.num}{suffix}_t*.png'))
+            # sorted list
+            self.list_imgs_sorted = sorted(ll,
+                                      key=lambda elem:
+                                      self.take_num_frame_png(elem))
         if 1 in debug:
             print(f'## ll is {ll}')
-            print(f'## list_imgs_sorted is {list_imgs_sorted}')
+            print(f'## self.list_imgs_sorted is {self.list_imgs_sorted}')
         self.list_imgs_vid = []
-        for f in list_imgs_sorted:
+        for f in self.list_imgs_sorted:
             img = cv2.imread(opj(folder, f))
             self.list_imgs_vid.append(img)
         if 1 in debug:
@@ -161,7 +170,8 @@ class MAKE_VIDEO():
             print(f'## self.list_imgs_vid is {self.list_imgs_vid}')
 
     def make_vid_avi(self, prefix='', suffix='',
-                     name_folder='', name_movie=''):
+                     name_folder='', name_movie='',
+                     debug=[1]):
         '''
         Make video with avi format
         '''
@@ -169,7 +179,12 @@ class MAKE_VIDEO():
         self.make_list_imgs_for_video(prefix=prefix,
                                       suffix=suffix,
                                       name_folder=name_folder)
-        addr_movie = opj(self.dir_mda_temp, name_movie)
+        if self.snap:
+            addr_movie = opj(name_folder, name_movie)
+        else:
+            addr_movie = opj(self.dir_mda_temp, name_movie)
+        if 1 in debug:
+            print(f'save video at address {addr_movie}')
         out = cv2.VideoWriter(addr_movie,
                               cv2.VideoWriter_fourcc(*'DIVX'),
                               15, (self.size, self.size))
@@ -177,23 +192,28 @@ class MAKE_VIDEO():
             out.write(img)
         out.release()
 
-    def make_vid_tif(self, name_movie=''):
+    def make_vid_tif(self, name_folder='', name_movie='', debug=[1]):
         '''
         Make video with tif format
         '''
         self.make_list_imgs_for_composite_video()   # list for composite video
-        addr_movie = opj(self.dir_mda_temp, name_movie)
-        img_final = np.empty((len(self.list_imgs_vid), 512, 512, 3))
+        if self.snap:
+            addr_movie = opj( name_folder, name_movie)
+        else:
+            addr_movie = opj(self.dir_mda_temp, name_movie)
+        img_final = np.empty((len(self.list_imgs_vid), self.size, self.size, 3))
         for i, img in enumerate(self.list_imgs_vid):
             img_final[i, :, :] = img
         io.imsave(addr_movie, img_final)
 
     def create_video(self, prefix='', suffix='',
                      name_folder='imgs_for_videos', name_movie='movie.avi',
-                     composite_tif=False, debug=[]):
+                     composite_tif=False, erase_imgs=False,
+                     debug=[]):
         '''
         Create a video for each position
         '''
+        self.erase_imgs = erase_imgs
         if 1 in debug:
             print(f'#### Creating video with prefix {prefix}')
             print(f'#### Creating video with suffix {suffix}')
@@ -205,3 +225,6 @@ class MAKE_VIDEO():
                               suffix=suffix,
                               name_folder=name_folder,
                               name_movie=name_movie)
+        if erase_imgs:
+            for img_addr in self.list_imgs_sorted:
+                os.remove(img_addr)

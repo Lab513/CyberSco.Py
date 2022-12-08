@@ -23,6 +23,7 @@ class TAKE_PIC_FLUO_OR_BF():
         self.emit = emit
         self.settings_folder = Path('interface') / 'settings'
         self.currview = 'simple'
+        self.live_cam = False
 
     def date(self):
         '''
@@ -89,7 +90,7 @@ class TAKE_PIC_FLUO_OR_BF():
         sleep(1)
         self.ol.set_shutter(shut='on')             # open the shutter for BF
 
-    def save_snap(self, snap_addr=None, debug=[0,1]):
+    def save_snap(self, snap_addr=None, kind_tag='date', num=None, debug=[0,1]):
         '''
         Save the snap in interface/static/snapped
         and in Downloads
@@ -100,7 +101,10 @@ class TAKE_PIC_FLUO_OR_BF():
         addr_snap_server = 'interface/static/snapped'
         if not os.path.exists(addr_snap_server):
             os.mkdir(addr_snap_server)
-        addr_targ = opj(addr_snap_server, f'snap_{self.date()}.png')  # snap with date
+        if kind_tag == 'date':
+            addr_targ = opj(addr_snap_server, f'snap_{self.date()}.png')  # snap with date
+        elif kind_tag == 'num':
+            addr_targ = opj(addr_snap_server, f'snap_{num}.png')  # snap with date
         addr_curr = opj(addr_snap_server, f'snap_curr.png')           # frame0.png
         print(addr_targ)
         sh.copy(addr_pic, addr_targ)
@@ -117,7 +121,10 @@ class TAKE_PIC_FLUO_OR_BF():
         if 1 in debug:
             print(f'save the snap in {dpath} ')
 
-    def take_pic(self, SC_val, snap_mode=True, snap_addr=None, debug=[0]):
+    def take_pic(self, SC_val, snap_mode=True,
+                       snap_addr=None, kind_tag='date',
+                       num=None,
+                       debug=[0]):
         '''
         Snap, Take an image online
         '''
@@ -126,44 +133,50 @@ class TAKE_PIC_FLUO_OR_BF():
             print(f'In take_pic, snap_addr is {snap_addr}')
         if 1 in debug:
             print(f'SC_val is {SC_val} ')
-        if 'FP' in SC_val :
-            # 'rfp': {'ch':'C','filt':5}, 'gfp': {'ch':'B','filt':3}
-            # current SC
-            with open(self.settings_folder /
-                      'settings_channels' / f'{SC_val}.yaml') as f_r:
-                set_chan = yaml.load(f_r, Loader=yaml.FullLoader)
-            print(f'set_chan is {set_chan}')
-            if 'COOL' in set_chan.keys():
-                cool = set_chan['COOL']
-                print(f'cool is {cool}')
-                if 'filter' not in set_chan.keys():
-                    if 'RFP' in SC_val:
-                        self.prepare_RFP()               # filter for RFP (5)
-                    elif 'GFP' in SC_val:
-                        self.prepare_GFP()               # filter for GFP (3)
-                else:
-                    filt = int(set_chan['filter'])
-                    self.prepare_fluo(filt)
-                sleep(2)
-                self.apply_cool_SC(cool)
-            sleep(1)
-            ##
-            if snap_mode:
-                self.save_snap(snap_addr)
-            self.return_to_BF()
-            self.emit('snapped', 'fluo')
+        if not self.live_cam:
+            if 'FP' in SC_val :
+                # 'rfp': {'ch':'C','filt':5}, 'gfp': {'ch':'B','filt':3}
+                # current SC
+                with open(self.settings_folder /
+                          'settings_channels' / f'{SC_val}.yaml') as f_r:
+                    set_chan = yaml.load(f_r, Loader=yaml.FullLoader)
+                print(f'set_chan is {set_chan}')
+                if 'COOL' in set_chan.keys():
+                    cool = set_chan['COOL']
+                    print(f'cool is {cool}')
+                    if 'filter' not in set_chan.keys():
+                        if 'RFP' in SC_val:
+                            self.prepare_RFP()               # filter for RFP (5)
+                        elif 'GFP' in SC_val:
+                            self.prepare_GFP()               # filter for GFP (3)
+                    else:
+                        filt = int(set_chan['filter'])
+                        self.prepare_fluo(filt)
+                    sleep(2)
+                    self.apply_cool_SC(cool)
+                sleep(1)
+                ##
+                if snap_mode:
+                    self.save_snap(snap_addr)
+                self.return_to_BF()
+                self.emit('snapped', 'fluo')
+            else:
+                if snap_mode:
+                    self.save_snap(snap_addr)
+                self.emit('snapped', 'BF')
         else:
-            if snap_mode:
-                self.save_snap(snap_addr)
-            self.emit('snapped', 'BF')
+            # save the images for the movie.. 
+            self.save_snap(snap_addr, kind_tag=kind_tag, num=num)
 
     def illuminate(self, SC_val, snap_mode=True, debug=[1]):
         '''
         Snap, Take an image in live
         '''
         ####
+
         if 1 in debug:
             print(f'SC_val is {SC_val} ')
+        # if RFP, GFP or YFP..
         if 'FP' in SC_val:
             with open(self.settings_folder /
                       'settings_channels' / f'{SC_val}.yaml') as f_r:

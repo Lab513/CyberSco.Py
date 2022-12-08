@@ -14,6 +14,8 @@ socket.on('init_snap_addr', function(snap_addr){
     socket.emit('snap_addr', snap_addr) // retrieve the address
 })
 
+//image with the mosts recent snap
+
 socket.on('snap_overview', function(){
     $('#snap_overview').show()
     $('#snap_overview').attr('src', 'static/snapped/snap_curr.png' + '?t='  + new Date().getTime() )
@@ -23,7 +25,22 @@ socket.on('snap_overview', function(){
 
 })
 
-//'interface/static/snapped/snap_curr.png'
+//save a movie instead of just an image capture..
+
+socket.on('save_movie', function(){
+
+    alert('saving a movie.. ')
+
+})
+
+//stop saving movie
+
+socket.on('stop_saving_movie', function(){
+
+    alert('stop saving the movie.. ')
+
+})
+
 
 // Context menu for changing exposure time
 
