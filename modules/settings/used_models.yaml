@@ -6,10 +6,18 @@
 #     id: YeastNoBact
 #     name: yeasts
 
+# mod0:
+#     id: beads_1umx1pt5
+#     name: beads
+#
+# mod1:
+#     id: beads_1umx1pt5
+#     name: beads
+
 mod0:
-    id: beads_1umx1pt5
-    name: beads
+    id: ep5_v4
+    name: yeasts
 
 mod1:
-    id: beads_1umx1pt5
-    name: beads
+    id: ep5_v4
+    name: yeasts

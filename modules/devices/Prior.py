@@ -20,12 +20,12 @@ class PRIOR(SB):
         # initialize the serial port communication
         self.port_init(f'{cl_name}'.lower(), port=port)
 
-    def test_response(self):
+    def test_response(self, mess, nbbits):
         '''
         Check the communication
         '''
-        self.emit('PX')
-        answer = self.receive(9)
+        self.emit(mess)
+        answer = self.receive(nbbits)
         return answer
 
     def receive(self, length):
@@ -39,7 +39,7 @@ class PRIOR(SB):
         Ask Prior for the position
         pos : 'x' or 'y'
         '''
-        dic_pos= {'x': 9, 'y': 8}                  # dic for serial length
+        dic_pos= {'x': 11, 'y': 11}                  # dic for serial length
         pos_ok = False
         while not pos_ok:
             try:
@@ -50,7 +50,7 @@ class PRIOR(SB):
                 answer = self.receive(dic_pos[pos])
                 if 2 in debug: print(f'answer is {answer}')
                 # current position in µm
-                curr_pos = -int(answer[1:])/self.steps_per_um
+                curr_pos = int(answer)/self.steps_per_um
                 pos_ok = True
             except:
                 pass
