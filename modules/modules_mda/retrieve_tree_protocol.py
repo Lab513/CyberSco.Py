@@ -161,6 +161,11 @@ class RETRIEVE_TREE_PROTOCOL():
         if obj.kind_focus == None: # select_AF = null in the tree by default..
             obj.kind_focus = 'afml_sweep'
 
+        try:
+            obj.mod_afml_used = d['data']['select_AF_model']
+        except:
+            obj.mod_afml_used = 'mod0'      # default model value for AF
+
         if 1 in debug:
             print(f'obj.kind_focus = {obj.kind_focus}')
             # list of kind of AF for predefined
@@ -177,6 +182,7 @@ class RETRIEVE_TREE_PROTOCOL():
                 print(f'#####  obj.step_focus = {obj.step_focus}')
                 print(f'#####  obj.focus_nbsteps = {obj.focus_nbsteps}')
                 print(f'#####  obj.thresh = {obj.thresh}')
+                print(f'#####  obj.mod_afml_used = {obj.mod_afml_used}')
             self.list_AF += [ [obj.kind_focus, obj.step_focus,
                               obj.delta_focus, obj.focus_nbsteps,
                               obj.thresh] ]

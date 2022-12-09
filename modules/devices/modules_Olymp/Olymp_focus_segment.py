@@ -112,7 +112,7 @@ class FOCUS_SEGM(FSP, FOF):
         mask = np.zeros((h, w), np.uint8 )
         # format array for prediction
         arr = np.array([img], dtype=np.float32)/255
-        pred = self.mod.predict(arr)[0]*255
+        pred = self.mod_afml.predict(arr)[0]*255
         ##
         nbcntrs = 0
         pred_surf = 0

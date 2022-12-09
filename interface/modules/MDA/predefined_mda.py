@@ -166,10 +166,10 @@ def launch_mda_predef(cam):
     module = importlib.import_module(chosen_plugin)
     mda_protocol = getattr(module,
                            f'{curr_mda_scenario}'.upper())(
-                            ldevices=[ol, pr, cam, co, xc, ga, se],
-                            user=current_user)
+                             ldevices=[ol, pr, cam, co, xc, ga, se],
+                             user=current_user)
     # attaching the current segmentation model to the microscope for focus
-    ol.mod = mda_protocol.mod0
+    ol.mod_afml = mda_protocol.mod0
     mda_params(mda_protocol)
     ##
     passing_from_tree_to_predefined(mda_protocol)
@@ -177,7 +177,7 @@ def launch_mda_predef(cam):
     mda_protocol.get_positions()        # retrieve the positions
     mda_protocol.get_gates()            # retrieve the gates association
     mda_protocol.get_chan_set()         # retrieve the channels settings
-    mda_protocol.get_focus()       # set positions focus kind..
+    mda_protocol.get_focus()            # set positions focus kind..
 
     mda_protocol.define()
 

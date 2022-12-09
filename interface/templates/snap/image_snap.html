@@ -29,7 +29,7 @@ socket.on('snap_overview', function(){
 
 socket.on('save_movie', function(){
 
-    alert('saving a movie.. ')
+    //alert('saving a movie.. ')
     $('#icon_cam').show()
 
 })
@@ -38,7 +38,7 @@ socket.on('save_movie', function(){
 
 socket.on('stop_saving_movie', function(){
 
-    alert('stop saving the movie.. ')
+    //alert('stop saving the movie.. ')
     $('#icon_cam').hide()
 
 })
@@ -130,29 +130,4 @@ socket.on('saved_set_chan', function( list_SC ){
         $(name_sc).selectpicker('val', curr_set_chan)                                      // select current name
 
       }
-})
-
-var load_masks = function(elem, dmd_masks){
-
-    var list_dmd_masks = JSON.parse( dmd_masks )
-
-    elem.empty()                                                   // Clear select
-    for ( m of list_dmd_masks ){
-         elem.append('<option value="' + m + '">' + m + ' </option>');             // Add options
-      }
-    elem.selectpicker('refresh')                                   // needed to have the list each time
-    elem.selectpicker('val', list_dmd_masks[0])                    // select current name
-
-}
-
-socket.on('dmd_masks', function( dmd_masks ){
-
-    /*
-    Retrieve the masks
-    */
-
-    load_masks( $('#spscm_mosaic_mask_name'), dmd_masks )     // load masks for tree
-    load_masks( $('#curr_mask_name'), dmd_masks )             // load masks for drawing DMD masks
-
-
 })

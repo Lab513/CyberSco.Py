@@ -139,6 +139,8 @@ class POS(MV, CP, TR, HG):
                 self.ol.delta_focus = self.delta_focus
                 self.ol.focus_nbsteps = self.focus_nbsteps
                 self.ol.thresh = self.thresh
+                # using the model selected in the interface
+                self.ol.mod_afml = getattr(self, self.mod_afml_used)
                 if self.num == 0:
                     ref = self.ref_posz-self.delta_focus
                     print(f'for self.num == 0, ref = { ref }')

@@ -14,10 +14,20 @@
 #     id: beads_1umx1pt5
 #     name: beads
 
+# mod0:
+#     id: ep5_v4
+#     name: yeasts
+#
+# mod1:
+#     id: ep5_v4
+#     name: yeasts
+
+# Test double models in the tree..
+
 mod0:
     id: ep5_v4
     name: yeasts
 
 mod1:
-    id: ep5_v4
-    name: yeasts
+    id: beads_1umx1pt5
+    name: beads

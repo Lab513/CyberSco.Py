@@ -1,0 +1,26 @@
+
+// Models for AFML
+
+var load_models = function(elem, models_used){
+
+    var dic_models_used = JSON.parse( models_used )
+
+    elem.empty()                                                   // Clear select
+    for (const [key, value] of Object.entries(dic_models_used)) {
+        elem.append('<option value="' + key + '">' + key + ' </option>');             // Add options
+    }
+    elem.selectpicker('refresh')                                   // needed to have the list each time
+    elem.selectpicker('val', 'mod0')                           // select current name
+
+}
+
+socket.on('models_used', function( models_used ){
+
+    /*
+    Retrieve the masks
+    */
+
+    load_models( $('#select_AF_model'), models_used )     // load the models for tree
+
+
+})

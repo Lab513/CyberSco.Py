@@ -19,6 +19,9 @@ def sending_used_models(debug=[]):
     emit('mod1', dic_mod1, broadcast=True)
     if 0 in debug:
         print(f'sent the current model name : {curr_model} to the interface..')
+    # send the models for AFML
+    dic_models = json.dumps(used_models)
+    emit('models_used', dic_models, broadcast=True)
 
 
 def sending_all_models(debug=[]):
