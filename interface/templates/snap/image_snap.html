@@ -30,6 +30,7 @@ socket.on('snap_overview', function(){
 socket.on('save_movie', function(){
 
     alert('saving a movie.. ')
+    $('#icon_cam').show()
 
 })
 
@@ -38,6 +39,7 @@ socket.on('save_movie', function(){
 socket.on('stop_saving_movie', function(){
 
     alert('stop saving the movie.. ')
+    $('#icon_cam').hide()
 
 })
 

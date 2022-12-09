@@ -115,10 +115,10 @@ class MAKE_VIDEO():
             # make fusions between fluo and BF
             self.image_fusion_for_BF_fluo(name_folder)
         if self.snap:
-            ll = glob.glob(opj(folder, f'snap_*.png'))
+            ll = glob.glob(opj(folder, f'snap_vid_*.png'))
             self.list_imgs_sorted = sorted(ll,
                                            key=lambda elem:
-                                           int(re.findall('snap_(\\d+).png', elem)[0]))
+                                           int(re.findall('snap_vid_(\\d+).png', elem)[0]))
         else:
             ll = glob.glob(opj(folder, f'*{prefix}{self.num}{suffix}_t*.png'))
             # sorted list

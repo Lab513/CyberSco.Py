@@ -108,3 +108,4 @@ def live_fluo_off(msg):
     Set live fluo off
     '''
     tpfb.return_to_BF()
+    tpfb.live_cam = False

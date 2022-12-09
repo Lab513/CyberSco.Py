@@ -438,7 +438,6 @@ img.cntrl_ML {
       Panel for live exposure time
       */
 
-
      position: absolute;
      box-shadow: 0.5em 0.5em 0.7em;
      top: 610px;
@@ -487,3 +486,33 @@ img.cntrl_ML {
     border-style: none;
 
   }
+
+  #snap_video_icon {
+
+         /*
+         panel for icon
+         */
+
+         position: absolute;
+         bottom: 0px;
+         left: 50px;
+         height: 50px;
+         width: 50px;
+         padding: 3px;
+         background-color: white;
+         z-index: 20;
+
+      }
+
+    #icon_cam {
+
+           /*
+           icon for indicating registering video..
+           */
+
+           position: absolute;
+           width: 30px;
+           padding-right: 5px;
+           padding-top: 10px;
+
+        }

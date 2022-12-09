@@ -104,7 +104,7 @@ class TAKE_PIC_FLUO_OR_BF():
         if kind_tag == 'date':
             addr_targ = opj(addr_snap_server, f'snap_{self.date()}.png')  # snap with date
         elif kind_tag == 'num':
-            addr_targ = opj(addr_snap_server, f'snap_{num}.png')  # snap with date
+            addr_targ = opj(addr_snap_server, f'snap_vid_{num}.png')  # snap with date
         addr_curr = opj(addr_snap_server, f'snap_curr.png')           # frame0.png
         print(addr_targ)
         sh.copy(addr_pic, addr_targ)
@@ -165,7 +165,7 @@ class TAKE_PIC_FLUO_OR_BF():
                     self.save_snap(snap_addr)
                 self.emit('snapped', 'BF')
         else:
-            # save the images for the movie.. 
+            # save the images for the movie..
             self.save_snap(snap_addr, kind_tag=kind_tag, num=num)
 
     def illuminate(self, SC_val, snap_mode=True, debug=[1]):
