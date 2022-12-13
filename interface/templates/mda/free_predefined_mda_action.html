@@ -2,7 +2,7 @@
 
  function load_basic_prot(){
 
-      socket.emit('read_yaml', 'temp0.yaml')                          // ask for reading the yaml
+      socket.emit('read_yaml', '@basic_protocol.yaml')                          // ask for reading the yaml
       socket.on('prot_json', function( json_file ){                   // on receiving the json
 
           initFancyTreeFromJSON( json_file )                          // load the protocol json file in the tree
@@ -13,7 +13,7 @@
 
 function load_predef_prot(){
 
-     socket.emit('read_yaml', '@predef_prot.yaml')                          // ask for reading the yaml
+     socket.emit('read_yaml', '@basic_protocol.yaml')                          // ask for reading the yaml
      socket.on('prot_json', function( json_file ){                      // on receiving the json
 
          initFancyTreeFromJSON( json_file )                             // load the protocol json file in the tree

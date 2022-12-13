@@ -400,19 +400,19 @@ class CAM_PRED(TR):
         f: file name for prediction
         '''
         arr = self.array_for_pred(f)
-        res = self.mod0.predict(arr)      # prediction for segmentation
+        res_mod0 = self.mod0.predict(arr)      # prediction for segmentation
         if event:
             if 1 in debug:
                 print(f' type(self.mod1) is {type(self.mod1)} ')
-            res_ev = self.mod1.predict(arr)     # prediction event model
+            res_mod1 = self.mod1.predict(arr)     # prediction event model
         ####
         if clear:
             tfk.backend.clear_session()     # avoid freezing
         if event:
             # save pred BF and pred event to mda_temp folder
-            self.save_pred(f, res[0]*255, res_ev[0]*255)
+            self.save_pred(f, res_mod0[0]*255, res_mod1[0]*255)
         else:
-            self.save_pred(f, res[0]*255)    # save pred to mda_temp folder
+            self.save_pred(f, res_mod0[0]*255)    # save pred to mda_temp folder
 
     def predict_mda(self, f):
         '''

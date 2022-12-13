@@ -86,7 +86,7 @@ def infos_hard_soft(debug=[]):
         print('probably working out of context')
 
 
-def sending_ip(debug=[0]):
+def sending_ip(debug=[]):
     '''
     Send the Ip for the camera
     '''

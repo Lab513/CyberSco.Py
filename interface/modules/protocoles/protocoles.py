@@ -33,7 +33,7 @@ def save_protocol(dicp, debug=[0]):
     addr_prot_saved = opj('interface', 'static',
                           'mda_protocols', dic_prot['newname'])
     prot_saved = opb(addr_prot_saved).split('.yaml')[0]
-    if prot_saved[0].isalpha() or prot_saved == '@predef_prot':
+    if prot_saved[0].isalpha() or prot_saved == '@basic_protocol':
         print(f'### addr_prot_saved : {addr_prot_saved} ')
         with open(addr_prot_saved, 'w') as f_w:
             yaml.dump(dic_prot['tree'],
@@ -59,7 +59,7 @@ def delete_protocol(dicp):
     file_to_remove = opj('interface', 'static',
                          'mda_protocols', dic_prot['nameprotoc'])
     print(f'### file_to_remove {file_to_remove} ')
-    if '@predef_prot' not in file_to_remove:      # protecting @predef_prot
+    if '@basic_protocol' not in file_to_remove:      # protecting @basic_protocol
         os.remove(file_to_remove)
     protocols_list = make_protocol_list()
     # refresh the list in the select list
@@ -84,5 +84,5 @@ def read_yaml(name_yaml, debug=[1]):
     except:
         print('Cannot read the yaml file')
     # corrections in the tree for predef
-    if name_yaml == 'temp0.yaml':
+    if name_yaml == '@basic_protocol.yaml':
         emit('correct_tree', '')

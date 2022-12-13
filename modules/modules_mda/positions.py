@@ -57,8 +57,9 @@ class POS(MV, CP, TR, HG):
         self.blocked = False           # by default the position is not blocked
         self.switched = False
         self.tracking = False
-        # tracking
+        # tracking, DMD
         self.track_in_analysis = False           # by default, no tracking
+        self.segm_for_dmd = True                 # by default, segmentation not used for DMD
         self.segm_all_buds = False
         self.all_cntrs = {}
         self.all_cntrs_fluo = {}
@@ -151,7 +152,7 @@ class POS(MV, CP, TR, HG):
                     print(f'Using self.delta_focus = {self.delta_focus}')
                     print(f'Using ref = {ref}')
             except:
-                print('self.step_focus is not defined.. ')
+                print('missing attribute.. ')
             self.ref_posz = self.ol.afml_refocus(ref,
                                                  num=self.num,
                                                  rep=self.rep)
@@ -948,6 +949,22 @@ class POS(MV, CP, TR, HG):
         if 2 in debug:
             print(f'#### iteration is  {rep}')
 
+    def save_segm_for_dmd(self, rep, debug=[]):
+        '''
+        Segmentation to be projected with DMD
+        '''
+        # retrieve the segmnetation and convert for DMD
+        if self.segm_for_dmd == 'mod0':
+            addr_pred = opj(self.dir_mda_temp, 'monitorings',
+                            'pred', f'pred_frame{self.num}_t{rep}.png')
+        elif self.segm_for_dmd == 'mod1':
+            addr_pred = opj(self.dir_mda_temp, 'monitorings',
+                            'pred', f'pred_ev_frame{self.num}_t{rep}.png')
+        addr_mask = f'interface/static/dmd/masks/segm.png'
+        img_mask = cv2.imread(addr_pred)
+        #img_mask = cv2.bitwise_not(img_pred)
+        cv2.imwrite(addr_mask, img_mask)
+
     def cells_analysis(self, rep, curves=False, debug=[]):
         '''
         rep : index of repetition
@@ -968,6 +985,8 @@ class POS(MV, CP, TR, HG):
                 print(Style.RESET_ALL)
             # find the cell the nearest from center
             self.find_nearest_from_center()
+        if self.segm_for_dmd:
+            self.save_segm_for_dmd(rep)
         if self.curr_exp == 'hog1':
             if curves:
                 self.hog1_curves(rep)

@@ -24,10 +24,18 @@
 
 # Test double models in the tree..
 
-mod0:
-    id: ep5_v4
-    name: yeasts
+# mod0:
+#     id: ep5_v4
+#     name: yeasts
+#
+# mod1:
+#     id: beads_1umx1pt5
+#     name: beads
 
-mod1:
+mod0:
     id: beads_1umx1pt5
     name: beads
+
+mod1:
+    id: beads_pairs_ep30
+    name: beads_pairs

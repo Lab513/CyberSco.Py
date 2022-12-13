@@ -143,7 +143,7 @@ def passing_from_tree_to_predefined(mda_protocol, debug=[]):
     Write in yaml files the informations from the tree
     to inject them after in the mda..
     '''
-    mda_protocol.load_tree_protocol('@predef_prot.yaml')
+    mda_protocol.load_tree_protocol('@basic_protocol.yaml')
     if 0 in debug:
         print(f'dir(mda_protocol) {dir(mda_protocol)} ')
     save_list_id(mda_protocol)

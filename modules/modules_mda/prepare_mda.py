@@ -109,6 +109,7 @@ class PREPARE_MDA():
                 pos.delta_focus = self.list_AF[i][2]
                 pos.focus_nbsteps = self.list_AF[i][3]
                 pos.thresh = self.list_AF[i][4]
+                pos.mod_afml_used = self.list_AF[i][5]
                 print(f'pos.kind_focus is {pos.kind_focus}')
                 # attach the kind of AFML to the position
                 # even if not used..

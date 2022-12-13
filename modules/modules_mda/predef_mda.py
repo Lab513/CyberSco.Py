@@ -97,7 +97,7 @@ class PREDEF_MDA(MON):
 
     ##########  Predefined MDA protocol..
 
-    def infos_server(self):
+    def infos_server(self, rep):
         '''
         '''
         self.server.sleep(0.1)
@@ -122,7 +122,7 @@ class PREDEF_MDA(MON):
                 sleep(0.1)
             self.check_conditions(rep)           # apply the conditions
             self.actions_after_check_conditions(rep)
-            self.infos_server()
+            self.infos_server(rep)
             if rep < self.repeat-1:
                 # respect delay between each beginning of measurement
                 self.delay_sleep()

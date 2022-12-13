@@ -172,9 +172,15 @@ class RETRIEVE_TREE_PROTOCOL():
             print(f'self.list_AF before is {self.list_AF} !!!')
 
         if obj.kind_focus == 'afml_sweep':
-            obj.focus_nbsteps = int(d['data']['nb_steps_afml'])
-            step_width = float(d['data']['step_afml'])
-            thresh = int(d['data']['thresh'])
+            try:
+                obj.focus_nbsteps = int(d['data']['nb_steps_afml'])
+                step_width = float(d['data']['step_afml'])
+                thresh = int(d['data']['thresh'])
+            except:
+                print('Using AFML params by default.. ')
+                obj.focus_nbsteps = 7
+                step_width = 1
+                thresh = 127
             obj.delta_focus = round(obj.focus_nbsteps*step_width*50,2)
             obj.step_focus = int(2*obj.delta_focus / obj.focus_nbsteps)
             obj.thresh = thresh
@@ -184,8 +190,8 @@ class RETRIEVE_TREE_PROTOCOL():
                 print(f'#####  obj.thresh = {obj.thresh}')
                 print(f'#####  obj.mod_afml_used = {obj.mod_afml_used}')
             self.list_AF += [ [obj.kind_focus, obj.step_focus,
-                              obj.delta_focus, obj.focus_nbsteps,
-                              obj.thresh] ]
+                               obj.delta_focus, obj.focus_nbsteps,
+                               obj.thresh, obj.mod_afml_used] ]
         else:
             self.list_AF += [ [obj.kind_focus] ]
         if 1 in debug:
