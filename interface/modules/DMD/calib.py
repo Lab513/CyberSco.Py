@@ -40,24 +40,34 @@ def make_calib():
         yaml.dump([l0,l1], f_w)
 
 
-def apply_calib(name_img_test):
+def apply_calib(name_img_test, debug=[]):
     '''
     Transform the image from Drawer.js.
+    Need of 3 points..
     '''
-
+    M = np.zeros((1,1))
     with open('interface/static/dmd/calib.yaml') as f_r:
         lcal = yaml.load(f_r, Loader=yaml.FullLoader)
     lpts0 = np.float32(lcal[0])
     lpts1 = np.float32(lcal[1])
     # find the Transform
-    M = cv2.getAffineTransform(lpts1,lpts0)
+    if len(lpts0)==len(lpts1)==3:
+        M = cv2.getAffineTransform(lpts1,lpts0)
+        if 1 in debug:
+            print('M well calculated')
+            print(f'len(M) = {len(M)}')
+    else:
+        print('Cannot calculate M')
     #
     addr_test = f'interface/static/dmd/masks/{name_img_test}.png'
     img_test = cv2.imread(addr_test,0)
     rows,cols = img_test.shape
     if name_img_test != 'calib':
         # Apply the affine Transform
-        dst = cv2.warpAffine(img_test,M,(cols,rows))
+        if len(M)>1:
+            dst = cv2.warpAffine(img_test,M,(cols,rows))
+        else:
+            print('Cannot find affine transformation.. ')
     else:
         # no transformation if calibration image
         dst = img_test

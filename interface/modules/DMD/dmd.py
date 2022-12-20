@@ -112,7 +112,7 @@ def init_for_DMD_test(name_SC):
     ol.set_shutter(shut='off')
 
 
-def dmd_move_images():
+def dmd_copy_images():
     '''
     '''
     addr_pic = 'interface/static/curr_pic/frame0.png'    # snap BF
@@ -128,18 +128,18 @@ def make_DMD_test(name_img_test, name_SC, debug=[]):
     '''
     init_for_DMD_test(name_SC)
 
-    mask_exp_time = 5
+    mask_exp_time = 7
 
     # apply calibration to image..
     apply_calib(name_img_test)
     pos.trigger_dmd_image(name_img_test,mask_exp_time)
-
+    ##
     sleep(5)                     # delay for loading and triggering
     print('shut Xcite on')
     xc.shut_on()
     sleep(2)
     ##
-    dmd_move_images()
+    dmd_copy_images()
 
     if name_img_test == 'calib':
         make_calib()

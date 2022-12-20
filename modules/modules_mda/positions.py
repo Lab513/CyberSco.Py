@@ -59,7 +59,7 @@ class POS(MV, CP, TR, HG):
         self.tracking = False
         # tracking, DMD
         self.track_in_analysis = False           # by default, no tracking
-        self.segm_for_dmd = True                 # by default, segmentation not used for DMD
+        self.segm_for_dmd = False                 # by default, segmentation not used for DMD
         self.segm_all_buds = False
         self.all_cntrs = {}
         self.all_cntrs_fluo = {}
@@ -953,17 +953,18 @@ class POS(MV, CP, TR, HG):
         '''
         Segmentation to be projected with DMD
         '''
-        # retrieve the segmnetation and convert for DMD
+        # retrieve the segmentation and convert for DMD
         if self.segm_for_dmd == 'mod0':
             addr_pred = opj(self.dir_mda_temp, 'monitorings',
                             'pred', f'pred_frame{self.num}_t{rep}.png')
         elif self.segm_for_dmd == 'mod1':
             addr_pred = opj(self.dir_mda_temp, 'monitorings',
                             'pred', f'pred_ev_frame{self.num}_t{rep}.png')
-        addr_mask = f'interface/static/dmd/masks/segm.png'
-        img_mask = cv2.imread(addr_pred)
-        #img_mask = cv2.bitwise_not(img_pred)
-        cv2.imwrite(addr_mask, img_mask)
+        if self.segm_for_dmd:
+            addr_mask = f'interface/static/dmd/masks/segm.png'
+            img_mask = cv2.imread(addr_pred)
+            #img_mask = cv2.bitwise_not(img_pred)
+            cv2.imwrite(addr_mask, img_mask)
 
     def cells_analysis(self, rep, curves=False, debug=[]):
         '''
