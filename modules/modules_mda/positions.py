@@ -17,6 +17,7 @@ import interface.modules.init.init_glob_vars as g
 from modules.modules_mda.make_video import MAKE_VIDEO as MV
 from modules.track_segm.cam_pred import CAM_PRED as CP
 from modules.modules_mda.tracking import TRACK as TR
+from modules.modules_mda.random_move import RAND_MOVE as RM
 from modules.predef.plugins.plugins_funcs.hog1_curves import HOG1 as HG
 from interface.modules.DMD.calib import apply_calib
 
@@ -31,7 +32,7 @@ server = chose_server(platf)
 ts_sleep = 0.05
 
 
-class POS(MV, CP, TR, HG):
+class POS(MV, CP, TR, RM, HG):
     '''
     Position on which are made the autofocus, BF, RFP, YFP etc...
     '''
@@ -39,7 +40,7 @@ class POS(MV, CP, TR, HG):
         '''
         Position
         '''
-        lcls = [MV, CP, TR, HG]
+        lcls = [MV, CP, TR, RM, HG]
         [cl.__init__(self) for cl in lcls]
         self.ldevices = ldevices
         # load the devices
@@ -398,7 +399,8 @@ class POS(MV, CP, TR, HG):
         # set all the channels off
         set_fluo_off = f'CSF'
         print(f'set_fluo_off {set_fluo_off}')
-        self.co.emit(set_fluo_off)
+        if not mask:
+            self.co.emit(set_fluo_off)
         self.save_fluo_pic(addr_pic, rep, kind_fluo)
         self.ol.set_wheel_filter(1) # return to BF
 
