@@ -382,11 +382,13 @@ class FOCUS_SEGM(FSP, FOF):
         reset_ref: reset the position of reference to the best position found
         AF_train : if True, produce dataset for ML training AF_ML_fast
         '''
-        self.num = num                       # position index
-        self.rep = rep                       # index of repetition in the mda
+        self.num = num                                     # position index
+        self.rep = rep                                     # index of repetition in the mda
         if not ref:
-            ref = ref_posz - self.delta_focus       # begin at position z=ref
+            ref = ref_posz - self.delta_focus              # begin at position z=ref
             print(f'beginning position is {ref} !!!')
+            print(f'ref_posz = {ref_posz} !!!')
+            print(f'self.delta_focus = {self.delta_focus} !!!')
         if rep == 0:
             if 0 in debug:
                 print(f'#### At beginning ref_posz = {ref_posz} ...')

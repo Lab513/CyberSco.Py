@@ -130,6 +130,7 @@ class POS(MV, CP, TR, RM, HG):
         if 'afml' in self.kind_focus:
             # refocus with AFML
             if 1 in debug:
+                print(f'In position.refocus, self.num = { self.num }')
                 print(f'self.step_focus = { self.step_focus }')
                 print(f'self.delta_focus = { self.delta_focus }')
                 print(f'self.ref_posz = { self.ref_posz }')
@@ -137,23 +138,26 @@ class POS(MV, CP, TR, RM, HG):
                 print(f'self.thresh = { self.thresh }')
             try:
                 # retrieving step_focus and delta_focus from interface
+                ref = self.ref_posz
                 self.ol.step_focus = self.step_focus
                 self.ol.delta_focus = self.delta_focus
                 self.ol.focus_nbsteps = self.focus_nbsteps
                 self.ol.thresh = self.thresh
                 # using the model selected in the interface
                 self.ol.mod_afml = getattr(self, self.mod_afml_used)
-                if self.num == 0:
-                    ref = self.ref_posz-self.delta_focus
-                    print(f'for self.num == 0, ref = { ref }')
-                else:
-                    ref = self.ref_posz
+                # if self.num == 0:
+                #     ref = self.ref_posz-self.delta_focus
+                #     print(f'using ref = self.ref_posz-self.delta_focus !!!')
+                #     print(f'for self.num == 0, ref = { ref }')
+                # else:
+                #     ref = self.ref_posz
                 if 1 in debug:
                     print(f'Using self.ref_posz = {self.ref_posz}')
                     print(f'Using self.delta_focus = {self.delta_focus}')
                     print(f'Using ref = {ref}')
             except:
                 print('missing attribute.. ')
+            # Perform the focus
             self.ref_posz = self.ol.afml_refocus(ref,
                                                  num=self.num,
                                                  rep=self.rep)

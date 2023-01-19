@@ -4,7 +4,7 @@ Choice between Evolve512 or Zyla camera
 '''
 
 from colorama import Fore, Style         # Color in the Terminal
-from PIL import Image
+from PIL import Image, ImageFont, ImageDraw
 from flask import Flask, Response, request, redirect
 import shutil as sh
 import socket
@@ -59,6 +59,18 @@ cp = CAM_PRED(mda_pic_addr, mode='live')
 def index():
     return "Default Message"
 
+@app.route('/magnif', methods = ['POST'])
+def receive_magnif():
+    '''
+    Retrieve magnification for size bar..
+    '''
+    global magnif
+    if request.method == 'POST':
+        magnif = request.form.get('magnif')
+        print(f'the current magnification is {magnif}')
+
+    return "Default Message"
+
 
 @app.route('/exp_time', methods = ['POST'])
 def receive_exp_time():
@@ -67,7 +79,7 @@ def receive_exp_time():
     '''
     global exp_time
     if request.method == 'POST':
-        new_exp_time = request.form.get('data')
+        new_exp_time = request.form.get('exp_time')
         print(f'new exp time is {new_exp_time}')
         exp_time = int(new_exp_time)
 
@@ -93,7 +105,7 @@ def receive_autocontrast():
 @app.route('/quit_live')
 def quit_live():
     '''
-    Quit the live mode
+    Quit the live mode before switching to MDA mode..
     '''
     print('Closing the server for live camera !!!')
     cam.close()
@@ -141,6 +153,43 @@ def adapt_size(addr_pic, debug=[]):
         print(f'************* Laplacian value is {lap} ************')
 
 
+def insert_scale_bar(addr_img, pos, h=4, w=50,
+                     thick=-1, col=(255, 255, 255), debug=[]):
+    '''
+    Bar for indicating the size
+    '''
+    img = cv2.imread(addr_img)
+    p0, p1 = pos[0]+10, pos[1]+10                           # bar position
+    # p0, p1 = 0,0
+    cv2.rectangle(img, (p0, p1), (p0+w, p1-h), col, thick)     # scale bar
+    cv2.imwrite(addr_img, img)
+
+
+def insert_text(addr_img, text, size=0.4, pos=None, debug=[]):
+    '''
+    Insert text in image
+    '''
+    img = Image.open(addr_img)
+    font = ImageFont.truetype("arial",14)
+    draw = ImageDraw.Draw(img)
+    p0, p1 = pos[0]+20, pos[1]-20
+    draw.text((p0,p1), text, font=font, fill='#fff')
+    img.save(addr_img)
+
+
+def insert_image_scale(addr_img, pos=(10, 480), debug=[]):
+    '''
+    Insert the scale of the image for the current objective in use
+    '''
+    # dictionary magnification <--> size in µm
+    dic_scale = {'20x': '30µm', '40x': '15µm',
+                 '60x': '10µm', '100x': '6µm'}
+    size_scale = dic_scale[magnif]
+    # scale bar with the value in µm
+    insert_text(addr_img, size_scale, pos=pos) # text, size in µm
+    insert_scale_bar(addr_img, pos) # rectangle
+
+
 def laplacian_var(img):
     '''
     Variance of the image's Laplacian
@@ -154,19 +203,20 @@ def laplacian_var(img):
 def gen(predict=True, debug=[]):
     while True:
         if livecam:
-            try:
-                if 0 in debug:
-                    print(f'exp_time is {exp_time}')
-                if 1 in debug:
-                    print('...')
-                # take a new pic
-                cam.take_pic(addr_pic, exp_time=exp_time, allow_contrast=True)
-                adapt_size(addr_pic)
-                # copy image for making predictions on it after
-                copy_pic_in_mda()
-            except:
-                print('Cannot copy to mda folder')
-                print('Check if the camera is on !!!')
+            # try:
+            if 0 in debug:
+                print(f'exp_time is {exp_time}')
+            if 1 in debug:
+                print('...')
+            # take a new img
+            cam.take_pic(addr_pic, exp_time=exp_time, allow_contrast=True)
+            adapt_size(addr_pic)
+            insert_image_scale(addr_pic)
+            # copy image for making predictions on it after
+            copy_pic_in_mda()
+            # except:
+            #     print('Cannot copy to mda folder')
+            #     print('Check if the camera is on !!!')
             if predict:
                 try:
                     cp.predict_and_save()   # predict in real time

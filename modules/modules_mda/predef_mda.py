@@ -127,6 +127,9 @@ class PREDEF_MDA(MON):
                 # respect delay between each beginning of measurement
                 self.delay_sleep()
             # duplicate mda_temp for monitoring..
-            self.copy_monitor(self.dir_mda_temp, self.dir_mda_temp_dash)
+            try:
+                self.copy_monitor(self.dir_mda_temp, self.dir_mda_temp_dash)
+            except:
+                print(f'Cannot copy mda_temp in {self.dir_mda_temp_dash}')
         # close the serial port of all the devices
         self.close_devices()

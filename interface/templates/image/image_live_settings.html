@@ -1,12 +1,20 @@
-// Live settings.. 
+// Live settings..
 
+// send magnification
+
+socket.on('curr_objective', function(magnif){
+
+  //alert('magnif is ' + magnif)
+  $.post('http://' + ip_addr + ':2204/magnif', {'magnif': magnif})
+
+})
 
 // send exposure time for snap
 
 socket.on('send_exp_time', function(time){
 
   //alert('time is ' + time)
-  $.post('http://' + ip_addr + ':2204/exp_time', {'data': time})
+  $.post('http://' + ip_addr + ':2204/exp_time', {'exp_time': time})
 
 })
 

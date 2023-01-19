@@ -97,9 +97,9 @@ class PREPARE_MDA():
             except:
                 pos.num_gate = None
 
-    def get_focus(self,debug=[1]):
+    def get_focus(self,debug=[1,2]):
         '''
-        Retrieve the kind of focus
+        Retrieve the focus parameters
         '''
         try:
             for i, pos in enumerate(self.list_pos):
@@ -120,3 +120,10 @@ class PREPARE_MDA():
             print('When get_focus is done, ')
             for pos in self.list_pos:
                 print(f'pos.kind_focus is {pos.kind_focus}')
+        if 2 in debug:
+            print('After get_focus, parameters are  ')
+            print(f'obj.step_focus {pos.step_focus}')
+            print(f'obj.focus_nbsteps {pos.focus_nbsteps}')
+            print(f'obj.thresh {pos.thresh}')
+            print(f'obj.delta_focus {pos.delta_focus}')
+            print(f'obj.kind_focus {pos.kind_focus}')

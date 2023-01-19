@@ -5,6 +5,6 @@ else if ( node.type == 'LOOP' ) {
       $tdList.eq(1).html('<button onClick="editTree();"><img src="/static/icons/tree/icons/wrench.png"></button>');
       $tdList.eq(4).html('<div id="LOOP' + node.key + "-info" +
                     '">Nb rep: '+ node.data.nb_repetition +
-                    ' Time per rep: ' + node.data.time_per_repetition + 'min</div>');
+                    ', Time per rep: ' + node.data.time_per_repetition + 'min</div>');
 
 }

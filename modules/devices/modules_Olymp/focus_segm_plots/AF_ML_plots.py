@@ -35,7 +35,7 @@ class FOCUS_SEGM_PLOT():
         Save in pickle format the curves for AF optimization..
         '''
         addr_af = Path('mda_temp') / 'monitorings' / 'AF'
-        addr_curves = addr_af / kind / f'af{kind}_optim_t{self.rep}.pk'
+        addr_curves = addr_af / kind / f'af{kind}_optim_pos{self.num}_t{self.rep}.pk'
         pk.dump(l_surf, open(addr_curves , "wb"))
 
     def debug_l_surf(self, l_surf, ind_optim, save_curve=True):
@@ -44,10 +44,14 @@ class FOCUS_SEGM_PLOT():
         '''
         plt.figure(figsize=(8,8))
         plt.title(f'Evol Surf t{self.rep}')
-        plt.plot(l_surf)                                                        # plot evolution of pred surface
-        x,y = ind_optim, l_surf[ind_optim]                                        # optimum position
-        if save_curve: self.save_pickle_curves(l_surf, 'ML')
-        plt.plot(x,y, 'go')                                                     # optimum with ML method on the cure of the surface
+        # plot evolution of pred surface
+        plt.plot(l_surf)
+        # optimum position
+        x,y = ind_optim, l_surf[ind_optim]
+        if save_curve:
+            self.save_pickle_curves(l_surf, 'ML')
+        # optimum with ML method on the cure of the surface
+        plt.plot(x,y, 'go')
         plt.xlabel('iteration')
         if self.mean_surf:
             plt.ylabel('segmented surface')
@@ -69,7 +73,8 @@ class FOCUS_SEGM_PLOT():
         plt.plot(l_lap)                                                         # plot evolution of the Laplacian variance
         plt.xlabel('iteration')
         plt.ylabel('variance of the Laplacian')
-        if save_curve: self.save_pickle_curves(l_lap, 'Lap')
+        if save_curve:
+            self.save_pickle_curves(l_lap, 'Lap')
         try:
             name_img = f'evol_lap_var{self.num}_t{self.rep}.png'
             addr_img = Path('mda_temp') / 'monitorings' / 'AF'/ 'Lap' / name_img

@@ -39,7 +39,7 @@ class TEST_DMD_RAND_WALK(MDA):
             pos.segm_for_dmd = 'mod1'
             pos.event = self.event
             pos.first_time = self.first_time
-            if pos.event.name:               # same event on all the positions
+            if pos.event.name:                 # same event on all the positions
                 pos.event.exists = True
 
     def init_conditions(self):
@@ -47,8 +47,8 @@ class TEST_DMD_RAND_WALK(MDA):
         '''
         self.init_on_positions()
         ##
-        self.delay = 1                        # delay between repetitions in min
-        self.repeat = 5                       # number of repetitions
+        self.delay = 1                         # delay between repetitions in min
+        self.repeat = 30                       # number of repetitions
 
     def check_conditions(self, rep):
         '''
