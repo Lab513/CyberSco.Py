@@ -19,7 +19,7 @@ server = chose_server(platf)
 
 class RAND_MOVE():
     '''
-    Random walk.. 
+    Random walk..
     '''
     def __init__(self):
         '''
@@ -57,7 +57,7 @@ class RAND_MOVE():
         dist_max : maximum distance in µm
         '''
         # difference between nearest cell and the center
-        dx = np.random.randint(0,dist_max)
-        dy = np.random.randint(0,dist_max)
+        dx = np.random.randint(-dist_max, dist_max)
+        dy = np.random.randint(-dist_max, dist_max)
         # keep the position on the event at the center
         self.make_relative_move(dx, dy)

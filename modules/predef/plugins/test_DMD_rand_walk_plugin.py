@@ -48,10 +48,11 @@ class TEST_DMD_RAND_WALK(MDA):
         self.init_on_positions()
         ##
         self.delay = 1                         # delay between repetitions in min
-        self.repeat = 30                       # number of repetitions
+        self.repeat = 60                       # number of repetitions
 
     def check_conditions(self, rep):
         '''
+        Change the position at random un x and y
         '''
         for pos in self.list_pos:
             pos.random_step(10)                 # random step in x,y

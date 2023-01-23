@@ -34,13 +34,13 @@
 
 # Mosaic beads paire experiment..
 
-# mod0:
-#     id: beads_1umx1pt5
-#     name: beads
-#
-# mod1:
-#     id: beads_pairs_ep30
-#     name: beads_pairs
+mod0:
+    id: beads_1umx1pt5
+    name: beads
+
+mod1:
+    id: beads_pairs_ep30
+    name: beads_pairs
 
 # mod0:
 #     id: beads_pairs_ep30
@@ -66,10 +66,10 @@
 #     id: beads_1umx1pt5
 #     name: beads
 
-mod0:
-    id: ep5_x100
-    name: yeast x100 
-
-mod1:
-    id: ep5_x100
-    name: yeast x100
+# mod0:
+#     id: ep5_x100
+#     name: yeast x100
+#
+# mod1:
+#     id: ep5_x100
+#     name: yeast x100

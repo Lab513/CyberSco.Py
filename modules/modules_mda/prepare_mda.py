@@ -15,13 +15,27 @@ class PREPARE_MDA():
         '''
         pass
 
+    def infos_in_log(self):
+        '''
+        Save info about the experiment in the log.dat
+        '''
+        with open('modules/settings/used_models.yaml') as f_r:
+            used_models = yaml.load(f_r, Loader=yaml.FullLoader)
+        with open('modules/settings/models.yaml') as f_r:
+            all_models = yaml.load(f_r, Loader=yaml.FullLoader)
+        name_mod0 = all_models[used_models['mod0']['id']]
+        name_mod1 = all_models[used_models['mod1']['id']]
+        print(f'Using models {name_mod0} and {name_mod1}')
+
     def save_experim_infos(self):
         '''
         Copy the information about the experiment with the mda results
+        and save infos in the log.dat..
         '''
         # infos about the experiment
         infos = opj('interface', 'infos_mda', 'experiment_infos.yaml')
         sh.copy(infos, self.dir_mda_temp)
+        self.infos_in_log()
 
     def save_protocol(self):
         '''
