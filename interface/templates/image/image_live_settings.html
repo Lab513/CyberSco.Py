@@ -26,3 +26,12 @@ socket.on('current_contrast', function(autocntrst){
   $.post('http://' + ip_addr + ':2204/autocontrast', {'val': autocntrst})
 
 })
+
+// send scale bar value
+
+socket.on('set_scale_bar', function(scale){
+
+  //alert('scale is ' + scale)
+  $.post('http://' + ip_addr + ':2204/scale_bar', {'val': scale})
+
+})

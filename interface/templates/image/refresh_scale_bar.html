@@ -1,0 +1,11 @@
+$('#show_scale_bar').change( function(){
+
+    if ( $(this).is(':checked') ){
+        socket.emit('scale_bar', 'True')
+        }
+    else{
+        socket.emit('scale_bar', 'False')
+    }
+
+
+})      //

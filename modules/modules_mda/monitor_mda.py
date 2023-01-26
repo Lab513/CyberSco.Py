@@ -205,15 +205,15 @@ class MONITORING(MVP):
         self.folder_nbcells = opj(self.dir_mda_temp, 'monitorings', 'nb_cells')
         # save the list of nb cells in yaml file after each acquisition
         self.save_nbcells_positions()
-        # try:
-        self.plot_nbcells_until_rep(rep)
-        # except:
-        #     print('###### Cannot plot the nb'
-        #           ' of cells with plot_nbcells_until_rep ')
-        # try:
-        self.last_bokeh_plot_nbcells(rep)
-        # except:
-        #     print('Tried to plot bokeh')
+        try:
+            self.plot_nbcells_until_rep(rep)
+        except:
+            print('###### Cannot plot the nb'
+                  ' of cells with plot_nbcells_until_rep ')
+        try:
+            self.last_bokeh_plot_nbcells(rep)
+        except:
+            print('Tried to plot bokeh')
 
     def find_max_bk_plot(self, pos, max_plot, num_mod):
         '''

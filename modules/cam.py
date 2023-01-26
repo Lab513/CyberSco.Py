@@ -53,6 +53,8 @@ if not os.path.exists(mda_imgs_pos):
 livecam = True
 # exposure time
 exp_time = 200
+# scale bar
+curr_scale_bar = False
 
 # make prediction and find contours
 cp = CAM_PRED(mda_pic_addr, mode='live')
@@ -101,6 +103,23 @@ def receive_autocontrast():
             cam.autocontrast = True
         else:
             cam.autocontrast = False
+
+    return "Default Message"
+
+
+@app.route('/scale_bar', methods = ['POST'])
+def receive_scale_bar():
+    '''
+    Retrieve scale bar value
+    '''
+    global curr_scale_bar
+    if request.method == 'POST':
+        new_scale_bar = request.form.get('val')
+        print(f'new_scale_bar is {new_scale_bar}')
+        if new_scale_bar == 'true':
+            curr_scale_bar = True
+        else:
+            curr_scale_bar = False
 
     return "Default Message"
 
@@ -156,7 +175,6 @@ def adapt_size(addr_pic, debug=[]):
         print(f'************* Laplacian value is {lap} ************')
 
 
-
 def laplacian_var(img):
     '''
     Variance of the image's Laplacian
@@ -178,7 +196,8 @@ def gen(predict=True, debug=[]):
             # take a new img
             cam.take_pic(addr_pic, exp_time=exp_time, allow_contrast=True)
             adapt_size(addr_pic)
-            insert_image_scale(addr_pic, magnif)
+            if curr_scale_bar:
+                insert_image_scale(addr_pic, magnif)
             # copy image for making predictions on it after
             copy_pic_in_mda()
             # except:

@@ -33,6 +33,17 @@ def make_autocontrast(val_cntrst, debug=[0]):
     emit('current_contrast', cntrst)
 
 
+@socketio.on('scale_bar')
+def insert_scale_bar(val_scale_bar, debug=[0]):
+    '''
+    Insert or remove the scale bar
+    '''
+    scale = eval(val_scale_bar)
+    if 0 in debug:
+        print(f'scale is {scale}')
+    emit('set_scale_bar', scale)
+
+
 @socketio.on('new_pic')
 def new_pic(msg):
     '''

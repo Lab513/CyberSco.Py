@@ -36,9 +36,9 @@ class RAND_MOVE():
 
         return x_abs, y_abs
 
-    def make_relative_move(self, dx, dy, debug=[]):
+    def make_relative_move_xy(self, dx, dy, debug=[]):
         '''
-        Relative move for tracking
+        Relative move in x and y
         '''
         if 0 in debug:
             print(f'dx,dy')
@@ -56,8 +56,33 @@ class RAND_MOVE():
         '''
         dist_max : maximum distance in µm
         '''
-        # difference between nearest cell and the center
         dx = np.random.randint(-dist_max, dist_max)
         dy = np.random.randint(-dist_max, dist_max)
-        # keep the position on the event at the center
-        self.make_relative_move(dx, dy)
+        self.make_relative_move_xy(dx, dy)
+
+    def make_relative_move_z(self, dz, debug=[]):
+        '''
+        Relative in z
+        '''
+        self.ol.set_zpos(dz, move_type='n')
+        # x, y positions
+        x_abs, y_abs = self.ask_for_xy()
+        z_abs = self.ol.ask_zpos()                # z position
+        print(f'x_abs, y_abs, z_abs positions are  {x_abs, y_abs, z_abs} ')
+        print('used in list_steps')
+        # change the current position
+        self.list_steps['posxyz'].val = [x_abs, y_abs, z_abs]
+        try:
+            self.randz += [z_abs]
+            with open(opj(self.dir_mda_temp, 'monitorings', 'AF', f'randz.pk'), "wb") as fw:
+                pkl.dump(self.randz,fw)
+        except:
+            print('Cannot save randz')
+
+    def random_z(self, dist_max, debug=[]):
+        '''
+        dist_max : maximum distance in µm
+        '''
+        dz = 100*np.random.randint(-dist_max, dist_max)
+        print(f'random z dz = {dz} ')
+        self.make_relative_move_z(dz)
