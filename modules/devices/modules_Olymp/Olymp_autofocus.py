@@ -1,5 +1,5 @@
 # https://neurodiscovery.harvard.edu/files/hndc/files/ix81_zdc.pdf page 3
-import time
+from time import time
 from time import sleep
 from colorama import Fore, Back, Style
 import yaml
@@ -13,6 +13,8 @@ class AF():
     def __init__(self, debug=[]):
         '''
         '''
+        # list of optimal z for ZDC method
+        self.list_focusZDC_zpos = []
         self.nbbytes = 11
         self.offset = None
         self.jump_down = 800
@@ -197,6 +199,7 @@ class AF():
         There can be an intermediate position for stabilizing the autofocus..
         num : position index
         '''
+        t0 = time()
         self.num = num
         print("refocusing !!!!")
         self.jump_to_ref()                         # return to ref position
@@ -206,7 +209,7 @@ class AF():
         new_posz = self.ask_zpos()
         if 1 in debug:
             print(Fore.YELLOW + f'####### new_posz, '
-                            f'just after AF is {new_posz} !!! ')
+                                f'just after AF is {new_posz} !!! ')
             print(Style.RESET_ALL)
         try:
             # focus = AF position + offset
@@ -215,8 +218,8 @@ class AF():
             print("Make the focus before !!!")
         if 2 in debug:
             print(Fore.YELLOW + f'offset used for refocusing is {self.offset}')
-            print(f'####### curr pos {new_posz} '
-                   'pos targetted for focus {pos_focus}')
+            print( f'####### curr pos {new_posz} '
+                   f'pos targetted for focus {pos_focus}')
             print(Style.RESET_ALL)
         # return to the focused position
         self.set_zpos(pos_focus, move_type='d')
@@ -224,5 +227,16 @@ class AF():
             print(Fore.YELLOW + f'pos AF is {self.af_pos}')
             print(f'offset is {self.offset}')
             print(Style.RESET_ALL)
+        t1 = time()
+        self.messages_refocus_zdc(t0,t1,pos_focus)
 
         return pos_focus
+
+    def messages_refocus_zdc(self, t0, t1, pos_focus):
+        '''
+        time for focusing with ZDC,
+        '''
+        print(f'time elapsed for the focus ZDC is {round((t1-t0) , 1)} s')
+        print(Fore.YELLOW + '------------------')
+        print(f'pos_focus ZDC is {pos_focus}')
+        print(Style.RESET_ALL)

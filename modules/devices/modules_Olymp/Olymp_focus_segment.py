@@ -186,13 +186,13 @@ class FOCUS_SEGM(FSP, FOF):
 
     def messages_refocus_segm(self,t0,t1,ind_optim,pos_focus):
         '''
-        time for focusing, index max found and position chosen for focus
+        time for focusing with ML, index max found and position chosen for focus
         '''
-        print(f'time elapsed for the focus is {round((t1-t0) , 1)} s')
+        print(f'time elapsed for the focus ML is {round((t1-t0) , 1)} s')
         print(Fore.YELLOW + '------------------')
         print(f'ind_optim is {ind_optim}')
         print('------------------')
-        print(f'pos_focus is {pos_focus}')
+        print(f'pos_focus ML is {pos_focus}')
         print(Style.RESET_ALL)
 
     def find_steepest_left(self, l_surf):
@@ -200,7 +200,7 @@ class FOCUS_SEGM(FSP, FOF):
         Find the optimal focus using the steepest
             position in l_surf on the left edge
         '''
-        diff = np.diff(np.array(l_surf))      # derivative of l_surf
+        diff = np.diff(np.array(l_surf))        # derivative of l_surf
         cnd1 = diff > 0                         # positive derivative
         cnd2 = diff > diff.max() - 0.1          # max derivative
         # index respecting the conditions cnd1 and cnd2
@@ -405,4 +405,5 @@ class FOCUS_SEGM(FSP, FOF):
         self.go_zpos(pos_focus, 'd')      # go to the focused z position
         if reset_ref:
             ref_posz = pos_focus          # update ref_posz
+            
         return ref_posz
