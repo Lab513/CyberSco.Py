@@ -56,7 +56,7 @@ def change_bpp(val_bpp, debug=[0]):
     if 0 in debug:
         print(f'bpp is {bpp}')
     set_bpp(bpp)
-    emit('current_contrast', bpp)
+    emit('current_bpp', bpp)
 
 
 @socketio.on('scale_bar')

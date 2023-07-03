@@ -107,6 +107,19 @@ def receive_autocontrast():
     return "Default Message"
 
 
+@app.route('/bpp', methods = ['POST'])
+def receive_bpp():
+    '''
+    Retrieve bpp
+    '''
+    if request.method == 'POST':
+        new_bpp = request.form.get('val')
+        print(f'new bpp is {new_bpp}')
+        cam.bpp = new_bpp
+
+    return "Default Message"
+
+
 @app.route('/scale_bar', methods = ['POST'])
 def receive_scale_bar():
     '''

@@ -27,6 +27,15 @@ socket.on('current_contrast', function(autocntrst){
 
 })
 
+// send bpp value
+
+socket.on('current_bpp', function(bpp){
+
+  //alert('bpp is ' + bpp)
+  $.post('http://' + ip_addr + ':2204/bpp', {'val': bpp})
+
+})
+
 // send scale bar value
 
 socket.on('set_scale_bar', function(scale){

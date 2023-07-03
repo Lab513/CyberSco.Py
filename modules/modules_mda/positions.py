@@ -853,7 +853,7 @@ class POS(MV, CP, TR, RM, HG):
         self.ol.set_shutter(shut='on')
         # take BF pic
         # autocontrast driven from interface..
-        self.ev.take_pic(addr_pic, bpp=8, exp_time=exp_time,
+        self.ev.take_pic(addr_pic, bpp=self.ev.bpp, exp_time=exp_time,
                          allow_contrast=self.ev.autocontrast)
         self.save_time_BF()
         ## close the shutter
