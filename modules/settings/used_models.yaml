@@ -1,10 +1,10 @@
-  mod0:
-      id: Croix60x
-      name: Croix
+    mod0:
+        id: Croix60xV2
+        name: Croix
 
-  mod1:
-      id: PCMother100x16v3
-      name: chambre
+    mod1:
+        id: PCMother100x16v3
+        name: chambre
 
 # mod0:
 #     id: beads_1umx1pt5
@@ -14,11 +14,11 @@
 #     id: beads_1umx1pt5
 #     name: beads
 
-#mod0:
+# mod0:
 #    id: ep5_v4
 #    name: yeasts
-
-#mod1:
+#
+# mod1:
 #    id: ep5_v4
 #    name: yeasts
 
@@ -73,3 +73,19 @@
 # mod1:
 #     id: ep5_x100
 #     name: yeast x100
+
+# mod0:
+#     id: bact_simon
+#     name: bact x100
+#
+# mod1:
+#     id: bact_simon
+#     name: bact x100
+
+#mod0:
+#   id: yeast_rejfuzz_ep5
+#   name: yeast
+
+#mod1:
+#  id: ep5_v4
+#  name: basic yeast

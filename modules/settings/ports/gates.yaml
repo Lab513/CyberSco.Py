@@ -1,6 +1,6 @@
 # port for Gates
 
-port : COM8
+port : COM9
 baudrate : 9600
 bytesize : EIGHTBITS
 parity : PARITY_NONE

@@ -51,7 +51,7 @@ class define_firstpage(define_page):
         define_page.__init__(self)
         self.header['main_title'] = 'CyberSco.Py'
         self.header['mess'] = 'Conditional Microscopy'
-        self.header['presentation_interface'] = 'A more flexible Microscopy'
+        self.header['presentation_interface'] = 'with Machine Learning'
         ###
         self.body['main_title'] = ""
         self.body['subtitle'] = ""

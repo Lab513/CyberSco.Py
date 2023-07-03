@@ -52,6 +52,8 @@ if not os.path.exists(mda_imgs_pos):
 
 livecam = True
 # exposure time
+cam.bpp = 8
+# exposure time
 exp_time = 200
 # scale bar
 curr_scale_bar = False
@@ -115,7 +117,7 @@ def receive_bpp():
     if request.method == 'POST':
         new_bpp = request.form.get('val')
         print(f'new bpp is {new_bpp}')
-        cam.bpp = new_bpp
+        cam.bpp = int(new_bpp)
 
     return "Default Message"
 
@@ -182,6 +184,9 @@ def adapt_size(addr_pic, debug=[]):
     '''
     img = cv2.imread(addr_pic)
     res = cv2.resize(img, dsize=(512, 512), interpolation=cv2.INTER_CUBIC)
+    if cam.bpp == 16:
+        res = cv2.cvtColor(res, cv2.CV_16U)
+        print('repassing the image in 16 bytes')
     cv2.imwrite(addr_pic, res)
     lap = laplacian_var(res)
     if 0 in debug:
@@ -207,7 +212,7 @@ def gen(predict=True, debug=[]):
             if 1 in debug:
                 print('...')
             # take a new img
-            cam.take_pic(addr_pic, exp_time=exp_time, allow_contrast=True)
+            cam.take_pic(addr_pic, bpp=cam.bpp, exp_time=exp_time, allow_contrast=True)
             adapt_size(addr_pic)
             if curr_scale_bar:
                 insert_image_scale(addr_pic, magnif)

@@ -430,6 +430,16 @@ img.cntrl_ML {
 
     }
 
+/* bpp input width */
+
+#bpp_for_camera {
+
+  /* bpp setting */
+
+  width: 30px;
+
+}
+
 /* Panel for snap time exposure */
 
 #snap_params {

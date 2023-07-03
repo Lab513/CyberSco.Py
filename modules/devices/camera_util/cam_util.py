@@ -8,17 +8,18 @@ class CAM_UTIL():
     Utilities functions for camera
     '''
     def __init__(self):
-        self.retrieve_autocontrast()
+        self.retrieve_cam_params()
 
-    def retrieve_autocontrast(self, debug=[0]):
+    def retrieve_cam_params(self, debug=[]):
         '''
-        Set autocontrast
         '''
         with open('interface/settings/cam_params.yaml') as f_r:
             dic_cam_params = yaml.load(f_r, Loader=yaml.FullLoader)
-            self.autocontrast = dic_cam_params['autocontrast']
-            if 0 in debug:
-                print(f'########### For BF autocontrast is {self.autocontrast}')
+        self.autocontrast = dic_cam_params['autocontrast']
+        self.bpp = dic_cam_params['bpp']
+        if 0 in debug:
+            print(f'########### For BF autocontrast is {self.autocontrast}')
+            print(f'########### bpp is {self.bpp}')
 
     def adapt(self, bpp, debug=[]):
         '''
