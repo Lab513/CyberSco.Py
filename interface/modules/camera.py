@@ -33,6 +33,32 @@ def make_autocontrast(val_cntrst, debug=[0]):
     emit('current_contrast', cntrst)
 
 
+def set_bpp(bpp, debug=[0]):
+    '''
+    Set nb of bytes per pixel
+    '''
+    print(f'Set bpp to {bpp}')
+    with open(settings_folder / 'cam_params.yaml') as f_r:
+        dic_cam_params = yaml.load(f_r, Loader=yaml.FullLoader)
+    dic_cam_params['bpp'] = bpp
+    with open(settings_folder / 'cam_params.yaml', 'w') as f_w:
+        yaml.dump(dic_cam_params, f_w)
+
+set_bpp(8)       # By default bpp = 8
+
+
+@socketio.on('bpp')
+def change_bpp(val_bpp, debug=[0]):
+    '''
+    Use or not the autocontrast for BF images
+    '''
+    bpp = eval(val_bpp)
+    if 0 in debug:
+        print(f'bpp is {bpp}')
+    set_bpp(bpp)
+    emit('current_contrast', bpp)
+
+
 @socketio.on('scale_bar')
 def insert_scale_bar(val_scale_bar, debug=[0]):
     '''

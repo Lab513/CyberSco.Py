@@ -1,0 +1,7 @@
+// send value of bpp
+
+$('#bpp_for_camera').change( function(){
+
+    socket.emit('autocontrast', $(this).val())
+
+})
