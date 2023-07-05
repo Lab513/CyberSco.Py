@@ -182,11 +182,11 @@ def adapt_size(addr_pic, debug=[]):
     '''
     Adapt image size for predictions
     '''
-    img = cv2.imread(addr_pic)
+    img = cv2.imread(addr_pic,-1) # keep 16 bits format in case.. 
     res = cv2.resize(img, dsize=(512, 512), interpolation=cv2.INTER_CUBIC)
-    if cam.bpp == 16:
-        res = cv2.cvtColor(res, cv2.CV_16U)
-        print('repassing the image in 16 bytes')
+    # if cam.bpp == 16:
+    #     res = cv2.cvtColor(res, cv2.CV_16U)
+    #     print('repassing the image in 16 bits')
     cv2.imwrite(addr_pic, res)
     lap = laplacian_var(res)
     if 0 in debug:
