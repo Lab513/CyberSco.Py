@@ -23,7 +23,7 @@ class CAM_UTIL():
 
     def adapt(self, bpp, debug=[]):
         '''
-        Adapt min max
+        Adapt min max, take into account the bpp value.
         '''
         low = max(self.frame.min(),1)       # lowest value in the image
         high = self.frame.max()      # Highest value in the image
@@ -51,4 +51,4 @@ class CAM_UTIL():
                 print('no autocontrast applied..')
             # if no autocontrast and 8 bits resolution
             if bpp == 8:
-                self.frame = self.frame/256
+                self.frame = self.frame/255

@@ -384,7 +384,7 @@ class POS(MV, CP, TR, RM, HG):
 
         # take the fluo pic
         # camera exposure time is a blocking operation
-        self.ev.take_pic(addr_pic, bpp=ev.bpp, exp_time=exp_time, allow_contrast=False)
+        self.ev.take_pic(addr_pic, bpp=self.ev.bpp, exp_time=exp_time, allow_contrast=False)
 
         print(f'filt for fluo is {filt}')
 

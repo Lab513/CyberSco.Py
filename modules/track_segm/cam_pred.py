@@ -369,7 +369,7 @@ class CAM_PRED(TR):
         sh.move(self.addr_predf, opj(self.dir_mda_temp,
                 'monitorings', 'pred', self.predf))   # prediction in mda_temp
 
-    def array_for_pred(self, f):
+    def array_for_pred(self, f, debug=[]):
         '''
         Prepare image format for prediction
         '''
@@ -377,9 +377,19 @@ class CAM_PRED(TR):
             self.addrf = opj(self.dir_test, f)       # addr image for prediction
         elif self.mode == 'live':
             self.addrf = opj(self.dir_pred, f)       # addr image for prediction
-        self.img = cv2.imread(self.addrf)
-        # format array for prediction
-        arr = np.array([self.img], dtype=np.float32)/255
+        self.img = cv2.imread(self.addrf,-1)
+        if 0 in debug:
+            print(f"self.addrf = {self.addrf}")
+            print(f"self.img.shape = {self.img.shape}")
+            print(f"self.img.dtype = {self.img.dtype}")
+        self.img = np.dstack((self.img,self.img,self.img))
+        if 1 in debug:
+            print(f'self.img.max() = {self.img.max()}')
+        if self.img.dtype == 'uint8':
+            arr = np.array([self.img], dtype=np.float32)/255
+        elif self.img.dtype == 'uint16':
+            arr = np.array([self.img])/255**2
+
         return arr
 
     def cam_track_BF(self):

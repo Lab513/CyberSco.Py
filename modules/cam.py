@@ -10,6 +10,7 @@ import shutil as sh
 import socket
 import yaml
 import cv2
+from skimage import io
 import os
 op = os.path
 opd, opb = op.dirname, op.basename
@@ -172,25 +173,25 @@ def copy_pic_in_mda(debug=[]):
         print('copy in static/mda_pics')
     sh.copy(addr_pic, mda_pic_addr)
     addr_copy = opj(mda_pic_addr, opb(addr_pic))
-    im = Image.open(addr_copy)
+    img = io.imread(addr_copy)
     if 2 in debug:
         print(f'## addr_copy is {addr_copy}')
-    im.save(addr_copy[:-4] + '.tiff', 'TIFF')
+    io.imsave(addr_copy[:-4] + '.tiff', img)
 
 
 def adapt_size(addr_pic, debug=[]):
     '''
     Adapt image size for predictions
     '''
-    img = cv2.imread(addr_pic,-1) # keep 16 bits format in case.. 
+    img = cv2.imread(addr_pic,-1) # keep 16 bits format in case..
     res = cv2.resize(img, dsize=(512, 512), interpolation=cv2.INTER_CUBIC)
     # if cam.bpp == 16:
     #     res = cv2.cvtColor(res, cv2.CV_16U)
     #     print('repassing the image in 16 bits')
     cv2.imwrite(addr_pic, res)
-    lap = laplacian_var(res)
-    if 0 in debug:
-        print(f'************* Laplacian value is {lap} ************')
+    # lap = laplacian_var(res)
+    # if 0 in debug:
+    #     print(f'************* Laplacian value is {lap} ************')
 
 
 def laplacian_var(img):
